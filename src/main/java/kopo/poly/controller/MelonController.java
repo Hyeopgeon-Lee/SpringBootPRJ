@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @RestController
@@ -33,7 +32,7 @@ public class MelonController {
         if (res == 1) {
             msg = "success";
 
-        }else{
+        } else {
             msg = "fail";
         }
 
@@ -61,14 +60,29 @@ public class MelonController {
      * 가수별 수집된 노래의 수 가져오기
      */
     @GetMapping(value = "melon/getSingerSongCnt")
-    public List<Map<String, Object>> getSingerSongCnt()
+    public List<MelonDTO> getSingerSongCnt()
             throws Exception {
 
         log.info(this.getClass().getName() + ".getSingerSongCnt Start!");
 
-        List<Map<String, Object>> rList = melonService.getSingerSongCnt();
+        List<MelonDTO> rList = melonService.getSingerSongCnt();
 
         log.info(this.getClass().getName() + ".getSingerSongCnt End!");
+
+        return rList;
+    }
+
+    /**
+     * 가수별 수집된 노래의 수 가져오기
+     */
+    @GetMapping(value = "melon/getSingerSong")
+    public List<MelonDTO> getSingerSong() throws Exception {
+
+        log.info(this.getClass().getName() + ".getSingerSong Start!");
+
+        List<MelonDTO> rList = melonService.getSingerSong();
+
+        log.info(this.getClass().getName() + ".getSingerSong End!");
 
         return rList;
     }

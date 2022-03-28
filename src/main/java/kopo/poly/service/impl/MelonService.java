@@ -97,13 +97,13 @@ public class MelonService implements IMelonService {
         List<MelonDTO> rList = new LinkedList<>();
 
         // RedisDB에 저장되어 있는지 확인하기(Key이름은 MongoDB 컬렉션 이름과 동일하게 사용함)
-        if (melonCacheMapper.getExistKey(colNm)){
-            for (Object rDTO: melonCacheMapper.getSongList(colNm)){
+        if (melonCacheMapper.getExistKey(colNm)) {
+            for (Object rDTO : melonCacheMapper.getSongList(colNm)) {
                 rList.add((MelonDTO) rDTO);
 
             }
 
-        }else{
+        } else {
             rList = melonMapper.getSongList(colNm);
 
         }
@@ -118,13 +118,13 @@ public class MelonService implements IMelonService {
     }
 
     @Override
-    public List<Map<String, Object>> getSingerSongCnt() throws Exception {
+    public List<MelonDTO> getSingerSongCnt() throws Exception {
 
         log.info(this.getClass().getName() + ".getSingerSongCnt Start!");
 
         String colNm = "MELON_" + DateUtil.getDateTime("yyyyMMdd");
 
-        List<Map<String, Object>> rList = melonMapper.getSingerSongCnt(colNm);
+        List<MelonDTO> rList = melonMapper.getSingerSongCnt(colNm);
 
         if (rList == null) {
             rList = new LinkedList<>();
@@ -134,5 +134,39 @@ public class MelonService implements IMelonService {
 
         return rList;
     }
+
+    @Override
+    public List<MelonDTO> getSingerSong() throws Exception {
+
+        log.info(this.getClass().getName() + ".getSingerSong Start!");
+
+        // MongoDB에 저장된 컬렉션 이름
+        String colNm = "MELON_" + DateUtil.getDateTime("yyyyMMdd");
+
+        // 수집된 데이터로부터 검색할 가수명
+        String singer = "방탄소년단";
+
+        // 결과값
+        List<MelonDTO> rList = null;
+
+        // Melen 노래 수집하기
+        if (this.collectMelonSong()==1) {
+
+            rList = melonMapper.getSingerSong(colNm, singer);
+
+            if (rList == null) {
+                rList = new LinkedList<>();
+            }
+
+        }else{
+            rList = new LinkedList<>();
+
+        }
+
+        log.info(this.getClass().getName() + ".getSingerSong End!");
+
+        return rList;
+    }
+
 
 }
