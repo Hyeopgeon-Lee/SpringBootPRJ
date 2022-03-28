@@ -20,7 +20,7 @@ public class MelonController {
      * 멜론 노래 리스트 저장하기
      */
     @GetMapping(value = "melon/collectMelonSong")
-    public String collectMelonRank() throws Exception {
+    public String collectMelonSong() throws Exception {
 
         log.info(this.getClass().getName() + ".collectMelonSong Start!");
 
@@ -86,4 +86,30 @@ public class MelonController {
 
         return rList;
     }
+
+    /**
+     * 멜론 노래 리스트 저장하기
+     */
+    @GetMapping(value = "melon/collectMelonSongMany")
+    public String collectMelonSongMany() throws Exception {
+
+        log.info(this.getClass().getName() + ".collectMelonSongMany Start!");
+
+        // 수집 결과 출력
+        String msg;
+
+        int res = melonService.collectMelonSongMany();
+
+        if (res == 1) {
+            msg = "success";
+
+        } else {
+            msg = "fail";
+        }
+
+        log.info(this.getClass().getName() + ".collectMelonSongMany End!");
+
+        return msg;
+    }
+
 }

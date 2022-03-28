@@ -40,4 +40,13 @@ public interface IMelonMapper {
      */
     List<MelonDTO> getSingerSong(String colNm, String singer) throws Exception;
 
+    /**
+     * 멜론 노래 리스트 저장하기
+     *
+     * @param pList 저장될 정보
+     * @param colNm 저장할 컬렉션 이름
+     * @return 저장 결과
+     */
+    int insertSongMany(List<MelonDTO> pList, String colNm) throws Exception;
+
 }
