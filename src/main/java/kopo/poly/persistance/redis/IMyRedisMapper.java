@@ -91,7 +91,7 @@ public interface IMyRedisMapper {
      * @param pDTO 저장할 정보들
      * @return 저장 성공 여부
      */
-    public int saveRedisHash(String redisKey, RedisDTO pDTO) throws Exception;
+    int saveRedisHash(String redisKey, RedisDTO pDTO) throws Exception;
 
     /**
      * Hash 타입에 문자열 형태로 저장된 값 가져오기
@@ -134,4 +134,20 @@ public interface IMyRedisMapper {
      * @return 결과 값
      */
     Set<RedisDTO> getRedisZSetJSON(String redisKey) throws Exception;
+
+    /**
+     * Redis에 JSON 구조로 저장된 데이터 삭제하기
+     *
+     * @param redisKey 삭제할 RedisKey
+     * @return 결과 값
+     */
+    boolean deleteDataJSON(String redisKey) throws Exception;
+
+    /**
+     * Redis에 String 구조로 저장된 데이터 삭제하기
+     *
+     * @param redisKey 삭제할 RedisKey
+     * @return 결과 값
+     */
+    boolean deleteDataString(String redisKey) throws Exception;
 }

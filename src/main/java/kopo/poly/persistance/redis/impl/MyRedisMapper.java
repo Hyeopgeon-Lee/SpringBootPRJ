@@ -154,10 +154,10 @@ public class MyRedisMapper implements IMyRedisMapper {
         for (RedisDTO dto : pList) {
 
             // 오름차순으로 저장하기
-            redisDB.opsForList().rightPush(redisKey, CmmUtil.nvl(dto.getTest_text()));
+            //redisDB.opsForList().rightPush(redisKey, CmmUtil.nvl(dto.getTest_text()));
 
             // 내림차순으로 저장하기
-//            redisDB.opsForList().leftPush(redisKey, CmmUtil.nvl(dto.getTest_text()));
+            redisDB.opsForList().leftPush(redisKey, CmmUtil.nvl(dto.getTest_text()));
 
         }
 
@@ -446,5 +446,49 @@ public class MyRedisMapper implements IMyRedisMapper {
         log.info(this.getClass().getName() + ".getRedisZSetJSON End!");
 
         return rSet;
+    }
+
+    @Override
+    public boolean deleteDataJSON(String redisKey) throws Exception {
+
+        log.info(this.getClass().getName() + ".deleteDataJSON Start!");
+
+        // 저장되었던 데이터 타입 정의
+        redisDB.setKeySerializer(new StringRedisSerializer()); // String 타입
+        redisDB.setValueSerializer(new Jackson2JsonRedisSerializer<>(RedisDTO.class));
+
+        boolean res = false;
+
+        if (redisDB.hasKey(redisKey)) {
+            redisDB.delete(redisKey);
+
+            res = true;
+        }
+
+        log.info(this.getClass().getName() + ".deleteDataJSON End!");
+
+        return res;
+    }
+
+    @Override
+    public boolean deleteDataString(String redisKey) throws Exception {
+
+        log.info(this.getClass().getName() + ".deleteDataString Start!");
+
+        // 저장되었던 데이터 타입 정의
+        redisDB.setKeySerializer(new StringRedisSerializer());
+        redisDB.setValueSerializer(new StringRedisSerializer());
+
+        boolean res = false;
+
+        if (redisDB.hasKey(redisKey)) {
+            redisDB.delete(redisKey);
+
+            res = true;
+        }
+
+        log.info(this.getClass().getName() + ".deleteDataString End!");
+
+        return res;
     }
 }

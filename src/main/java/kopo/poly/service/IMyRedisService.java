@@ -23,7 +23,7 @@ public interface IMyRedisService {
     int saveRedisStringJSON() throws Exception;
 
     /**
-     * String 타입 가져오기
+     * String 타입에 JSON 형태로 저장된 값 가져오기
      */
     RedisDTO getRedisStringJSON() throws Exception;
 
@@ -89,4 +89,15 @@ public interface IMyRedisService {
      * ZSet타입에 JSON 형태로 저장된 값 가져오기
      */
     Set<RedisDTO> getRedisZSetJSON() throws Exception;
+
+    /**
+     * Redis에 JSON 구조로 저장된 데이터 삭제하기
+     */
+    boolean deleteDataJSON() throws Exception;
+
+    /**
+     * Redis에 String 구조로 저장된 데이터 삭제하기
+     */
+    boolean deleteDataString() throws Exception;
+
 }

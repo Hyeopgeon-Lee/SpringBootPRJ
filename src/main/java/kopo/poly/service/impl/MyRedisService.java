@@ -7,10 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Slf4j
 @Service("MyRedisService")
@@ -187,9 +184,9 @@ public class MyRedisService implements IMyRedisService {
 
         String redisKey = "myRedis_List_JSON_Ramda";
 
-        List<RedisDTO> pList = new LinkedList<>();
+        List<RedisDTO> pList = new ArrayList<>();
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 1000; i++) {
 
             RedisDTO pDTO = new RedisDTO();
             pDTO.setTest_text(i + "번째 데이터입니다.");
@@ -355,5 +352,33 @@ public class MyRedisService implements IMyRedisService {
         log.info(this.getClass().getName() + ".getRedisZSetJSON End!");
 
         return rSet;
+    }
+
+    @Override
+    public boolean deleteDataJSON() throws Exception {
+
+        log.info(this.getClass().getName() + ".deleteDate Start!");
+
+        String redisKey = "myRedis_Zset_JSON";
+
+        boolean res = myRedisMapper.deleteDataJSON(redisKey);
+
+        log.info(this.getClass().getName() + ".deleteDate End!");
+
+        return res;
+    }
+
+    @Override
+    public boolean deleteDataString() throws Exception {
+
+        log.info(this.getClass().getName() + ".deleteDate Start!");
+
+        String redisKey = "myRedis_Zset_JSON";
+
+        boolean res = myRedisMapper.deleteDataJSON(redisKey);
+
+        log.info(this.getClass().getName() + ".deleteDate End!");
+
+        return res;
     }
 }

@@ -43,7 +43,7 @@ public class RedisController {
     }
 
     /**
-     * Redis 문자열 저장 실습
+     * Redis 문자열 저장된 값 가져오기
      */
     @GetMapping(value = "redis/getRedisString")
     public RedisDTO getRedisString() throws Exception {
@@ -83,7 +83,7 @@ public class RedisController {
     }
 
     /**
-     * Redis 문자열을 JSON으로 저장 실습
+     * Redis 문자열을 JSON으로 저장된 값 가져오기
      */
     @GetMapping(value = "redis/getRedisStringJSON")
     public RedisDTO getRedisStringJSON() throws Exception {
@@ -98,7 +98,7 @@ public class RedisController {
     }
 
     /**
-     * Redis 문자열을 JSON으로 저장 실습
+     * List타입에 여러 문자열로 저장하기(동기화)
      */
     @GetMapping(value = "redis/saveRedisList")
     public String saveRedisList() throws Exception {
@@ -123,7 +123,7 @@ public class RedisController {
     }
 
     /**
-     * Redis 문자열을 JSON으로 저장 실습
+     * List타입에 여러 문자열로 저장된 데이터 가져오기
      */
     @GetMapping(value = "redis/getRedisList")
     public List<String> getRedisList() throws Exception {
@@ -179,7 +179,7 @@ public class RedisController {
     }
 
     /**
-     * List타입에 JSON 형태로 저장하기
+     * List타입에 JSON 형태로 람다식을 이용하여 저장하기(비동기화)
      */
     @GetMapping(value = "redis/saveRedisListJSONRamda")
     public String saveRedisListJSONRamda() throws Exception {
@@ -336,6 +336,36 @@ public class RedisController {
         log.info(this.getClass().getName() + ".getRedisZSetJSON End!");
 
         return rSet;
+    }
+    
+    /**
+     * RedisDB 데이터 삭제하기
+     */
+    @GetMapping(value = "redis/deleteDataJSON")
+    public boolean deleteDataJSON() throws Exception {
+
+        log.info(this.getClass().getName() + ".deleteDataJSON Start!");
+
+        boolean res = myRedisService.deleteDataJSON();
+
+        log.info(this.getClass().getName() + ".deleteDataJSON End!");
+
+        return res;
+    }
+
+    /**
+     * RedisDB 데이터 삭제하기
+     */
+    @GetMapping(value = "redis/deleteData")
+    public boolean deleteDataString() throws Exception {
+
+        log.info(this.getClass().getName() + ".deleteDataString Start!");
+
+        boolean res = myRedisService.deleteDataString();
+
+        log.info(this.getClass().getName() + ".deleteDataString End!");
+
+        return res;
     }
 
 }
