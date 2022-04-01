@@ -112,4 +112,104 @@ public class MelonController {
         return msg;
     }
 
+    /**
+     * 가수 이름이 방탄소년단을 BTS로 변경하기
+     */
+    @GetMapping(value = "melon/updateBTSName")
+    public String updateBTSName() throws Exception {
+
+        log.info(this.getClass().getName() + ".updateBTSName Start!");
+
+        // 결과 출력
+        String msg;
+
+        int res = melonService.updateBTSName();
+
+        if (res == 1) {
+            msg = "success";
+
+        } else {
+            msg = "fail";
+        }
+
+        log.info(this.getClass().getName() + ".updateBTSName End!");
+
+        return msg;
+    }
+
+    /**
+     * 가수 이름이 방탄소년단을 BTS로 변경하기
+     */
+    @GetMapping(value = "melon/btsAddNickname")
+    public String btsAddField() throws Exception {
+
+        log.info(this.getClass().getName() + ".btsAddNickname Start!");
+
+        // 결과 출력
+        String msg;
+
+        int res = melonService.updateAddBTSNickname();
+
+        if (res == 1) {
+            msg = "success";
+
+        } else {
+            msg = "fail";
+        }
+
+        log.info(this.getClass().getName() + ".btsAddNickname End!");
+
+        return msg;
+    }
+
+    /**
+     * 가수 이름이 방탄소년단을 BTS로 변경하기
+     */
+    @GetMapping(value = "melon/btsAddMember")
+    public String btsAddMember() throws Exception {
+
+        log.info(this.getClass().getName() + ".btsAddMember Start!");
+
+        // 결과 출력
+        String msg;
+
+        int res = melonService.updateAddBTSMember();
+
+        if (res == 1) {
+            msg = "success";
+
+        } else {
+            msg = "fail";
+        }
+
+        log.info(this.getClass().getName() + ".btsAddMember End!");
+
+        return msg;
+    }
+
+    /**
+     * 가수 이름이 방탄소년단인 노래 삭제하기
+     */
+    @GetMapping(value = "melon/deleteBTSSong")
+    public String deleteBTSSong() throws Exception {
+
+        log.info(this.getClass().getName() + ".deleteBTSSong Start!");
+
+        // 결과 출력
+        String msg;
+
+        int res = melonService.deleteBTSSong();
+
+        if (res == 1) {
+            msg = "success";
+
+        } else {
+            msg = "fail";
+        }
+
+        log.info(this.getClass().getName() + ".deleteBTSSong End!");
+
+        return msg;
+    }
+
 }

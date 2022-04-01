@@ -33,4 +33,26 @@ public interface IMelonService {
      */
     int collectMelonSongMany() throws Exception;
 
+    /**
+     * singer 필드의 값인 방탄소년단을 BTS로 변경하기
+     */
+    int updateBTSName() throws Exception;
+
+    /**
+     * BTS 노래마다 nickname 필드를 추가하고,
+     * 그 필드에 BTS 저장하기
+     */
+    int updateAddBTSNickname() throws Exception;
+
+    /**
+     * BTS 노래에 member 필드 추가하고,
+     * 그 member 필드에 BTS 멤버 이름들을 List로 저장하기
+     */
+    int updateAddBTSMember() throws Exception;
+
+    /**
+     * BTS 노래 삭제하기
+     */
+    int deleteBTSSong() throws Exception;
+
 }
