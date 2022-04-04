@@ -7,7 +7,7 @@
 <html>
 <head>
     <script src="/js/annyang.js"></script>
-    <script src="/js/jquery-3.4.1.min.js"></script>
+    <script src="/js/jquery-3.6.0.min.js"></script>
     <script>
         // html의 모든 객체(태그)들이 로딩이 완료된 경우 실행함
         $(window).on("load", function () {
