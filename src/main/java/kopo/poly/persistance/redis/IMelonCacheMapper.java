@@ -10,9 +10,10 @@ public interface IMelonCacheMapper {
      * 멜론 노래 리스트 저장하기
      *
      * @param pList 저장할 데이터
+     * @param redisKey 저장할 키
      * @return 저장 결과
      */
-    int insertSong(List<MelonDTO> pList) throws Exception;
+    int insertSong(List<MelonDTO> pList, String redisKey) throws Exception;
 
     /**
      * 멜론 노래 키 정보 존재여부 체크하기
@@ -28,7 +29,7 @@ public interface IMelonCacheMapper {
      * @param key 저장된 키 이름
      * @return 노래 리스트
      */
-    List<Object> getSongList(String key) throws Exception;
+    List<MelonDTO> getSongList(String key) throws Exception;
 
 
 }

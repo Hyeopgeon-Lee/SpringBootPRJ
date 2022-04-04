@@ -4,7 +4,6 @@ import kopo.poly.dto.RedisDTO;
 import kopo.poly.persistance.redis.IMyRedisMapper;
 import kopo.poly.util.CmmUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
@@ -18,8 +17,11 @@ import java.util.concurrent.TimeUnit;
 @Component("MyRedisMapper")
 public class MyRedisMapper implements IMyRedisMapper {
 
-    @Autowired
-    public RedisTemplate<String, Object> redisDB;
+    public final RedisTemplate<String, Object> redisDB;
+
+    public MyRedisMapper(RedisTemplate<String, Object> redisDB) {
+        this.redisDB = redisDB;
+    }
 
     @Override
     public int saveRedisString(String redisKey, RedisDTO pDTO) throws Exception {
@@ -129,7 +131,7 @@ public class MyRedisMapper implements IMyRedisMapper {
         // RedisDTO에 저장된 데이터를 자동으로 JSON으로 변경하기
         redisDB.setValueSerializer(new Jackson2JsonRedisSerializer<>(RedisDTO.class));
 
-        if (redisDB.hasKey(redisKey)) { // 데이터가 존재하지 않으면 저장하기
+        if (Boolean.TRUE.equals(redisDB.hasKey(redisKey))) { // 데이터가 존재하지 않으면 저장하기
             rDTO = (RedisDTO) redisDB.opsForValue().get(redisKey);
 
         }
@@ -266,7 +268,7 @@ public class MyRedisMapper implements IMyRedisMapper {
         redisDB.setValueSerializer(new Jackson2JsonRedisSerializer<>(RedisDTO.class));
 
         // 람다식 사용은 순서에 상관없이 저장하기 때문에 오름차순, 내림차순은 중요하지 않음
-        pList.stream().forEach(dto -> redisDB.opsForList().rightPush(redisKey, dto));
+        pList.forEach(dto -> redisDB.opsForList().rightPush(redisKey, dto));
 
         // 저장되는 데이터의 유효기간(TTL)은 5시간으로 정의
         redisDB.expire(redisKey, 5, TimeUnit.HOURS);
@@ -354,7 +356,7 @@ public class MyRedisMapper implements IMyRedisMapper {
         redisDB.setValueSerializer(new Jackson2JsonRedisSerializer<>(RedisDTO.class));
 
         // 데이터 저장하기
-        pSet.stream().forEach(dto -> redisDB.opsForSet().add(redisKey, dto));
+        pSet.forEach(dto -> redisDB.opsForSet().add(redisKey, dto));
 
         // 저장되는 데이터의 유효기간(TTL)은 5시간으로 정의
         redisDB.expire(redisKey, 5, TimeUnit.HOURS);
