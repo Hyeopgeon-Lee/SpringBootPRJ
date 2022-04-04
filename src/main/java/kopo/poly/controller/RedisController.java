@@ -356,7 +356,7 @@ public class RedisController {
     /**
      * RedisDB 데이터 삭제하기
      */
-    @GetMapping(value = "redis/deleteData")
+    @GetMapping(value = "redis/deleteDataString")
     public boolean deleteDataString() throws Exception {
 
         log.info(this.getClass().getName() + ".deleteDataString Start!");

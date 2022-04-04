@@ -371,13 +371,13 @@ public class MyRedisService implements IMyRedisService {
     @Override
     public boolean deleteDataString() throws Exception {
 
-        log.info(this.getClass().getName() + ".deleteDate Start!");
+        log.info(this.getClass().getName() + ".deleteDataString Start!");
 
-        String redisKey = "myRedis_Zset_JSON";
+        String redisKey = "myRedis_Hash";
 
         boolean res = myRedisMapper.deleteDataJSON(redisKey);
 
-        log.info(this.getClass().getName() + ".deleteDate End!");
+        log.info(this.getClass().getName() + ".deleteDataString End!");
 
         return res;
     }
