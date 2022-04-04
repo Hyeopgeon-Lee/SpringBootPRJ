@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>음성인식 기초 프로그램</title>
+    <script src="../js/annyang.js"></script>
+    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script>
+        //annyang 라이브러리 실행
+        annyang.start({
+            autoRestart: true,
+            continuous: true
+        })
+
+        //음성인식 값 받아오기위한 객체 생성
+        let recognition = annyang.getSpeechRecognizer();
+
+        //최종 음성인식 결과값 저장 변수
+        let final_transcript = "";
+
+        //말하는 동안에 인식되는 값 가져오기(허용)
+        recognition.interimResults = true;
+
+        //음성 인식결과 가져오기
+        recognition.onresult = function (event) {
+
+            let final_transcript = "";
+
+            for (let i = event.resultIndex; i < event.results.length; ++i) {
+                if (event.results[i].isFinal) {
+                    final_transcript += event.results[i][0].transcript;
+                }
+            }
+
+            $("#mySpeak").html(final_transcript);
+            $("#totalMySpeak").after(final_transcript + "\n");
+
+        };
+    </script>
+</head>
+<body>
+<h1>내가 방금 한말</h1>
+<hr/>
+<div id="mySpeak"></div>
+
+<h1>음성메시지 전체 내용</h1>
+<hr/>
+<div id="totalMySpeak"></div>
+
+</body>
+</html>
