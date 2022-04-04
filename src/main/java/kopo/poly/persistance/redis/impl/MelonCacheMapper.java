@@ -55,7 +55,7 @@ public class MelonCacheMapper implements IMelonCacheMapper {
         if (redisDB.hasKey(key)) {
             return true;
 
-        }{
+        } else {
             return false;
 
         }
@@ -73,7 +73,7 @@ public class MelonCacheMapper implements IMelonCacheMapper {
 
         // 저장된 키가 존재한다면...
         if (redisDB.hasKey(key)) {
-            rList = (List)redisDB.opsForList().range(key, 0, -1);
+            rList = (List) redisDB.opsForList().range(key, 0, -1);
         }
 
         log.info(this.getClass().getName() + ".getSongList End!");
@@ -81,3 +81,4 @@ public class MelonCacheMapper implements IMelonCacheMapper {
         return rList;
     }
 }
+

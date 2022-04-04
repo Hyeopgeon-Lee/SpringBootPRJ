@@ -77,8 +77,13 @@ public class MelonService implements IMelonService {
         // MongoDB에 데이터저장하기
         res = melonMapper.insertSong(pList, colNm);
 
-        // RedisDB에 데이터저장하기
-        res = melonCacheMapper.insertSong(pList, colNm);
+        // RedisDB에 저장되지 않았다면, 저장하기
+        if (!melonCacheMapper.getExistKey(colNm)){
+
+            // RedisDB에 데이터저장하기
+            res = melonCacheMapper.insertSong(pList, colNm);
+
+        }
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
         log.info(this.getClass().getName() + ".collectMelonSong End!");
@@ -94,17 +99,14 @@ public class MelonService implements IMelonService {
         // MongoDB에 저장된 컬렉션 이름
         String colNm = "MELON_" + DateUtil.getDateTime("yyyyMMdd");
 
-        List<MelonDTO> rList = new LinkedList<>();
+        List<MelonDTO> rList = null;
 
         // RedisDB에 저장되어 있는지 확인하기(Key이름은 MongoDB 컬렉션 이름과 동일하게 사용함)
         if (melonCacheMapper.getExistKey(colNm)) {
-            for (Object rDTO : melonCacheMapper.getSongList(colNm)) {
-                rList.add((MelonDTO) rDTO);
-
-            }
+            rList = melonCacheMapper.getSongList(colNm); // RedisDB에서 데이터 가져오기
 
         } else {
-            rList = melonMapper.getSongList(colNm);
+            rList = melonMapper.getSongList(colNm); // MongoDB에서 데이터 가져오기
 
         }
 

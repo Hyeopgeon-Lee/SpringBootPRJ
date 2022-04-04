@@ -21,7 +21,7 @@ public interface IMelonCacheMapper {
      * @param key 저장된 키 이름
      * @return key존재여부
      */
-    boolean getExistKey(String key) throws Exception;
+    boolean getExistKey(String rediskey) throws Exception;
 
     /**
      * 오늘 수집된 멜론 노래리스트 가져오기
@@ -29,7 +29,6 @@ public interface IMelonCacheMapper {
      * @param key 저장된 키 이름
      * @return 노래 리스트
      */
-    List<MelonDTO> getSongList(String key) throws Exception;
-
+    List<MelonDTO> getSongList(String rediskey) throws Exception;
 
 }
