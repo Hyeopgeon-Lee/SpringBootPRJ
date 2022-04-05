@@ -24,14 +24,14 @@ public class MovieMapper implements IMovieMapper {
 
     @Override
     public int insertMovie(MovieDTO pDTO, String redisKey) throws Exception {
-        log.info(this.getClass().getName() + ".saveRedisListJSON Start!");
+        log.info(this.getClass().getName() + ".insertMovie Start!");
 
         int res = 0;
 
         // redisDB의 키의 데이터 타입을 String으로 정의(항상 String으로 설정함)
         redisDB.setKeySerializer(new StringRedisSerializer()); // String 타입
 
-        // RedisDTO에 저장된 데이터를 자동으로 JSON으로 변경하기
+        // MovieDTO에 저장된 데이터를 자동으로 JSON으로 변경하기
         redisDB.setValueSerializer(new Jackson2JsonRedisSerializer<>(MovieDTO.class));
 
         // 오름차순으로 저장하기
@@ -42,13 +42,14 @@ public class MovieMapper implements IMovieMapper {
 
         res = 1;
 
-        log.info(this.getClass().getName() + ".saveRedisListJSON End!");
+        log.info(this.getClass().getName() + ".insertMovie End!");
 
         return res;
     }
 
     @Override
     public boolean getExistKey(String redisKey) throws Exception {
+        log.info(this.getClass().getName() + ".getExistKey Start!");
 
         // 저장된 키가 존재한다면...
         if (redisDB.hasKey(redisKey)) {

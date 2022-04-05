@@ -36,7 +36,7 @@ public class MovieController {
 
         log.info("send_msg : " + send_msg);
 
-        // 영화, 순위와 비슷한 단어가 존재하면 CGV 영화 순위 가져오기 수행
+        // 영화와 비슷한 단어가 존재하면 CGV 영화 순위 가져오기 수행
         if ((send_msg.contains("영화")) || (send_msg.contains("영하")) || (send_msg.contains("연하"))
                 || (send_msg.contains("연화"))) {
 

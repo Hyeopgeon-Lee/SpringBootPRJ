@@ -15,3 +15,4 @@ public class MovieDTO {
     private String open_day; // 개봉일
 
 }
+

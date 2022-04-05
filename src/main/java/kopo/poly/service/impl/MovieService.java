@@ -58,7 +58,8 @@ public class MovieService implements IMovieService {
             //수집시간을 기본키(pk)로 사용
             pDTO.setCollect_time(DateUtil.getDateTime("yyyyMMdd"));
 
-            //영화 순위(trim 함수 추가 이유 : trim 함수는 글자의 앞뒤 공백 삭제 역할을 수행하여,데이터 수집시, 홈페이지 개발자들을 앞뒤 공백 집어넣을 수 있어서 추가)
+            //영화 순위(trim 함수 추가 이유 : trim 함수는 글자의 앞뒤 공백 삭제 역할을 수행하여,
+            // 데이터 수집시, 홈페이지 개발자들을 앞뒤 공백 집어넣을 수 있어서 추가)
             String rank = CmmUtil.nvl(movie_rank.next().text()).trim();  //No.1 들어옴
             pDTO.setMovie_rank(rank.substring(3, rank.length()));
 
