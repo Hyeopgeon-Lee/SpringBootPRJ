@@ -188,6 +188,31 @@ public class MelonController {
     }
 
     /**
+     * 가수 이름이 방탄소년단을 BTS로 변경하기
+     */
+    @GetMapping(value = "melon/updateManySong")
+    public String updateManySong() throws Exception {
+
+        log.info(this.getClass().getName() + ".updateManySong Start!");
+
+        // 결과 출력
+        String msg;
+
+        int res = melonService.updateManySong();
+
+        if (res == 1) {
+            msg = "success";
+
+        } else {
+            msg = "fail";
+        }
+
+        log.info(this.getClass().getName() + ".updateManySong End!");
+
+        return msg;
+    }
+
+    /**
      * 가수 이름이 방탄소년단인 노래 삭제하기
      */
     @GetMapping(value = "melon/deleteBTSSong")

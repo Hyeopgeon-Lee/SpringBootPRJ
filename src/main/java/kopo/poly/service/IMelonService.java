@@ -51,6 +51,12 @@ public interface IMelonService {
     int updateAddBTSMember() throws Exception;
 
     /**
+     * BTS 노래에 member 필드 추가하고,
+     * 그 member 필드에 BTS 멤버 이름들을 List로 저장하기
+     */
+    int updateManySong() throws Exception;
+
+    /**
      * BTS 노래 삭제하기
      */
     int deleteBTSSong() throws Exception;

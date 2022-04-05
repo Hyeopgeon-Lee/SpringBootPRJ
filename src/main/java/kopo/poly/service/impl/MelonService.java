@@ -78,7 +78,7 @@ public class MelonService implements IMelonService {
         res = melonMapper.insertSong(pList, colNm);
 
         // RedisDB에 저장되지 않았다면, 저장하기
-        if (!melonCacheMapper.getExistKey(colNm)){
+        if (!melonCacheMapper.getExistKey(colNm)) {
 
             // RedisDB에 데이터저장하기
             res = melonCacheMapper.insertSong(pList, colNm);
@@ -331,6 +331,37 @@ public class MelonService implements IMelonService {
 
         return res;
     }
+
+    @Override
+    public int updateManySong() throws Exception {
+        // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
+        log.info(this.getClass().getName() + ".updateManySong Start!");
+
+        int res = 0;
+
+        // 수정할 컬렉션
+        String colNm = "MELON_" + DateUtil.getDateTime("yyyyMMdd");
+
+        // 기존 수집된 멜론Top100 수집한 컬렉션 삭제하기
+        melonMapper.dropMelonCollection(colNm);
+
+        // 멜론Top100 수집하기
+        if (this.collectMelonSong() == 1) {
+            String singer = "방탄소년단"; // 수정할 가수 이름
+            String updateSinger = "BTS"; // 변경될 가수이름
+            String updateSong = "BTS-SONG"; // 변경될 노래제목
+
+            res = melonMapper.updateManySong(colNm, singer, updateSinger, updateSong);
+
+        }
+
+        // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
+        log.info(this.getClass().getName() + ".updateManySong End!");
+
+        return res;
+
+    }
+
 
     @Override
     public int deleteBTSSong() throws Exception {

@@ -22,9 +22,6 @@ import java.util.Set;
 @Controller
 public class ChatController {
 
-	/*
-	 * 비즈니스 로직(중요 로직을 수행하기 위해 사용되는 서비스를 메모리에 적재(싱글톤패턴 적용됨)
-	 */
 	@Resource(name = "ChatService")
 	private IChatService chatService;
 

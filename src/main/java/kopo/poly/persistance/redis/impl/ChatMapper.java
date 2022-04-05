@@ -29,9 +29,6 @@ public class ChatMapper implements IChatMapper {
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
         log.info(this.getClass().getName() + ".getRoomList Start!");
 
-        redisDB.setKeySerializer(new StringRedisSerializer());
-        redisDB.setValueSerializer(new StringRedisSerializer());
-
         // 이름이 Chat으로 시작하는 Key만 가져오기
         Set<String> rSet = (Set) redisDB.keys("Chat*");
 
@@ -50,11 +47,8 @@ public class ChatMapper implements IChatMapper {
         // 대화방 키 정보
         String roomKey = CmmUtil.nvl(pDTO.getRoomKey());
 
-        /*
-         * redis 저장 및 읽기에 대한 데이터 타입 지정(String 타입으로 지정함)
-         */
         redisDB.setKeySerializer(new StringRedisSerializer()); // String 타입
-        redisDB.setValueSerializer(new Jackson2JsonRedisSerializer<>(ChatDTO.class));
+        redisDB.setValueSerializer(new Jackson2JsonRedisSerializer<>(ChatDTO.class)); // JSON 타입
 
         redisDB.opsForList().leftPush(roomKey, pDTO);
 
@@ -77,15 +71,12 @@ public class ChatMapper implements IChatMapper {
         // 대화방 키 정보
         String roomKey = CmmUtil.nvl(pDTO.getRoomKey());
 
-        /*
-         * redis 저장 및 읽기에 대한 데이터 타입 지정(String 타입으로 지정함)
-         */
         redisDB.setKeySerializer(new StringRedisSerializer()); // String 타입
-        redisDB.setValueSerializer(new Jackson2JsonRedisSerializer<>(ChatDTO.class));
+        redisDB.setValueSerializer(new Jackson2JsonRedisSerializer<>(ChatDTO.class)); // JSON 타입
 
         if (redisDB.hasKey(roomKey)) {
 
-            // 저장된 전체 레코드 수
+            // 저장된 전체 레코드 가져오기
             rList = (List) redisDB.opsForList().range(roomKey, 0, -1);
 
         }
