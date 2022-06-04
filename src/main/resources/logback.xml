@@ -27,7 +27,7 @@
         <appender-ref ref="CONSOLE"/>
     </root>
 
-    <Logger name="kopo.notice" level="DEBUG" additivity="false">
+    <Logger name="kopo.poly" level="DEBUG" additivity="false">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="File"/>
     </Logger>
