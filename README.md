@@ -6,8 +6,8 @@ Spring Boot Frameworks, Spring Data MongoDB, Spring Data Redis 연동
 * 빅데이터학과 입학 상담 오픈채팅방 : https://open.kakao.com/o/gEd0JIad
 
 주요 실습 내용
-1. Spring Data MongoDB를 통한 데이터 수집 및 처리 프프로그래밍
-2. Spring Data RedisDB를 통한 데이터 수집 및 처리 프프로그래밍
+1. Spring Data MongoDB를 통한 데이터 수집 및 처리 프로그래밍
+2. Spring Data RedisDB를 통한 데이터 수집 및 처리 프로그래밍
 3. 멜론 차트100 데이터 수집하여 NoSQL에 저장하기
 4. CGV 영화 순위 데이터를 수집하여 NoSQL에 저장하기
 5. 음성 채팅 구현하기
