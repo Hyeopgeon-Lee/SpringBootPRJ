@@ -8,7 +8,7 @@
 
         //상세보기 이동
         function doDetail(seq) {
-            location.href = "/notice/NoticeInfo?nSeq=" + seq;
+            location.href = "/notice/noticeInfo?nSeq=" + seq;
         }
 
     </script>
@@ -31,12 +31,10 @@
         <div class="divTableRow" th:each="dto: ${rList}">
             <div class="divTableCell" th:if="${dto.notice_yn=='Y'}" th:text="공지사항"></div>
             <div class="divTableCell" th:unless="${dto.notice_yn=='Y'}" th:text="${dto.notice_seq}"></div>
-            <div class="divTableCell" th:text="${dto.title}">>
-                <a href="javascript:doDetail('<%=rDTO.getNoticeSeq()%>');"></a>
-            </div>
-            <div class="divTableCell" th:text="${dto.readCnt}"></div>
-            <div class="divTableCell" th:text="${dto.userName}"></div>
-            <div class="divTableCell" th:text="${dto.regDt}"></div>
+            <div class="divTableCell" th:text="${dto.title}" th:onclick="doDetail([[${dto.notice_seq}]])"></div>
+            <div class="divTableCell" th:text="${dto.read_cnt}"></div>
+            <div class="divTableCell" th:text="${dto.user_name}"></div>
+            <div class="divTableCell" th:text="${dto.reg_dt}"></div>
         </div>
     </div>
 </div>

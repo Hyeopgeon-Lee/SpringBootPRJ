@@ -23,11 +23,11 @@
         </rollingPolicy>
     </appender>
 
-    <root level="DEBUG">
+    <root level="INFO">
         <appender-ref ref="CONSOLE"/>
     </root>
 
-    <Logger name="kopo.poly" level="DEBUG" additivity="false">
+    <Logger name="kopo.poly" level="INFO" additivity="false">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="File"/>
     </Logger>

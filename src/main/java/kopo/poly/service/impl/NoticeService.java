@@ -12,7 +12,7 @@ import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
-@Service("NoticeService")
+@Service
 public class NoticeService implements INoticeService {
 
     // RequiredArgsConstructor 어노테이션으로 생성자를 자동 생성함

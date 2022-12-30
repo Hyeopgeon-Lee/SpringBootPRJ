@@ -1,15 +1,18 @@
 package kopo.poly.controller;
 
+import kopo.poly.dto.MsgDTO;
 import kopo.poly.dto.NoticeDTO;
 import kopo.poly.service.INoticeService;
 import kopo.poly.util.CmmUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -19,44 +22,36 @@ import java.util.List;
 /*
  * Controller 선언해야만 Spring 프레임워크에서 Controller인지 인식 가능
  * 자바 서블릿 역할 수행
- * 
+ *
  * slf4j는 스프링 프레임워크에서 로그 처리하는 인터페이스 기술이며,
  * 로그처리 기술인 log4j와 logback과 인터페이스 역할 수행함
  * 스프링 프레임워크는 기본으로 logback을 채택해서 로그 처리함
  * */
 @Slf4j
+@RequestMapping(value = "/notice")
+@RequiredArgsConstructor
 @Controller
 public class NoticeController {
 
-    /*
-
-     * 비즈니스 로직(중요 로직을 수행하기 위해 사용되는 서비스를 메모리에 적재(싱글톤패턴 적용됨)
-     */
-    @Resource(name = "NoticeService")
-    private INoticeService noticeService;
-
-    /**
-     * GetMapping은 GET방식을 통해 접속되는 URL 호출에 대해 실행되는 함수로 설정함을 의미함
-     * PostMapping은 POST방식을 통해 접속되는 URL 호출에 대해 실행되는 함수로 설정함을 의미함
-     * GetMapping(value = "index") =>  GET방식을 통해 접속되는 URL이 index인 경우 아래 함수를 실행함
-     */
-    @GetMapping(value = "index")
-    public String Index() {
-        return "/index";
-
-    }
+    // @RequiredArgsConstructor 를 통해 메모리에 올라간 서비스 객체를 Controller에서 사용할 수 있게 주입함
+    private final INoticeService noticeService;
 
     /**
      * 게시판 리스트 보여주기
-     *
-     * GetMapping(value = "notice/NoticeList") =>  GET방식을 통해 접속되는 URL이 notice/NoticeList인 경우 아래 함수를 실행함
+     * <p>
+     * GetMapping(value = "notice/noticeList") =>  GET방식을 통해 접속되는 URL이 notice/noticeList 경우 아래 함수를 실행함
      */
-    @GetMapping(value = "notice/NoticeList")
-    public String NoticeList(ModelMap model)
+    @GetMapping(value = "noticeList")
+    public String noticeList(HttpSession session, ModelMap model)
             throws Exception {
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
-        log.info(this.getClass().getName() + ".NoticeList start!");
+        log.info(this.getClass().getName() + ".noticeList Start!");
+
+        // 로그인된 사용자 아이디는 Session에 저장함
+        // 교육용으로 아직 로그인을 구현하지 않았기 때문에 Session에 데이터를 저장하지 않았음
+        // 추후 로그인을 구현할 것으로 가정하고, 공지사항 리스트 출력하는 함수에서 로그인 한 것처럼 Session 값을 생성함
+        session.setAttribute("SESSION_USER_ID", "USER01");
 
         // 공지사항 리스트 가져오기
         List<NoticeDTO> rList = noticeService.getNoticeList();
@@ -70,48 +65,54 @@ public class NoticeController {
         model.addAttribute("rList", rList);
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수 호출이 끝났는지 파악하기 용이하다.)
-        log.info(this.getClass().getName() + ".NoticeList end!");
+        log.info(this.getClass().getName() + ".noticeList End!");
 
-        // 함수 처리가 끝나고 보여줄 JSP 파일명(/WEB-INF/view/notice/NoticeList.jsp)
-        return "/notice/noticeList";
+        // 함수 처리가 끝나고 보여줄 HTML (Thymeleaf) 파일명
+        // templates/notice/noticeList.html
+        return "notice/noticeList";
 
     }
 
     /**
      * 게시판 작성 페이지 이동
-     *
-     * 이 함수는 게시판 작성 페이지로 접근하기 위해 만듬. WEB-INF 밑에 존재하는 JSP는 직접 호출할 수 없음 따라서 WEB-INF 밑에
-     * 존재하는 JSP를 호출하기 위해서는 반드시 Controller 등록해야함
-     *
-     * GetMapping(value = "notice/NoticeReg") =>  GET방식을 통해 접속되는 URL이 notice/NoticeReg인 경우 아래 함수를 실행함
+     * <p>
+     * 이 함수는 게시판 작성 페이지로 접근하기 위해 만듬
+     * <p>
+     * GetMapping(value = "notice/noticeReg") =>  GET방식을 통해 접속되는 URL이 notice/noticeReg 경우 아래 함수를 실행함
      */
-    @GetMapping(value = "notice/NoticeReg")
+    @GetMapping(value = "noticeReg")
     public String NoticeReg() {
 
-        log.info(this.getClass().getName() + ".NoticeReg start!");
+        log.info(this.getClass().getName() + ".noticeReg Start!");
 
-        log.info(this.getClass().getName() + ".NoticeReg end!");
+        log.info(this.getClass().getName() + ".noticeReg End!");
 
-        return "/notice/NoticeReg";
+        // 함수 처리가 끝나고 보여줄 HTML (Thymeleaf) 파일명
+        // templates/notice/noticeReg.html
+        return "notice/noticeReg";
     }
 
     /**
      * 게시판 글 등록
+     * <p>
+     * 게시글 등록은 Ajax로 호출되기 때문에 결과는 JSON 구조로 전달해야만 함
+     * JSON 구조로 결과 메시지를 전송하기 위해 @ResponseBody 어노테이션 추가함
      */
-    @PostMapping(value = "notice/NoticeInsert")
-    public String NoticeInsert(HttpSession session, HttpServletRequest request, ModelMap model) {
+    @ResponseBody
+    @PostMapping(value = "noticeInsert")
+    public MsgDTO noticeInsert(HttpServletRequest request, HttpSession session) {
 
-        log.info(this.getClass().getName() + ".NoticeInsert start!");
+        log.info(this.getClass().getName() + ".noticeInsert Start!");
 
-        String msg = "";
+        String msg = ""; // 메시지 내용
+        MsgDTO dto = null; // 결과 메시지 구조
 
         try {
-            /*
-             * 게시판 글 등록되기 위해 사용되는 form객체의 하위 input 객체 등을 받아오기 위해 사용함
-             */
+            // 로그인된 사용자 아이디를 가져오기
+            // 로그인을 아직 구현하지 않았기에 공지사항 리스트에서 로그인 한 것처럼 Session 값을 저장함
             String user_id = CmmUtil.nvl((String) session.getAttribute("SESSION_USER_ID"));
             String title = CmmUtil.nvl(request.getParameter("title")); // 제목
-            String noticeYn = CmmUtil.nvl(request.getParameter("noticeYn")); // 공지글 여부
+            String notice_yn = CmmUtil.nvl(request.getParameter("notice_yn")); // 공지글 여부
             String contents = CmmUtil.nvl(request.getParameter("contents")); // 내용
 
             /*
@@ -119,18 +120,17 @@ public class NoticeController {
              * 반드시, 값을 받았으면, 꼭 로그를 찍어서 값이 제대로 들어오는지 파악해야함 반드시 작성할 것
              * ####################################################################################
              */
-            log.info("user_id : " + user_id);
+            log.info("session user_id : " + user_id);
             log.info("title : " + title);
-            log.info("noticeYn : " + noticeYn);
+            log.info("notice_yn : " + notice_yn);
             log.info("contents : " + contents);
 
+            // 데이터 저장하기 위해 DTO에 저장하기
             NoticeDTO pDTO = new NoticeDTO();
-
             pDTO.setUser_id(user_id);
             pDTO.setTitle(title);
-            pDTO.setNotice_yn(noticeYn);
+            pDTO.setNotice_yn(notice_yn);
             pDTO.setContents(contents);
-
             /*
              * 게시글 등록하기위한 비즈니스 로직을 호출
              */
@@ -139,7 +139,6 @@ public class NoticeController {
             // 저장이 완료되면 사용자에게 보여줄 메시지
             msg = "등록되었습니다.";
 
-
         } catch (Exception e) {
 
             // 저장이 실패되면 사용자에게 보여줄 메시지
@@ -148,154 +147,110 @@ public class NoticeController {
             e.printStackTrace();
 
         } finally {
-            log.info(this.getClass().getName() + ".NoticeInsert end!");
-
             // 결과 메시지 전달하기
-            model.addAttribute("msg", msg);
+            dto = new MsgDTO();
+            dto.setMsg(msg);
 
+            log.info(this.getClass().getName() + ".noticeInsert End!");
         }
 
-        return "/notice/MsgToList";
+        return dto;
     }
 
     /**
      * 게시판 상세보기
      */
-    @GetMapping(value = "notice/NoticeInfo")
-    public String NoticeInfo(HttpServletRequest request, ModelMap model) {
+    @GetMapping(value = "noticeInfo")
+    public String noticeInfo(HttpServletRequest request, ModelMap model) throws Exception {
 
-        log.info(this.getClass().getName() + ".NoticeInfo start!");
+        log.info(this.getClass().getName() + ".noticeInfo Start!");
 
-        String msg = "";
+        String nSeq = CmmUtil.nvl(request.getParameter("nSeq")); // 공지글번호(PK)
 
-        try {
-            /*
-             * 게시판 글 등록되기 위해 사용되는 form객체의 하위 input 객체 등을 받아오기 위해 사용함
-             */
-            String nSeq = CmmUtil.nvl(request.getParameter("nSeq")); // 공지글번호(PK)
+        /*
+         * ####################################################################################
+         * 반드시, 값을 받았으면, 꼭 로그를 찍어서 값이 제대로 들어오는지 파악해야함 반드시 작성할 것
+         * ####################################################################################
+         */
+        log.info("nSeq : " + nSeq);
 
-            /*
-             * ####################################################################################
-             * 반드시, 값을 받았으면, 꼭 로그를 찍어서 값이 제대로 들어오는지 파악해야함 반드시 작성할 것
-             * ####################################################################################
-             */
-            log.info("nSeq : " + nSeq);
+        /*
+         * 값 전달은 반드시 DTO 객체를 이용해서 처리함 전달 받은 값을 DTO 객체에 넣는다.
+         */
+        NoticeDTO pDTO = new NoticeDTO();
+        pDTO.setNotice_seq(nSeq);
 
-            /*
-             * 값 전달은 반드시 DTO 객체를 이용해서 처리함 전달 받은 값을 DTO 객체에 넣는다.
-             */
-            NoticeDTO pDTO = new NoticeDTO();
-            pDTO.setNotice_seq(nSeq);
+        // 공지사항 상세정보 가져오기
+        NoticeDTO rDTO = noticeService.getNoticeInfo(pDTO);
 
-            // 공지사항 상세정보 가져오기
-            NoticeDTO rDTO = noticeService.getNoticeInfo(pDTO);
-
-            if (rDTO == null) {
-                rDTO = new NoticeDTO();
-
-            }
-
-            log.info("getNoticeInfo success!!!");
-
-            // 조회된 리스트 결과값 넣어주기
-            model.addAttribute("rDTO", rDTO);
-
-
-        } catch (Exception e) {
-
-            // 저장이 실패되면 사용자에게 보여줄 메시지
-            msg = "실패하였습니다. : " + e.getMessage();
-            log.info(e.toString());
-            e.printStackTrace();
-
-        } finally {
-            log.info(this.getClass().getName() + ".NoticeInsert end!");
-
-            // 결과 메시지 전달하기
-            model.addAttribute("msg", msg);
+        if (rDTO == null) {
+            rDTO = new NoticeDTO();
 
         }
 
-        log.info(this.getClass().getName() + ".NoticeInfo end!");
+        // 조회된 리스트 결과값 넣어주기
+        model.addAttribute("rDTO", rDTO);
 
-        return "/notice/NoticeInfo";
+        log.info(this.getClass().getName() + ".noticeInfo End!");
+
+        return "notice/noticeInfo";
     }
 
     /**
      * 게시판 수정 보기
      */
-    @GetMapping(value = "notice/NoticeEditInfo")
-    public String NoticeEditInfo(HttpServletRequest request, ModelMap model) {
+    @GetMapping(value = "noticeEditInfo")
+    public String noticeEditInfo(HttpServletRequest request, ModelMap model) throws Exception {
 
-        log.info(this.getClass().getName() + ".NoticeEditInfo start!");
+        log.info(this.getClass().getName() + ".noticeEditInfo Start!");
 
-        String msg = "";
+        String nSeq = CmmUtil.nvl(request.getParameter("nSeq")); // 공지글번호(PK)
 
-        try {
+        log.info("nSeq : " + nSeq);
 
-            String nSeq = CmmUtil.nvl(request.getParameter("nSeq")); // 공지글번호(PK)
+        NoticeDTO pDTO = new NoticeDTO();
 
-            log.info("nSeq : " + nSeq);
+        pDTO.setNotice_seq(nSeq);
 
-            NoticeDTO pDTO = new NoticeDTO();
+        NoticeDTO rDTO = noticeService.getNoticeInfo(pDTO);
 
-            pDTO.setNotice_seq(nSeq);
-
-            /*
-             * ####################################################### 공지사항 수정정보 가져오기(상세보기
-             * 쿼리와 동일하여, 같은 서비스 쿼리 사용함)
-             * #######################################################
-             */
-            NoticeDTO rDTO = noticeService.getNoticeInfo(pDTO);
-
-            if (rDTO == null) {
-                rDTO = new NoticeDTO();
-
-            }
-
-            // 조회된 리스트 결과값 넣어주기
-            model.addAttribute("rDTO", rDTO);
-
-        } catch (Exception e) {
-            msg = "실패하였습니다. : " + e.getMessage();
-            log.info(e.toString());
-            e.printStackTrace();
-
-        } finally {
-            log.info(this.getClass().getName() + ".NoticeUpdate end!");
-
-            // 결과 메시지 전달하기
-            model.addAttribute("msg", msg);
+        if (rDTO == null) {
+            rDTO = new NoticeDTO();
 
         }
 
-        log.info(this.getClass().getName() + ".NoticeEditInfo end!");
+        // 조회된 리스트 결과값 넣어주기
+        model.addAttribute("rDTO", rDTO);
 
-        return "/notice/NoticeEditInfo";
+        log.info(this.getClass().getName() + ".noticeEditInfo End!");
+
+        return "notice/noticeEditInfo";
     }
 
     /**
      * 게시판 글 수정
      */
-    @PostMapping(value = "notice/NoticeUpdate")
-    public String NoticeUpdate(HttpSession session, HttpServletRequest request, ModelMap model) {
+    @ResponseBody
+    @PostMapping(value = "noticeUpdate")
+    public MsgDTO noticeUpdate(HttpSession session, HttpServletRequest request, ModelMap model) {
 
-        log.info(this.getClass().getName() + ".NoticeUpdate start!");
+        log.info(this.getClass().getName() + ".noticeUpdate Start!");
 
-        String msg = "";
+        String msg = ""; // 메시지 내용
+        MsgDTO dto = null; // 결과 메시지 구조
 
         try {
 
             String user_id = CmmUtil.nvl((String) session.getAttribute("SESSION_USER_ID")); // 아이디
             String nSeq = CmmUtil.nvl(request.getParameter("nSeq")); // 글번호(PK)
             String title = CmmUtil.nvl(request.getParameter("title")); // 제목
-            String noticeYn = CmmUtil.nvl(request.getParameter("noticeYn")); // 공지글 여부
+            String notice_yn = CmmUtil.nvl(request.getParameter("notice_yn")); // 공지글 여부
             String contents = CmmUtil.nvl(request.getParameter("contents")); // 내용
 
             log.info("user_id : " + user_id);
             log.info("nSeq : " + nSeq);
             log.info("title : " + title);
-            log.info("noticeYn : " + noticeYn);
+            log.info("notice_yn : " + notice_yn);
             log.info("contents : " + contents);
 
             NoticeDTO pDTO = new NoticeDTO();
@@ -303,7 +258,7 @@ public class NoticeController {
             pDTO.setUser_id(user_id);
             pDTO.setNotice_seq(nSeq);
             pDTO.setTitle(title);
-            pDTO.setNotice_yn(noticeYn);
+            pDTO.setNotice_yn(notice_yn);
             pDTO.setContents(contents);
 
             // 게시글 수정하기 DB
@@ -317,28 +272,31 @@ public class NoticeController {
             e.printStackTrace();
 
         } finally {
-            log.info(this.getClass().getName() + ".NoticeUpdate end!");
 
             // 결과 메시지 전달하기
-            model.addAttribute("msg", msg);
+            dto = new MsgDTO();
+            dto.setMsg(msg);
+
+            log.info(this.getClass().getName() + ".noticeUpdate End!");
 
         }
 
-        return "/notice/MsgToList";
+        return dto;
     }
 
     /**
      * 게시판 글 삭제
      */
-    @GetMapping(value = "notice/NoticeDelete")
-    public String NoticeDelete(HttpServletRequest request, ModelMap model) {
+    @ResponseBody
+    @PostMapping(value = "noticeDelete")
+    public MsgDTO noticeDelete(HttpServletRequest request, ModelMap model) {
 
-        log.info(this.getClass().getName() + ".NoticeDelete start!");
+        log.info(this.getClass().getName() + ".noticeDelete Start!");
 
-        String msg = "";
+        String msg = ""; // 메시지 내용
+        MsgDTO dto = null; // 결과 메시지 구조
 
         try {
-
             String nSeq = CmmUtil.nvl(request.getParameter("nSeq")); // 글번호(PK)
 
             log.info("nSeq : " + nSeq);
@@ -358,14 +316,15 @@ public class NoticeController {
             e.printStackTrace();
 
         } finally {
-            log.info(this.getClass().getName() + ".NoticeDelete end!");
-
             // 결과 메시지 전달하기
-            model.addAttribute("msg", msg);
+            dto = new MsgDTO();
+            dto.setMsg(msg);
+
+            log.info(this.getClass().getName() + ".noticeDelete End!");
 
         }
 
-        return "/notice/MsgToList";
+        return dto;
     }
 
 }
