@@ -1,7 +1,8 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
+    <title>채팅방 입장 및 채팅 리스트</title>
     <script src="/js/jquery-3.6.0.min.js"></script>
     <script type="text/javascript">
         let myChatRoom = "";
@@ -22,7 +23,7 @@
                 contentType: "application/json; charset=UTF-8",
                 success: function (json) {
                     for (let i = 0; i < json.length; i++) {
-                        $("#room_list").append(json[i] +"<br/>"); // 채팅방마다 한줄씩 추가
+                        $("#room_list").append(json[i] + "<br/>"); // 채팅방마다 한줄씩 추가
 
                     }
                 }
@@ -30,7 +31,6 @@
 
         }
     </script>
-    <title>채팅방 입장 및 채팅 리스트</title>
 </head>
 <body>
 <h1>채팅방 전체 리스트</h1>
@@ -48,4 +48,3 @@
 
 </body>
 </html>
-

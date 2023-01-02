@@ -1,11 +1,8 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="kopo.poly.util.CmmUtil" %>
-<%
-    String room_name = CmmUtil.nvl((String) session.getAttribute("SS_ROOM_NAME"));
-%>
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset=" UTF-8">
+    <title>채팅방입장</title>
     <script src="/js/annyang.js"></script>
     <script src="/js/jquery-3.6.0.min.js"></script>
     <script>
@@ -140,12 +137,9 @@
         #########################################################################
          */
     </script>
-    <title></title>
 </head>
 <body>
-<h1>
-    [<%=room_name%>] 채팅방 '음성대화' 전체 내용
-</h1>
+<h1 th:text="${session.SS_ROOM_NAME}+ ' 채팅 내용'"></h1>
 <hr/>
 <div id="total_msg"></div>
 
@@ -164,4 +158,3 @@
 
 </body>
 </html>
-
