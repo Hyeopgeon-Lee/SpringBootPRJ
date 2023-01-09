@@ -3,6 +3,7 @@ package kopo.poly.controller;
 import kopo.poly.dto.MelonDTO;
 import kopo.poly.dto.MsgDTO;
 import kopo.poly.service.IMelonService;
+import kopo.poly.util.CmmUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Slf4j
@@ -84,12 +86,24 @@ public class MelonController {
     /**
      * 가수별 수집된 노래의 수 가져오기
      */
-    @GetMapping(value = "getSingerSong")
-    public List<MelonDTO> getSingerSong() throws Exception {
+    @PostMapping(value = "getSingerSong")
+    public List<MelonDTO> getSingerSong(HttpServletRequest request) throws Exception {
 
         log.info(this.getClass().getName() + ".getSingerSong Start!");
 
-        List<MelonDTO> rList = melonService.getSingerSong();
+        String singer = CmmUtil.nvl(request.getParameter("singer")); // 제목
+
+        /*
+         * ####################################################################################
+         * 반드시, 값을 받았으면, 꼭 로그를 찍어서 값이 제대로 들어오는지 파악해야함 반드시 작성할 것
+         * ####################################################################################
+         */
+        log.info("singer : " + singer);
+
+        MelonDTO pDTO = new MelonDTO();
+        pDTO.setSinger(singer);
+
+        List<MelonDTO> rList = melonService.getSingerSong(pDTO);
 
         log.info(this.getClass().getName() + ".getSingerSong End!");
 
@@ -99,7 +113,7 @@ public class MelonController {
     /**
      * 멜론 노래 리스트 저장하기
      */
-    @GetMapping(value = "collectMelonSongMany")
+    @PostMapping(value = "collectMelonSongMany")
     public String collectMelonSongMany() throws Exception {
 
         log.info(this.getClass().getName() + ".collectMelonSongMany Start!");

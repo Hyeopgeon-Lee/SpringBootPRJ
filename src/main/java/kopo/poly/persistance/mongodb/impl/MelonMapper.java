@@ -27,22 +27,6 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
     private final MongoTemplate mongodb;
 
     @Override
-    public int dropMelonCollection(String colNm) throws Exception {
-
-        log.info(this.getClass().getName() + ".dropMelonCollection Start!");
-
-        int res = 0;
-
-        super.dropCollection(mongodb, colNm);
-
-        res = 1;
-
-        log.info(this.getClass().getName() + ".dropMelonCollection End!");
-
-        return res;
-    }
-
-    @Override
     public int insertSong(List<MelonDTO> pList, String colNm) throws Exception {
 
         log.info(this.getClass().getName() + ".insertSong Start!");
@@ -182,7 +166,7 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
     }
 
     @Override
-    public List<MelonDTO> getSingerSong(String pColNm, String pSinger) throws Exception {
+    public List<MelonDTO> getSingerSong(String pColNm, MelonDTO pDTO) throws Exception {
 
         log.info(this.getClass().getName() + ".getSingerSong Start!");
 
@@ -193,7 +177,7 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
 
         // 조회할 조건(SQL의 WHERE 역할 /  SELECT song, singer FROM MELON_20220321 where singer ='방탄소년단')
         Document query = new Document();
-        query.append("singer", pSinger);
+        query.append("singer", CmmUtil.nvl(pDTO.getSinger()));
 
         // 조회 결과 중 출력할 컬럼들(SQL의 SELECT절과 FROM절 가운데 컬럼들과 유사함)
         Document projection = new Document();
@@ -425,6 +409,22 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
         return res;
     }
 
+
+    @Override
+    public int dropMelonCollection(String colNm) throws Exception {
+
+        log.info(this.getClass().getName() + ".dropMelonCollection Start!");
+
+        int res = 0;
+
+        super.dropCollection(mongodb, colNm);
+
+        res = 1;
+
+        log.info(this.getClass().getName() + ".dropMelonCollection End!");
+
+        return res;
+    }
 
 }
 

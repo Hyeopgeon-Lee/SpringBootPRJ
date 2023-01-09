@@ -47,8 +47,6 @@ public class MelonService implements IMelonService {
         Elements element = doc.select("div.service_list_song");
 
         // Iterator을 사용하여 멜론차트 정보를 가져오기
-        // 멜론 50위까지 차크
-
         for (Element songInfo : element.select("div.wrap_song_info")) {
 
             // 크롤링을 통해 데이터 저장하기
@@ -139,15 +137,12 @@ public class MelonService implements IMelonService {
     }
 
     @Override
-    public List<MelonDTO> getSingerSong() throws Exception {
+    public List<MelonDTO> getSingerSong(MelonDTO pDTO) throws Exception {
 
         log.info(this.getClass().getName() + ".getSingerSong Start!");
 
         // MongoDB에 저장된 컬렉션 이름
         String colNm = "MELON_" + DateUtil.getDateTime("yyyyMMdd");
-
-        // 수집된 데이터로부터 검색할 가수명
-        String singer = "방탄소년단";
 
         // 결과값
         List<MelonDTO> rList = null;
@@ -155,7 +150,7 @@ public class MelonService implements IMelonService {
         // Melen 노래 수집하기
         if (this.collectMelonSong() == 1) {
 
-            rList = melonMapper.getSingerSong(colNm, singer);
+            rList = melonMapper.getSingerSong(colNm, pDTO);
 
             if (rList == null) {
                 rList = new LinkedList<>();
