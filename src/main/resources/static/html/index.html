@@ -2,9 +2,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>초기 화면</title>
+    <title>메인화면</title>
+    <script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+
+        // HTML로딩이 완료되고, 실행됨
+        $(document).ready(function () {
+
+            // html의 btnLogin id의 버튼 객체 가져오기
+            const btnNotice = document.getElementById("btnNotice");
+
+            // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
+            btnNotice.addEventListener("click", e => {
+                document.location.href = "/notice/noticeList";
+            })
+
+        })
+    </script>
 </head>
 <body>
-안녕하세요.
+<h2>프로젝트 첫 화면!(메인화면입니다.)</h2>
+<hr/>
+<br/>
+<div>
+    <button id="btnNotice">로그인된 사용자만 공지사항 게시판 접속 가능</button>
+</div>
 </body>
 </html>

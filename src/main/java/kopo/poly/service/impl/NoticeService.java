@@ -31,25 +31,27 @@ public class NoticeService implements INoticeService {
 
     @Transactional
     @Override
-    public void InsertNoticeInfo(NoticeDTO pDTO) throws Exception {
+    public NoticeDTO getNoticeInfo(NoticeDTO pDTO, boolean type) throws Exception {
 
-        log.info(this.getClass().getName() + ".InsertNoticeInfo start!");
+        log.info(this.getClass().getName() + ".getNoticeInfo start!");
 
-        noticeMapper.InsertNoticeInfo(pDTO);
+        // 상세보기할 때마다, 조회수 증가하기(수정보기는 제외)
+        if (type) {
+            log.info("Update ReadCNT");
+            noticeMapper.updateNoticeReadCnt(pDTO);
+        }
+
+        return noticeMapper.getNoticeInfo(pDTO);
+
     }
 
     @Transactional
     @Override
-    public NoticeDTO getNoticeInfo(NoticeDTO pDTO) throws Exception {
+    public void insertNoticeInfo(NoticeDTO pDTO) throws Exception {
 
-        log.info(this.getClass().getName() + ".getNoticeInfo start!");
+        log.info(this.getClass().getName() + ".InsertNoticeInfo start!");
 
-        // 상세보기 할때마다, 조회수 증가하기
-        log.info("Update ReadCNT");
-        noticeMapper.updateNoticeReadCnt(pDTO);
-
-        return noticeMapper.getNoticeInfo(pDTO);
-
+        noticeMapper.insertNoticeInfo(pDTO);
     }
 
     @Transactional

@@ -53,15 +53,15 @@
                 return;
             }
             let noticeCheck = false; //체크 여부 확인 변수
-            for (let i = 0; i < f.notice_yn.length; i++) {
-                if (f.notice_yn[i].checked) {
+            for (let i = 0; i < f.noticeYn.length; i++) {
+                if (f.noticeYn[i].checked) {
                     noticeCheck = true;
                     break;
                 }
             }
             if (noticeCheck === false) {
                 alert("공지글 여부를 선택하시기 바랍니다.");
-                f.notice_yn[0].focus();
+                f.noticeYn[0].focus();
                 return;
             }
             if (f.contents.value === "") {
@@ -95,7 +95,7 @@
 <hr/>
 <br/>
 <form name="f" id="f">
-    <input type="hidden" name="nSeq" th:value="${rDTO.notice_seq}"/>
+    <input type="hidden" name="nSeq" th:value="${rDTO.noticeSeq}"/>
     <div class="divTable minimalistBlack">
         <div class="divTableBody">
             <div class="divTableRow">
@@ -110,14 +110,14 @@
                 <div class="divTableCell">공지글 여부
                 </div>
                 <div class="divTableCell">
-                    예<input type="radio" name="notice_yn" value="Y" th:checked="${rDTO.notice_yn eq 'Y'}"/>
-                    아니오<input type="radio" name="notice_yn" value="N" th:checked="${rDTO.notice_yn eq 'N'}"/>
+                    예<input type="radio" name="noticeYn" value="Y" th:checked="${rDTO.noticeYn eq 'Y'}"/>
+                    아니오<input type="radio" name="noticeYn" value="N" th:checked="${rDTO.noticeYn eq 'N'}"/>
                 </div>
             </div>
             <div class="divTableRow">
                 <div class="divTableCell">조회수
                 </div>
-                <div class="divTableCell" th:text="${rDTO.read_cnt}">
+                <div class="divTableCell" th:text="${rDTO.readCnt}">
                 </div>
             </div>
             <div class="divTableRow">

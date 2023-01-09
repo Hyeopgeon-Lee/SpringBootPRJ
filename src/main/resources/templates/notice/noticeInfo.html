@@ -9,8 +9,8 @@
     <script th:inline="javascript">
         /*<![CDATA[*/
         const session_user_id = [[${session.SESSION_USER_ID}]]; // Controller에서 받은 세션에 저장된 값
-        const user_id = [[${rDTO.user_id}]]; // 공지사항 게시글 작성자 아이디
-        const nSeq = [[${rDTO.notice_seq}]]; // 현재 글번호, 자바에서 받을 변수들은 자바스크립트 변수로 저장하면 편함
+        const user_id = [[${rDTO.userId}]]; // 공지사항 게시글 작성자 아이디
+        const nSeq = [[${rDTO.noticeSeq}]]; // 현재 글번호, 자바에서 받을 변수들은 자바스크립트 변수로 저장하면 편함
 
         // HTML로딩이 완료되고, 실행됨
         $(document).ready(function () {
@@ -108,19 +108,19 @@
             <div class="divTableCell">공지글 여부
             </div>
             <div class="divTableCell">
-                예<input type="radio" name="notice_yn" th:checked="${rDTO.notice_yn eq 'Y'}"/>
-                아니오<input type="radio" name="notice_yn" th:checked="${rDTO.notice_yn eq 'N'}"/>
+                예<input type="radio" name="noticeYn" th:checked="${rDTO.noticeYn eq 'Y'}"/>
+                아니오<input type="radio" name="noticeYn" th:checked="${rDTO.noticeYn eq 'N'}"/>
             </div>
         </div>
         <div class="divTableRow">
             <div class="divTableCell">작성일
             </div>
-            <div class="divTableCell" th:text="${rDTO.reg_dt}"></div>
+            <div class="divTableCell" th:text="${rDTO.regDt}"></div>
         </div>
         <div class="divTableRow">
             <div class="divTableCell">조회수
             </div>
-            <div class="divTableCell" th:text="${rDTO.read_cnt}"></div>
+            <div class="divTableCell" th:text="${rDTO.readCnt}"></div>
         </div>
         <div class="divTableRow">
             <div class="divTableCell">내용
@@ -136,3 +136,4 @@
 </div>
 </body>
 </html>
+
