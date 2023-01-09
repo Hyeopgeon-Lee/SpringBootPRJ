@@ -6,6 +6,7 @@ import kopo.poly.persistance.redis.IMelonCacheMapper;
 import kopo.poly.service.IMelonService;
 import kopo.poly.util.CmmUtil;
 import kopo.poly.util.DateUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -17,11 +18,11 @@ import javax.annotation.Resource;
 import java.util.*;
 
 @Slf4j
+@RequiredArgsConstructor
 @Service("MelonService")
 public class MelonService implements IMelonService {
 
-    @Resource(name = "MelonMapper")
-    private IMelonMapper melonMapper; // MongoDB에 저장할 Mapper
+    private final IMelonMapper melonMapper; // MongoDB에 저장할 Mapper
 
     @Resource(name = "MelonCacheMapper")
     private IMelonCacheMapper melonCacheMapper; // redisDB에 저장할 Mapper

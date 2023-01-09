@@ -5,15 +5,20 @@ import com.mongodb.client.MongoCollection;
 import kopo.poly.dto.MongoDTO;
 import kopo.poly.persistance.mongodb.AbstractMongoDBComon;
 import kopo.poly.persistance.mongodb.IMongoMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
 @Slf4j
-@Component("MongoMapper")
+@RequiredArgsConstructor
+@Component
 public class MongoMapper extends AbstractMongoDBComon implements IMongoMapper {
+
+    private final MongoTemplate mongodb;
 
     @Override
     public int insertData(MongoDTO pDTO, String colNm) throws Exception {
@@ -23,7 +28,7 @@ public class MongoMapper extends AbstractMongoDBComon implements IMongoMapper {
         int res = 0;
 
         // 데이터를 저장할 컬렉션 생성
-        super.createCollection(colNm);
+        super.createCollection(mongodb, colNm);
 
         // 저장할 컬렉션 객체 생성
         MongoCollection<Document> col = mongodb.getCollection(colNm);

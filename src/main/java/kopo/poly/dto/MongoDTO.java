@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class MongoDTO {
     
-    String user_nm; // 이름
+    String userName; // 이름
     String addr; // 주소
     String email; // 이메일
     

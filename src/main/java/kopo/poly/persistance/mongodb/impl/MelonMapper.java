@@ -8,9 +8,11 @@ import kopo.poly.dto.MelonDTO;
 import kopo.poly.persistance.mongodb.AbstractMongoDBComon;
 import kopo.poly.persistance.mongodb.IMelonMapper;
 import kopo.poly.util.CmmUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -18,8 +20,11 @@ import java.util.*;
 import static com.mongodb.client.model.Updates.set;
 
 @Slf4j
-@Component("MelonMapper")
+@Component
+@RequiredArgsConstructor
 public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
+
+    private final MongoTemplate mongodb;
 
     @Override
     public int dropMelonCollection(String colNm) throws Exception {
@@ -28,7 +33,7 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
 
         int res = 0;
 
-        super.dropCollection(colNm);
+        super.dropCollection(mongodb, colNm);
 
         res = 1;
 
@@ -49,7 +54,7 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
         }
 
         // 데이터를 저장할 컬렉션 생성
-        super.createCollection(colNm, "collectTime");
+        super.createCollection(mongodb, colNm, "collectTime");
 
         // 저장할 컬렉션 객체 생성
         MongoCollection<Document> col = mongodb.getCollection(colNm);
@@ -243,7 +248,7 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
         }
 
         // 데이터를 저장할 컬렉션 생성
-        super.createCollection(colNm, "collectTime");
+        super.createCollection(mongodb, colNm, "collectTime");
 
         // 저장할 컬렉션 객체 생성
         MongoCollection<Document> col = mongodb.getCollection(colNm);

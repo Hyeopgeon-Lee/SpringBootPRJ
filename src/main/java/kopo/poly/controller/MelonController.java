@@ -1,50 +1,59 @@
 package kopo.poly.controller;
 
 import kopo.poly.dto.MelonDTO;
+import kopo.poly.dto.MsgDTO;
 import kopo.poly.service.IMelonService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 @Slf4j
+@RequestMapping(value = "/melon")
+@RequiredArgsConstructor
 @RestController
 public class MelonController {
 
-    @Resource(name = "MelonService")
-    private IMelonService melonService;
+    private final IMelonService melonService;
 
     /**
      * 멜론 노래 리스트 저장하기
      */
-    @GetMapping(value = "melon/collectMelonSong")
-    public String collectMelonSong() throws Exception {
+    @PostMapping(value = "collectMelonSong")
+    public MsgDTO collectMelonSong() throws Exception {
 
         log.info(this.getClass().getName() + ".collectMelonSong Start!");
 
         // 수집 결과 출력
-        String msg;
+        String msg = "";
 
         int res = melonService.collectMelonSong();
 
         if (res == 1) {
-            msg = "success";
+            msg = "멜론차트 수집 성공!";
 
         } else {
-            msg = "fail";
+            msg = "멜론차트 수집 실패!";
         }
+
+        // 전달할 결과 구조 만들기
+        MsgDTO dto = new MsgDTO();
+        dto.setResult(res);
+        dto.setMsg(msg);
 
         log.info(this.getClass().getName() + ".collectMelonSong End!");
 
-        return msg;
+        return dto;
     }
 
     /**
      * 오늘 수집된 멜론 노래리스트 가져오기
      */
-    @GetMapping(value = "melon/getSongList")
+    @PostMapping(value = "getSongList")
     public List<MelonDTO> getSongList() throws Exception {
 
         log.info(this.getClass().getName() + ".getSongList Start!");
@@ -59,7 +68,7 @@ public class MelonController {
     /**
      * 가수별 수집된 노래의 수 가져오기
      */
-    @GetMapping(value = "melon/getSingerSongCnt")
+    @PostMapping(value = "getSingerSongCnt")
     public List<MelonDTO> getSingerSongCnt()
             throws Exception {
 
@@ -75,7 +84,7 @@ public class MelonController {
     /**
      * 가수별 수집된 노래의 수 가져오기
      */
-    @GetMapping(value = "melon/getSingerSong")
+    @GetMapping(value = "getSingerSong")
     public List<MelonDTO> getSingerSong() throws Exception {
 
         log.info(this.getClass().getName() + ".getSingerSong Start!");
@@ -90,7 +99,7 @@ public class MelonController {
     /**
      * 멜론 노래 리스트 저장하기
      */
-    @GetMapping(value = "melon/collectMelonSongMany")
+    @GetMapping(value = "collectMelonSongMany")
     public String collectMelonSongMany() throws Exception {
 
         log.info(this.getClass().getName() + ".collectMelonSongMany Start!");
@@ -115,7 +124,7 @@ public class MelonController {
     /**
      * 가수 이름이 방탄소년단을 BTS로 변경하기
      */
-    @GetMapping(value = "melon/updateBTSName")
+    @GetMapping(value = "updateBTSName")
     public String updateBTSName() throws Exception {
 
         log.info(this.getClass().getName() + ".updateBTSName Start!");
@@ -140,7 +149,7 @@ public class MelonController {
     /**
      * 가수 이름이 방탄소년단을 BTS로 변경하기
      */
-    @GetMapping(value = "melon/btsAddNickname")
+    @GetMapping(value = "btsAddNickname")
     public String btsAddField() throws Exception {
 
         log.info(this.getClass().getName() + ".btsAddNickname Start!");
@@ -165,7 +174,7 @@ public class MelonController {
     /**
      * 가수 이름이 방탄소년단을 BTS로 변경하기
      */
-    @GetMapping(value = "melon/btsAddMember")
+    @GetMapping(value = "btsAddMember")
     public String btsAddMember() throws Exception {
 
         log.info(this.getClass().getName() + ".btsAddMember Start!");
@@ -190,7 +199,7 @@ public class MelonController {
     /**
      * 가수 이름이 방탄소년단을 BTS로 변경하기
      */
-    @GetMapping(value = "melon/updateManySong")
+    @GetMapping(value = "updateManySong")
     public String updateManySong() throws Exception {
 
         log.info(this.getClass().getName() + ".updateManySong Start!");
@@ -215,7 +224,7 @@ public class MelonController {
     /**
      * 가수 이름이 방탄소년단인 노래 삭제하기
      */
-    @GetMapping(value = "melon/deleteBTSSong")
+    @GetMapping(value = "deleteBTSSong")
     public String deleteBTSSong() throws Exception {
 
         log.info(this.getClass().getName() + ".deleteBTSSong Start!");

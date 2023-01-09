@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MongoDB 데이터 저장하기 테스트</title>
+    <script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+
+        // HTML로딩이 완료되고, 실행됨
+        $(document).ready(function () {
+
+            // html의 btnSend id의 버튼 객체 가져오기
+            const btnSend = document.getElementById("btnSend");
+
+            // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
+            btnSend.addEventListener("click", e => {
+                doSend();
+            })
+
+            function doSend() {
+                // Ajax 호출해서 MongoDB 저장하기
+                $.ajax({
+                        url: "/mongo/test",
+                        type: "post", // 전송방식은 Post
+                        dataType: "JSON", // 전송 결과는 JSON으로 받기
+                        data: $("#f").serialize(), // form 태그 내 input 등 객체를 자동으로 전송할 형태로 변경하기
+                        success: function (json) { // /melon/getSingerSongCnt 호출이 성공했다면..
+                            alert(json.msg)
+
+                        }
+                    }
+                )
+            }
+
+        })
+    </script>
+</head>
+<body>
+<form name="f" id="f">
+    <div class="divTable minimalistBlack">
+        <div class="divTableBody">
+            <div class="divTableRow">
+                <div class="divTableCell">이름
+                </div>
+                <div class="divTableCell">
+                    <input type="text" name="userName" maxlength="100" style="width: 95%"/>
+                </div>
+            </div>
+            <div class="divTableRow">
+                <div class="divTableCell">주소
+                </div>
+                <div class="divTableCell">
+                    <input type="text" name="addr" maxlength="100" style="width: 95%"/>
+                </div>
+            </div>
+            <div class="divTableRow">
+                <div class="divTableCell">이메일
+                </div>
+                <div class="divTableCell">
+                    <input type="text" name="email" maxlength="100" style="width: 95%"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <button id="btnSend">MongoDB 저장 테스트</button>
+    </div>
+</form>
+
+</body>
+</html>

@@ -1,30 +1,29 @@
 package kopo.poly.persistance.mongodb;
 
 import com.mongodb.client.model.Indexes;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 @Slf4j
+@RequiredArgsConstructor
 public abstract class AbstractMongoDBComon {
-
-    @Autowired
-    protected MongoTemplate mongodb;
 
     /**
      * 컬렉션 생성
      *
+     * @param mongodb 접속된 MongoDB
      * @param colNm 생성할 컬렉션명
      * @return 생성결과
      */
-    protected boolean createCollection(String colNm) {
+    protected boolean createCollection(MongoTemplate mongodb, String colNm) {
 
         boolean res;
 
-        if (mongodb.collectionExists(colNm)){
+        if (mongodb.collectionExists(colNm)) {
             res = false;
 
-        }else{
+        } else {
             mongodb.createCollection(colNm);
             res = true;
         }
@@ -33,27 +32,14 @@ public abstract class AbstractMongoDBComon {
     }
 
     /**
-     * 인덱스 컬럼이 한 개일때 컬렉션 생성
-     *
-     * @param colNm 생성할 컬렉션명
-     * @param index 생성할 인덱스
-     * @return 생성결과
-     */
-    protected boolean createCollection(String colNm, String index) {
-
-        String[] indexArr = {index};
-
-        return createCollection(colNm, indexArr);
-    }
-
-    /**
      * 인덱스 컬럼이 여러 개일때 컬렉션 생성
      *
+     * @param mongodb 접속된 MongoDB
      * @param colNm 생성할 컬렉션명
      * @param index 생성할 인덱스
      * @return 생성결과
      */
-    protected boolean createCollection(String colNm, String[] index) {
+    protected boolean createCollection(MongoTemplate mongodb, String colNm, String[] index) {
 
         log.info(this.getClass().getName() + ".createCollection Start!");
 
@@ -86,16 +72,32 @@ public abstract class AbstractMongoDBComon {
     }
 
     /**
+     * 인덱스 컬럼이 한 개일때 컬렉션 생성
+     *
+     * @param mongodb 접속된 MongoDB
+     * @param colNm 생성할 컬렉션명
+     * @param index 생성할 인덱스
+     * @return 생성결과
+     */
+    protected boolean createCollection(MongoTemplate mongodb, String colNm, String index) {
+
+        String[] indexArr = {index};
+
+        return createCollection(mongodb, colNm, indexArr);
+    }
+
+    /**
      * 컬렉션 삭제
      *
+     * @param mongodb 접속된 MongoDB
      * @param colNm 생성할 컬렉션명
      * @return 삭제결과
      */
-    protected boolean dropCollection(String colNm) {
+    protected boolean dropCollection(MongoTemplate mongodb, String colNm) {
 
         boolean res = false;
 
-        if (mongodb.collectionExists(colNm)){
+        if (mongodb.collectionExists(colNm)) {
             mongodb.dropCollection(colNm);
             res = true;
 
