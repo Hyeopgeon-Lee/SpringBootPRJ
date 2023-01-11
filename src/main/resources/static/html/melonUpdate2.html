@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>멜론 차트 데이터 수정 - MongoDB update 실습2</title>
+    <link rel="stylesheet" href="/css/table.css"/>
+    <script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+
+        // HTML로딩이 완료되고, 실행됨
+        $(document).ready(function () {
+
+            // html의 btnUpdateSinger id의 버튼 객체 가져오기
+            const btnUpdateSinger = document.getElementById("btnUpdateSinger");
+
+            // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
+            btnUpdateSinger.addEventListener("click", e => {
+                doUpdateSinger();
+            })
+
+            // html의 btnAddNickname id의 버튼 객체 가져오기
+            const btnAddNickname = document.getElementById("btnAddNickname");
+
+            // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
+            btnAddNickname.addEventListener("click", e => {
+                $('.buttons').append (
+                    '<input type="text" name="txt"> <input type="button" class="btnRemove" value="Remove"><br>'
+                ); // end append
+            })
+
+        })
+
+        function doUpdateSinger() {
+            // Ajax 호출해서 멜론차트 조회하기
+            $.ajax({
+                    url: "/melon/updateSinger",
+                    type: "post", // 전송방식은 Post
+                    data: $("#f1").serialize(), // form 태그 내 input 등 객체를 자동으로 전송할 형태로 변경하기
+                    dataType: "JSON", // 전송 결과는 JSON으로 받기
+                    success: function (json) { // /melon/getSongList 호출이 성공했다면..
+                        for (let i = 0; i < json.length; i++) {
+                            $("#melonData").append("<div class=\"divTableRow\">");
+                            $("#melonData").append("<div class=\"divTableCell\">" + json[i].song + "</div>");
+                            $("#melonData").append("<div class=\"divTableCell\">" + json[i].singer + "</div>");
+                            $("#melonData").append("</div>");
+                        }
+
+                    }
+                }
+            )
+        }
+
+        function doAddNickname() {
+            // Ajax 호출해서 멜론차트 조회하기
+            $.ajax({ //https://aspdotnet.tistory.com/1562
+                    url: "/melon/btsAddNickname",
+                    type: "post", // 전송방식은 Post
+                    data: $("#f2").serialize(), // form 태그 내 input 등 객체를 자동으로 전송할 형태로 변경하기
+                    dataType: "JSON", // 전송 결과는 JSON으로 받기
+                    success: function (json) { // /melon/getSongList 호출이 성공했다면..
+                        for (let i = 0; i < json.length; i++) {
+                            $("#melonData").append("<div class=\"divTableRow\">");
+                            $("#melonData").append("<div class=\"divTableCell\">" + json[i].song + "</div>");
+                            $("#melonData").append("<div class=\"divTableCell\">" + json[i].singer + "</div>");
+                            $("#melonData").append("</div>");
+                        }
+
+                    }
+                }
+            )
+        }
+    </script>
+</head>
+<body>
+<h2>멜론 차트 데이터 수정 - MongoDB update 실습</h2>
+<hr/>
+<br/>
+<div>
+    <button id="btnCollectMelonTop100">멜론 차트100 수정하기</button>
+    <button id="btnMelonTop100">멜론 차트100 닉네임 추가하기</button>
+</div>
+<br/>
+<br/>
+<form name="f" id="f">
+    <div class="divTableRow">
+        <div class="divTableCell"><label>가수이름 수정</label>
+            <label>추가할 가수이름</label><input type="text" name="singer" maxlength="100"/>
+            <label>추가될 가수 맴버 이름</label>
+            <input type="text" name="member"> <input type="button" id="btnAdd" value="Add"><br>
+            <button id="btnUpdateSinger">가수 이름 수정하기</button>
+        </div>
+    </div>
+</form>
+
+<div className="divTable minimalistBlack">
+    <div className="divTableHeading">
+        <div className="divTableRow">
+            <div className="divTableHead">노래제목</div>
+            <div className="divTableHead">가수</div>
+        </div>
+    </div>
+    <div className="divTableBody" id="melonData">
+    </div>
+</div>
+</body>
+</html>

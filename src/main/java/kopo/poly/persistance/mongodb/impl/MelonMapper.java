@@ -253,7 +253,7 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
     }
 
     @Override
-    public int updateSong(String pColNm, String pSinger, String pUpdateSinger) throws Exception {
+    public int updateSong(String pColNm, MelonDTO pDTO) throws Exception {
 
         log.info(this.getClass().getName() + ".updateSong Start!");
 
@@ -261,11 +261,16 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
 
         MongoCollection<Document> col = mongodb.getCollection(pColNm);
 
+        String singer = CmmUtil.nvl(pDTO.getSinger());
+        String updateSinger = CmmUtil.nvl(pDTO.getUpdateSinger());
+
         log.info("pColNm : " + pColNm);
+        log.info("singer : " + singer);
+        log.info("updateSinger : " + updateSinger);
 
         // 조회할 조건(SQL의 WHERE 역할 /  SELECT * FROM MELON_20220321 where singer ='방탄소년단')
         Document query = new Document();
-        query.append("singer", pSinger);
+        query.append("singer", singer);
 
         // MongoDB 데이터 삭제는 반드시 컬렉션을 조회하고, 조회된 ObjectID를 기반으로 데이터를 삭제함
         // MongoDB 환경은 분산환경(Sharding)으로 구성될 수 있기 때문에 정확한 PK에 매핑하기 위해서임
@@ -273,7 +278,7 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
 
         // 람다식 활용하여 데이터 삭제하기
         // 전체 컬렉션에 있는 데이터들을 삭제하기
-        rs.forEach(doc -> col.updateOne(doc, new Document("$set", new Document("singer", "BTS"))));
+        rs.forEach(doc -> col.updateOne(doc, new Document("$set", new Document("singer", updateSinger))));
 
         res = 1;
 
@@ -283,7 +288,7 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
     }
 
     @Override
-    public int updateSongAddField(String pColNm, String pSinger, String pNickname) throws Exception {
+    public int updateSongAddField(String pColNm, MelonDTO pDTO) throws Exception {
 
         log.info(this.getClass().getName() + ".updateSongAddField Start!");
 
@@ -291,12 +296,16 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
 
         MongoCollection<Document> col = mongodb.getCollection(pColNm);
 
+        String singer = CmmUtil.nvl(pDTO.getSinger());
+        String nickname = CmmUtil.nvl(pDTO.getNickname());
+
         log.info("pColNm : " + pColNm);
-        log.info("pSinger : " + pSinger);
+        log.info("singer : " + singer);
+        log.info("nickname : " + nickname);
 
         // 조회할 조건(SQL의 WHERE 역할 /  SELECT * FROM MELON_20220321 where singer ='방탄소년단')
         Document query = new Document();
-        query.append("singer", pSinger);
+        query.append("singer", singer);
 
         // MongoDB 데이터 삭제는 반드시 컬렉션을 조회하고, 조회된 ObjectID를 기반으로 데이터를 삭제함
         // MongoDB 환경은 분산환경(Sharding)으로 구성될 수 있기 때문에 정확한 PK에 매핑하기 위해서임
@@ -304,7 +313,7 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
 
         // 람다식 활용하여 nickname 필드 추가하기
         // 전체 컬렉션에 있는 데이터들을 삭제하기
-        rs.forEach(doc -> col.updateOne(doc, set("nickname", pNickname)));
+        rs.forEach(doc -> col.updateOne(doc, set("nickname", nickname)));
 
         res = 1;
 

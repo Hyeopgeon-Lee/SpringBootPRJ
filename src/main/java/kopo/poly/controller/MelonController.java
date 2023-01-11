@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -91,7 +92,7 @@ public class MelonController {
 
         log.info(this.getClass().getName() + ".getSingerSong Start!");
 
-        String singer = CmmUtil.nvl(request.getParameter("singer")); // 제목
+        String singer = CmmUtil.nvl(request.getParameter("singer")); // 가수
 
         /*
          * ####################################################################################
@@ -110,79 +111,131 @@ public class MelonController {
         return rList;
     }
 
+
+    /**
+     * 멜론 노래 리스트 저장하기
+     */
+    @PostMapping(value = "dropCollection")
+    public MsgDTO dropCollection() throws Exception {
+
+        log.info(this.getClass().getName() + ".dropCollection Start!");
+
+        // 삭제 결과 출력
+        String msg = "";
+
+        int res = melonService.collectMelonSong();
+
+        if (res == 1) {
+            msg = "멜론차트 삭제 성공!";
+
+        } else {
+            msg = "멜론차트 삭제 실패!";
+        }
+
+        // 전달할 결과 구조 만들기
+        MsgDTO dto = new MsgDTO();
+        dto.setResult(res);
+        dto.setMsg(msg);
+
+        log.info(this.getClass().getName() + ".dropCollection End!");
+
+        return dto;
+    }
+
     /**
      * 멜론 노래 리스트 저장하기
      */
     @PostMapping(value = "collectMelonSongMany")
-    public String collectMelonSongMany() throws Exception {
+    public MsgDTO collectMelonSongMany() throws Exception {
 
         log.info(this.getClass().getName() + ".collectMelonSongMany Start!");
 
         // 수집 결과 출력
-        String msg;
+        String msg = "";
 
         int res = melonService.collectMelonSongMany();
 
         if (res == 1) {
-            msg = "success";
+            msg = "멜론차트 수집 성공!";
 
         } else {
-            msg = "fail";
+            msg = "멜론차트 수집 실패!";
         }
+
+        // 전달할 결과 구조 만들기
+        MsgDTO dto = new MsgDTO();
+        dto.setResult(res);
+        dto.setMsg(msg);
 
         log.info(this.getClass().getName() + ".collectMelonSongMany End!");
 
-        return msg;
+        return dto;
     }
 
     /**
-     * 가수 이름이 방탄소년단을 BTS로 변경하기
+     * 가수 이름이 수정하기
+     * 예 : 방탄소년단을 BTS로 변경하기
      */
-    @GetMapping(value = "updateBTSName")
-    public String updateBTSName() throws Exception {
+    @PostMapping(value = "updateSinger")
+    public List<MelonDTO> updateSinger(HttpServletRequest request) throws Exception {
 
-        log.info(this.getClass().getName() + ".updateBTSName Start!");
+        log.info(this.getClass().getName() + ".updateSinger Start!");
 
         // 결과 출력
-        String msg;
+        String msg = "";
 
-        int res = melonService.updateBTSName();
+        String singer = CmmUtil.nvl(request.getParameter("singer")); // 수정될 가수
+        String updateSinger = CmmUtil.nvl(request.getParameter("updateSinger")); // 수정할 가수
 
-        if (res == 1) {
-            msg = "success";
+        log.info("singer " + singer);
+        log.info("updateSinger " + updateSinger);
 
-        } else {
-            msg = "fail";
+        MelonDTO pDTO = new MelonDTO();
+        pDTO.setSinger(singer);
+        pDTO.setUpdateSinger(updateSinger);
+
+        List<MelonDTO> rList = melonService.updateBTSName(pDTO);
+
+        if (rList == null) {
+            rList = new ArrayList<>();
         }
 
-        log.info(this.getClass().getName() + ".updateBTSName End!");
+        log.info(this.getClass().getName() + ".updateSinger End!");
 
-        return msg;
+        return rList;
     }
 
     /**
-     * 가수 이름이 방탄소년단을 BTS로 변경하기
+     * 가수 별명 추가하기
+     * 예 : 방탄소년단을 BTS 별명 추가하기
      */
-    @GetMapping(value = "btsAddNickname")
-    public String btsAddField() throws Exception {
+    @PostMapping(value = "btsAddNickname")
+    public List<MelonDTO> btsAddField(HttpServletRequest request) throws Exception {
 
         log.info(this.getClass().getName() + ".btsAddNickname Start!");
 
         // 결과 출력
-        String msg;
+        String msg = "";
 
-        int res = melonService.updateAddBTSNickname();
+        String singer = CmmUtil.nvl(request.getParameter("singer")); // 필드를 추가할 가수
+        String nickname = CmmUtil.nvl(request.getParameter("nickname")); // 추가될 필드 값
 
-        if (res == 1) {
-            msg = "success";
+        log.info("singer " + singer);
+        log.info("nickname " + nickname);
 
-        } else {
-            msg = "fail";
+        MelonDTO pDTO = new MelonDTO();
+        pDTO.setSinger(singer);
+        pDTO.setNickname(nickname);
+
+        List<MelonDTO> rList = melonService.updateAddBTSNickname(pDTO);
+
+        if (rList == null) {
+            rList = new ArrayList<>();
         }
 
         log.info(this.getClass().getName() + ".btsAddNickname End!");
 
-        return msg;
+        return rList;
     }
 
     /**
