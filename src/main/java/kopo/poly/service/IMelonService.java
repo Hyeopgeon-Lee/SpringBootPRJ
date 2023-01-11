@@ -36,34 +36,34 @@ public interface IMelonService {
     /**
      * 멜론 노래 리스트 한번에 저장하기
      */
-    int collectMelonSongMany() throws Exception;
+    List<MelonDTO> insertManyField() throws Exception;
 
     /**
      * singer 필드의 값인 방탄소년단을 BTS로 변경하기
      */
-    List<MelonDTO> updateBTSName(MelonDTO pDTO) throws Exception;
+    List<MelonDTO> updateField(MelonDTO pDTO) throws Exception;
 
     /**
      * BTS 노래마다 nickname 필드를 추가하고,
      * 그 필드에 BTS 저장하기
      */
-    List<MelonDTO> updateAddBTSNickname(MelonDTO pDTO) throws Exception;
+    List<MelonDTO> updateAddField(MelonDTO pDTO) throws Exception;
 
     /**
      * BTS 노래에 member 필드 추가하고,
      * 그 member 필드에 BTS 멤버 이름들을 List로 저장하기
      */
-    int updateAddBTSMember() throws Exception;
+    List<MelonDTO> updateAddListField(MelonDTO pDTO) throws Exception;
 
     /**
      * BTS 노래에 member 필드 추가하고,
      * 그 member 필드에 BTS 멤버 이름들을 List로 저장하기
      */
-    int updateManySong() throws Exception;
+    List<MelonDTO> updateFieldAndAddField(MelonDTO pDTO) throws Exception;
 
     /**
      * BTS 노래 삭제하기
      */
-    int deleteBTSSong() throws Exception;
+    public List<MelonDTO> deleteDocument(MelonDTO pDTO) throws Exception;
 
 }

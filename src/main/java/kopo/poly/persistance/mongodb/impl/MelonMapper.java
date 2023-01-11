@@ -221,9 +221,25 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
     }
 
     @Override
-    public int insertSongMany(List<MelonDTO> pList, String colNm) throws Exception {
+    public int dropCollection(String colNm) throws Exception {
 
-        log.info(this.getClass().getName() + ".insertSongMany Start!");
+        log.info(this.getClass().getName() + ".dropCollection Start!");
+
+        int res = 0;
+
+        super.dropCollection(mongodb, colNm);
+
+        res = 1;
+
+        log.info(this.getClass().getName() + ".dropCollection End!");
+
+        return res;
+    }
+
+    @Override
+    public int insertManyField(String colNm, List<MelonDTO> pList) throws Exception {
+
+        log.info(this.getClass().getName() + ".insertManyField Start!");
 
         int res = 0;
 
@@ -247,15 +263,15 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
 
         res = 1;
 
-        log.info(this.getClass().getName() + ".insertSongMany End!");
+        log.info(this.getClass().getName() + ".insertManyField End!");
 
         return res;
     }
 
     @Override
-    public int updateSong(String pColNm, MelonDTO pDTO) throws Exception {
+    public int updateField(String pColNm, MelonDTO pDTO) throws Exception {
 
-        log.info(this.getClass().getName() + ".updateSong Start!");
+        log.info(this.getClass().getName() + ".updateField Start!");
 
         int res = 0;
 
@@ -282,15 +298,15 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
 
         res = 1;
 
-        log.info(this.getClass().getName() + ".updateSong End!");
+        log.info(this.getClass().getName() + ".updateField End!");
 
         return res;
     }
 
     @Override
-    public int updateSongAddField(String pColNm, MelonDTO pDTO) throws Exception {
+    public int updateAddField(String pColNm, MelonDTO pDTO) throws Exception {
 
-        log.info(this.getClass().getName() + ".updateSongAddField Start!");
+        log.info(this.getClass().getName() + ".updateAddField Start!");
 
         int res = 0;
 
@@ -317,26 +333,30 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
 
         res = 1;
 
-        log.info(this.getClass().getName() + ".updateSongAddField End!");
+        log.info(this.getClass().getName() + ".updateAddField End!");
 
         return res;
     }
 
     @Override
-    public int updateSongAddListField(String pColNm, String pSinger, List<String> pMember) throws Exception {
+    public int updateAddListField(String pColNm, MelonDTO pDTO) throws Exception {
 
-        log.info(this.getClass().getName() + ".updateSongAddField Start!");
+        log.info(this.getClass().getName() + ".updateAddListField Start!");
 
         int res = 0;
 
         MongoCollection<Document> col = mongodb.getCollection(pColNm);
 
+        String singer = CmmUtil.nvl(pDTO.getSinger());
+        List<String> member = pDTO.getMember();
+
         log.info("pColNm : " + pColNm);
-        log.info("pSinger : " + pSinger);
+        log.info("singer : " + singer);
+        log.info("member : " + member);
 
         // 조회할 조건(SQL의 WHERE 역할 /  SELECT * FROM MELON_20220321 where singer ='방탄소년단')
         Document query = new Document();
-        query.append("singer", pSinger);
+        query.append("singer", singer);
 
         // MongoDB 데이터 삭제는 반드시 컬렉션을 조회하고, 조회된 ObjectID를 기반으로 데이터를 삭제함
         // MongoDB 환경은 분산환경(Sharding)으로 구성될 수 있기 때문에 정확한 PK에 매핑하기 위해서임
@@ -344,31 +364,35 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
 
         // 람다식 활용하여 member 필드 추가하기
         // 전체 컬렉션에 있는 데이터들을 삭제하기
-        rs.forEach(doc -> col.updateOne(doc, set("member", pMember)));
+        rs.forEach(doc -> col.updateOne(doc, set("member", member)));
 
         res = 1;
 
-        log.info(this.getClass().getName() + ".updateSongAddField End!");
+        log.info(this.getClass().getName() + ".updateAddListField End!");
 
         return res;
     }
 
     @Override
-    public int updateManySong(String pColNm, String pSinger, String pUpdateSinger, String pUpdateSong) throws Exception {
-        log.info(this.getClass().getName() + ".updateManySong Start!");
+    public int updateFieldAndAddField(String pColNm, MelonDTO pDTO) throws Exception {
+        log.info(this.getClass().getName() + ".updateFieldAndAddField Start!");
 
         int res = 0;
 
         MongoCollection<Document> col = mongodb.getCollection(pColNm);
 
+        String singer = CmmUtil.nvl(pDTO.getSinger());
+        String song = CmmUtil.nvl(pDTO.getSong());
+        String addFieldValue = CmmUtil.nvl(pDTO.getAddFieldValue());
+
         log.info("pColNm : " + pColNm);
-        log.info("pSinger : " + pSinger);
-        log.info("pUpdateSinger : " + pUpdateSinger);
-        log.info("pUpdateSong : " + pUpdateSong);
+        log.info("singer : " + singer);
+        log.info("song : " + song);
+        log.info("addFieldValue : " + song);
 
         // 조회할 조건(SQL의 WHERE 역할 /  SELECT * FROM MELON_20220321 where singer ='방탄소년단')
         Document query = new Document();
-        query.append("singer", pSinger);
+        query.append("singer", singer);
 
         // MongoDB 데이터 삭제는 반드시 컬렉션을 조회하고, 조회된 ObjectID를 기반으로 데이터를 삭제함
         // MongoDB 환경은 분산환경(Sharding)으로 구성될 수 있기 때문에 정확한 PK에 매핑하기 위해서임
@@ -376,32 +400,37 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
 
         // 한줄로 append해서 수정할 필드 추가해도 되지만, 가독성이 떨어져 줄마다 append 함
         Document updateDoc = new Document();
-        updateDoc.append("singer", pUpdateSinger); // 기존 필드 수정
-        updateDoc.append("song", pUpdateSong); // 기존 필드 수정
-        updateDoc.append("addData", "난 기존 필드 수정과 동시에 추가하는 데이터"); // 신규 필드 추가
+        updateDoc.append("singer", singer); // 기존 필드 수정
+        updateDoc.append("song", song); // 기존 필드 수정
+        updateDoc.append("addData", addFieldValue); // 신규 필드 추가
 
         rs.forEach(doc -> col.updateOne(doc, new Document("$set", updateDoc)));
 
         res = 1;
 
-        log.info(this.getClass().getName() + ".updateManySong End!");
+        log.info(this.getClass().getName() + ".updateFieldAndAddField End!");
 
         return res;
 
     }
 
     @Override
-    public int deleteSong(String pColNm, String pSinger) throws Exception {
+    public int deleteDocument(String pColNm, MelonDTO pDTO) throws Exception {
 
-        log.info(this.getClass().getName() + ".deleteSong Start!");
+        log.info(this.getClass().getName() + ".deleteDocument Start!");
 
         int res = 0;
 
         MongoCollection<Document> col = mongodb.getCollection(pColNm);
 
+        String singer = CmmUtil.nvl(pDTO.getSinger());
+
+        log.info("pColNm : " + pColNm);
+        log.info("singer : " + singer);
+
         // 조회할 조건(SQL의 WHERE 역할 /  SELECT * FROM MELON_20220321 where singer ='방탄소년단')
         Document query = new Document();
-        query.append("singer", pSinger);
+        query.append("singer", singer);
 
         // MongoDB 데이터 삭제는 반드시 컬렉션을 조회하고, 조회된 ObjectID를 기반으로 데이터를 삭제함
         // MongoDB 환경은 분산환경(Sharding)으로 구성될 수 있기 때문에 정확한 PK에 매핑하기 위해서임
@@ -413,24 +442,7 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
 
         res = 1;
 
-        log.info(this.getClass().getName() + ".deleteSong End!");
-
-        return res;
-    }
-
-
-    @Override
-    public int dropMelonCollection(String colNm) throws Exception {
-
-        log.info(this.getClass().getName() + ".dropMelonCollection Start!");
-
-        int res = 0;
-
-        super.dropCollection(mongodb, colNm);
-
-        res = 1;
-
-        log.info(this.getClass().getName() + ".dropMelonCollection End!");
+        log.info(this.getClass().getName() + ".deleteDocument End!");
 
         return res;
     }
