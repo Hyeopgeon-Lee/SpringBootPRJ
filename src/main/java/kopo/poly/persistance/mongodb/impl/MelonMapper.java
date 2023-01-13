@@ -203,7 +203,7 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
             String singer = CmmUtil.nvl(doc.getString("singer"));
 
             log.info("song : " + song);
-            log.info("mysinger : " + singer);
+            log.info("singer : " + singer);
 
             MelonDTO rDTO = new MelonDTO();
 
@@ -339,6 +339,65 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
     }
 
     @Override
+    public List<MelonDTO> getSingerSongNickname(String pColNm, MelonDTO pDTO) throws Exception {
+
+        log.info(this.getClass().getName() + ".getSingerSongNickname Start!");
+
+        // 조회 결과를 전달하기 위한 객체 생성하기
+        List<MelonDTO> rList = new LinkedList<>();
+
+        MongoCollection<Document> col = mongodb.getCollection(pColNm);
+
+        // 조회할 조건(SQL의 WHERE 역할 /  SELECT song, singer FROM MELON_20220321 where singer ='방탄소년단')
+        Document query = new Document();
+        query.append("singer", CmmUtil.nvl(pDTO.getSinger()));
+
+        // 조회 결과 중 출력할 컬럼들(SQL의 SELECT절과 FROM절 가운데 컬럼들과 유사함)
+        Document projection = new Document();
+        projection.append("song", "$song");
+        projection.append("singer", "$singer");
+        projection.append("nickname", "$nickname");
+
+        // MongoDB는 무조건 ObjectId가 자동생성되며, ObjectID는 사용하지 않을때, 조회할 필요가 없음
+        // ObjectId를 가지고 오지 않을 때 사용함
+        projection.append("_id", 0);
+
+        // MongoDB의 find 명령어를 통해 조회할 경우 사용함
+        // 조회하는 데이터의 양이 적은 경우, find를 사용하고, 데이터양이 많은 경우 무조건 Aggregate 사용한다.
+        FindIterable<Document> rs = col.find(query).projection(projection);
+
+        for (Document doc : rs) {
+            if (doc == null) {
+                doc = new Document();
+
+            }
+
+            // 조회 잘되나 출력해 봄
+            String song = CmmUtil.nvl(doc.getString("song"));
+            String singer = CmmUtil.nvl(doc.getString("singer"));
+            String nickname = CmmUtil.nvl(doc.getString("nickname"));
+
+            log.info("song : " + song);
+            log.info("singer : " + singer);
+            log.info("nickname : " + nickname);
+
+            MelonDTO rDTO = new MelonDTO();
+
+            rDTO.setSong(song);
+            rDTO.setSinger(singer);
+            rDTO.setNickname(nickname);
+
+            // 레코드 결과를 List에 저장하기
+            rList.add(rDTO);
+
+        }
+        log.info(this.getClass().getName() + ".getSingerSongNickname End!");
+
+        return rList;
+
+    }
+
+    @Override
     public int updateAddListField(String pColNm, MelonDTO pDTO) throws Exception {
 
         log.info(this.getClass().getName() + ".updateAddListField Start!");
@@ -371,6 +430,65 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
         log.info(this.getClass().getName() + ".updateAddListField End!");
 
         return res;
+    }
+
+    @Override
+    public List<MelonDTO> getSingerSongMember(String pColNm, MelonDTO pDTO) throws Exception {
+
+        log.info(this.getClass().getName() + ".getSingerSongMember Start!");
+
+        // 조회 결과를 전달하기 위한 객체 생성하기
+        List<MelonDTO> rList = new LinkedList<>();
+
+        MongoCollection<Document> col = mongodb.getCollection(pColNm);
+
+        // 조회할 조건(SQL의 WHERE 역할 /  SELECT song, singer FROM MELON_20220321 where singer ='방탄소년단')
+        Document query = new Document();
+        query.append("singer", CmmUtil.nvl(pDTO.getSinger()));
+
+        // 조회 결과 중 출력할 컬럼들(SQL의 SELECT절과 FROM절 가운데 컬럼들과 유사함)
+        Document projection = new Document();
+        projection.append("song", "$song");
+        projection.append("singer", "$singer");
+        projection.append("member", "$member");
+
+        // MongoDB는 무조건 ObjectId가 자동생성되며, ObjectID는 사용하지 않을때, 조회할 필요가 없음
+        // ObjectId를 가지고 오지 않을 때 사용함
+        projection.append("_id", 0);
+
+        // MongoDB의 find 명령어를 통해 조회할 경우 사용함
+        // 조회하는 데이터의 양이 적은 경우, find를 사용하고, 데이터양이 많은 경우 무조건 Aggregate 사용한다.
+        FindIterable<Document> rs = col.find(query).projection(projection);
+
+        for (Document doc : rs) {
+            if (doc == null) {
+                doc = new Document();
+
+            }
+
+            // 조회 잘되나 출력해 봄
+            String song = CmmUtil.nvl(doc.getString("song"));
+            String singer = CmmUtil.nvl(doc.getString("singer"));
+            List<String> member = doc.getList("member", String.class, new ArrayList<>());
+
+            log.info("song : " + song);
+            log.info("singer : " + singer);
+            log.info("member : " + member);
+
+            MelonDTO rDTO = new MelonDTO();
+
+            rDTO.setSong(song);
+            rDTO.setSinger(singer);
+            rDTO.setMember(member);
+
+            // 레코드 결과를 List에 저장하기
+            rList.add(rDTO);
+
+        }
+        log.info(this.getClass().getName() + ".getSingerSongMember End!");
+
+        return rList;
+
     }
 
     @Override

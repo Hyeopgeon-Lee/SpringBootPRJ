@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>멜론 차트 데이터 수정 - MongoDB update 실습2</title>
+    <link rel="stylesheet" href="/css/table.css"/>
+    <script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+
+        // HTML로딩이 완료되고, 실행됨
+        $(document).ready(function () {
+
+            // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
+            $("#btnAdd").on("click", function () {
+
+                $("#memberData").append("<input type=\"text\" name=\"member\"> ");
+                $("#memberData").append("<input type=\"button\" class=\"btnRemove\" value=\"Remove\">");
+                $("#memberData").append("<br/>");
+
+                $(".btnRemove").on("click", function () {
+                    $(this).prev().remove(); // remove the textbox
+                    $(this).next().remove(); // remove the <br>
+                    $(this).remove(); // remove the button
+                });
+
+            })
+
+            // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
+            $("#btnSend").on("click", function () {
+
+                // Ajax 호출해서 멜론차트 조회하기
+                $.ajax({
+                        url: "/melon/updateAddListField",
+                        type: "post", // 전송방식은 Post
+                        data: $("#f").serialize(), // form 태그 내 input 등 객체를 자동으로 전송할 형태로 변경하기
+                        dataType: "JSON", // 전송 결과는 JSON으로 받기
+                        success: function (json) { // /melon/getSongList 호출이 성공했다면..
+                            for (let i = 0; i < json.length; i++) {
+                                $("#melonData").append("<div class=\"divTableRow\">");
+                                $("#melonData").append("<div class=\"divTableCell\">" + json[i].song + "</div>");
+                                $("#melonData").append("<div class=\"divTableCell\">" + json[i].singer + "</div>");
+                                $("#melonData").append("<div class=\"divTableCell\">" + json[i].member + "</div>");
+                            }
+
+                        }
+                    }
+                )
+
+            })
+        })
+    </script>
+</head>
+<body>
+<h2>멜론 차트 데이터 수정 - MongoDB Update - List Field 추가 실습</h2>
+<hr/>
+<br/>
+<br/>
+<form name="f" id="f">
+    <div class="divTable minimalistBlack">
+        <div class="divTableBody">
+            <div class="divTableRow">
+                <div class="divTableCell" style="width: 30%">수정할 가수이름</div>
+                <div class="divTableCell" style="width: 70%"><input type="text" name="singer"></div>
+            </div>
+            <div class="divTableRow">
+                <div class="divTableCell">추가할 맴버이름</div>
+                <div class="divTableCell" id="memberData">
+                    <input type="text" name="member"> <input type="button" id="btnAdd" value="Add"><br>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <button id="btnSend" type="button">가수 맴버 이름 추가하기</button>
+    </div>
+</form>
+<br/><br/>
+<div class="divTable minimalistBlack">
+    <div class="divTableHeading">
+        <div class="divTableRow">
+            <div class="divTableHead">노래제목</div>
+            <div class="divTableHead">가수</div>
+            <div class="divTableHead">맴버</div>
+        </div>
+    </div>
+    <div class="divTableBody" id="melonData">
+    </div>
+</div>
+</body>
+</html>

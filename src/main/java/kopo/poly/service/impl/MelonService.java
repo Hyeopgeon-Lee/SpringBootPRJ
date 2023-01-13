@@ -15,8 +15,8 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.io.IOException;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -268,7 +268,7 @@ public class MelonService implements IMelonService {
     public List<MelonDTO> updateAddField(MelonDTO pDTO) throws Exception {
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 updateAddField 파악하기 용이하다.)
-        log.info(this.getClass().getName() + ".updateAddBTSNickname Start!");
+        log.info(this.getClass().getName() + ".updateAddField Start!");
 
         List<MelonDTO> rList = null; // 변경된 데이터 조회 결과
 
@@ -285,7 +285,7 @@ public class MelonService implements IMelonService {
             if (melonMapper.updateAddField(colNm, pDTO) == 1) {
 
                 // 변경된 값을 확인하기 위해 MongoDB로부터 데이터 조회하기
-                rList = melonMapper.getSingerSong(colNm, pDTO);
+                rList = melonMapper.getSingerSongNickname(colNm, pDTO);
 
                 if (rList == null) {
                     rList = new LinkedList<>();
@@ -321,7 +321,7 @@ public class MelonService implements IMelonService {
             if (melonMapper.updateAddListField(colNm, pDTO) == 1) {
 
                 // 변경된 값을 확인하기 위해 MongoDB로부터 데이터 조회하기
-                rList = melonMapper.getSingerSong(colNm, pDTO);
+                rList = melonMapper.getSingerSongMember(colNm, pDTO);
 
                 if (rList == null) {
                     rList = new LinkedList<>();
