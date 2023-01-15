@@ -256,7 +256,8 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
         List<Document> list = new ArrayList<>();
 
         // 람다식 활용 stream과 -> 사용
-        pList.parallelStream().forEach(melon -> list.add(new Document(new ObjectMapper().convertValue(melon, Map.class))));
+        pList.parallelStream().forEach(melon ->
+                list.add(new Document(new ObjectMapper().convertValue(melon, Map.class))));
 
         // 레코드 리스트 단위로 한번에 저장하기
         col.insertMany(list);
