@@ -32,7 +32,7 @@ public interface IMelonMapper {
     List<MelonDTO> getSingerSongCnt(String colNm) throws Exception;
 
     /**
-     * 가수의 노래 가져오기
+     * 가수 이름으로 조회하기
      *
      * @param colNm 조회할 컬렉션 이름
      * @param pDTO  가수명

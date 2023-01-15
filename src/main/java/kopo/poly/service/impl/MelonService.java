@@ -29,7 +29,7 @@ public class MelonService implements IMelonService {
     private IMelonCacheMapper melonCacheMapper; // redisDB에 저장할 Mapper
 
     /**
-     * 멜론 차트 수집 함수
+     * 멜론 차트 수집 함수(웹 크롤링)
      */
     private List<MelonDTO> doCollect() throws Exception {
 

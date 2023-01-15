@@ -6,7 +6,6 @@ import kopo.poly.service.IMelonService;
 import kopo.poly.util.CmmUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -86,7 +85,7 @@ public class MelonController {
     }
 
     /**
-     * 가수별 수집된 노래의 수 가져오기
+     * 가수 이름으로 조회하기
      */
     @PostMapping(value = "getSingerSong")
     public List<MelonDTO> getSingerSong(HttpServletRequest request) throws Exception {

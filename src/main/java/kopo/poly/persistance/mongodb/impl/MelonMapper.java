@@ -128,7 +128,7 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
                         .append("$project",
                                 new Document().append("singer", "$_id.singer").append("singerCnt", "$COUNT(singer)")
                                         .append("_id", 0)),
-                new Document().append("$sort", new Document().append("singerCnt", 1)));
+                new Document().append("$sort", new Document().append("singerCnt", -1)));
 
         MongoCollection<Document> col = mongodb.getCollection(colNm);
         AggregateIterable<Document> rs = col.aggregate(pipeline).allowDiskUse(true);
