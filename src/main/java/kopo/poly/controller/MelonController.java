@@ -113,7 +113,7 @@ public class MelonController {
 
 
     /**
-     * 멜론 노래 리스트 저장하기
+     * 수집된 멜론 차트 컬렉션 삭제하긴
      */
     @PostMapping(value = "dropCollection")
     public MsgDTO dropCollection() throws Exception {
