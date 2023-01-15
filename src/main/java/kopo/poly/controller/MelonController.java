@@ -229,15 +229,13 @@ public class MelonController {
 
         log.info(this.getClass().getName() + ".updateAddListField Start!");
 
-        // 결과 출력
-        String msg = "";
-
         String singer = CmmUtil.nvl(request.getParameter("singer")); // 필드를 추가할 가수
 
         // 가수 그룹 이름은 여러명 입력될 수 있기에 배열로 받음
         // 배열로 받는 방법 : <input type="text" name="member" />의 name 속성 값이 동일하면 배열로 받아짐
         String[] member = request.getParameterValues("member");
 
+        // String[] 구조를 List<String> 구조로 변환하기
         List<String> memberList = Arrays.asList(member);
 
         log.info("singer " + singer);
@@ -267,14 +265,17 @@ public class MelonController {
         log.info(this.getClass().getName() + ".updateFieldAndAddField Start!");
 
         String singer = CmmUtil.nvl(request.getParameter("singer")); // 필드를 추가할 가수
-        String nickname = CmmUtil.nvl(request.getParameter("nickname")); // 추가될 필드 값
+        String song = CmmUtil.nvl(request.getParameter("song")); // 필드를 추가할 가수
+        String addData = CmmUtil.nvl(request.getParameter("addData")); // 추가될 필드 값
 
         log.info("singer " + singer);
-        log.info("nickname " + nickname);
+        log.info("song " + song);
+        log.info("addData " + addData);
 
         MelonDTO pDTO = new MelonDTO();
         pDTO.setSinger(singer);
-        pDTO.setNickname(nickname);
+        pDTO.setSong(song);
+        pDTO.setAddFieldValue(addData);
 
         List<MelonDTO> rList = melonService.updateFieldAndAddField(pDTO);
 

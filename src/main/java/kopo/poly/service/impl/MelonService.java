@@ -267,7 +267,7 @@ public class MelonService implements IMelonService {
     @Override
     public List<MelonDTO> updateAddField(MelonDTO pDTO) throws Exception {
 
-        // 로그 찍기(추후 찍은 로그를 통해 이 함수에 updateAddField 파악하기 용이하다.)
+        // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
         log.info(this.getClass().getName() + ".updateAddField Start!");
 
         List<MelonDTO> rList = null; // 변경된 데이터 조회 결과
@@ -358,7 +358,7 @@ public class MelonService implements IMelonService {
             if (melonMapper.updateFieldAndAddField(colNm, pDTO) == 1) {
 
                 // 변경된 값을 확인하기 위해 MongoDB로부터 데이터 조회하기
-                rList = melonMapper.getSingerSong(colNm, pDTO);
+                rList = melonMapper.getSingerSongAddData(colNm, pDTO);
 
                 if (rList == null) {
                     rList = new LinkedList<>();
@@ -394,8 +394,8 @@ public class MelonService implements IMelonService {
             // MongoDB에 데이터 삭제하기
             if (melonMapper.deleteDocument(colNm, pDTO) == 1) {
 
-                // 변경된 값을 확인하기 위해 MongoDB로부터 데이터 조회하기
-                rList = melonMapper.getSingerSong(colNm, pDTO);
+                // 삭제된 값을 확인하기 위해 MongoDB로부터 데이터 조회하기
+                rList = melonMapper.getSongList(colNm);
 
                 if (rList == null) {
                     rList = new LinkedList<>();

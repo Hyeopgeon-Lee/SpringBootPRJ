@@ -115,6 +115,15 @@ public interface IMelonMapper {
     int updateFieldAndAddField(String colNm, MelonDTO pDTO) throws Exception;
 
     /**
+     * 가수의 노래 가져오기(임의 추가한 필드 포함 조회)
+     *
+     * @param colNm 조회할 컬렉션 이름
+     * @param pDTO  가수명
+     * @return 노래 리스트
+     */
+    List<MelonDTO> getSingerSongAddData(String colNm, MelonDTO pDTO) throws Exception;
+    
+    /**
      * 가수의 노래 삭제하기
      *
      * @param colNm 저장할 컬렉션 이름

@@ -327,8 +327,8 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
         // MongoDB 환경은 분산환경(Sharding)으로 구성될 수 있기 때문에 정확한 PK에 매핑하기 위해서임
         FindIterable<Document> rs = col.find(query);
 
-        // 람다식 활용하여 nickname 필드 추가하기
-        // 전체 컬렉션에 있는 데이터들을 삭제하기
+        // 람다식 활용하여 컬렉션에 조회된 데이터들을 수정하기
+        // MongoDB Driver는 MongoDB의 "$set" 함수를 대신할 자바 함수를 구현함
         rs.forEach(doc -> col.updateOne(doc, set("nickname", nickname)));
 
         res = 1;
@@ -421,8 +421,9 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
         // MongoDB 환경은 분산환경(Sharding)으로 구성될 수 있기 때문에 정확한 PK에 매핑하기 위해서임
         FindIterable<Document> rs = col.find(query);
 
-        // 람다식 활용하여 member 필드 추가하기
-        // 전체 컬렉션에 있는 데이터들을 삭제하기
+        // 람다식 활용하여 컬렉션에 조회된 데이터들을 수정하기
+        // List 구조는 String 구조와 동일하게 set에 List 객체를 저장하면 된다.
+        // MongoDB의 저장단위는 Document 객체는 자바의 Map을 상속받아 구현한 것이며, Map 특징인 값은 모든 객체가 저장 가능하다.
         rs.forEach(doc -> col.updateOne(doc, set("member", member)));
 
         res = 1;
@@ -506,7 +507,7 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
         log.info("pColNm : " + pColNm);
         log.info("singer : " + singer);
         log.info("song : " + song);
-        log.info("addFieldValue : " + song);
+        log.info("addFieldValue : " + addFieldValue);
 
         // 조회할 조건(SQL의 WHERE 역할 /  SELECT * FROM MELON_20220321 where singer ='방탄소년단')
         Document query = new Document();
@@ -518,7 +519,6 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
 
         // 한줄로 append해서 수정할 필드 추가해도 되지만, 가독성이 떨어져 줄마다 append 함
         Document updateDoc = new Document();
-        updateDoc.append("singer", singer); // 기존 필드 수정
         updateDoc.append("song", song); // 기존 필드 수정
         updateDoc.append("addData", addFieldValue); // 신규 필드 추가
 
@@ -530,6 +530,64 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
 
         return res;
 
+    }
+
+    @Override
+    public List<MelonDTO> getSingerSongAddData(String pColNm, MelonDTO pDTO) throws Exception {
+
+        log.info(this.getClass().getName() + ".getSingerSongAddData Start!");
+
+        // 조회 결과를 전달하기 위한 객체 생성하기
+        List<MelonDTO> rList = new LinkedList<>();
+
+        MongoCollection<Document> col = mongodb.getCollection(pColNm);
+
+        // 조회할 조건(SQL의 WHERE 역할 /  SELECT song, singer FROM MELON_20220321 where singer ='방탄소년단')
+        Document query = new Document();
+        query.append("singer", CmmUtil.nvl(pDTO.getSinger()));
+
+        // 조회 결과 중 출력할 컬럼들(SQL의 SELECT절과 FROM절 가운데 컬럼들과 유사함)
+        Document projection = new Document();
+        projection.append("song", "$song");
+        projection.append("singer", "$singer");
+        projection.append("addData", "addData");
+
+        // MongoDB는 무조건 ObjectId가 자동생성되며, ObjectID는 사용하지 않을때, 조회할 필요가 없음
+        // ObjectId를 가지고 오지 않을 때 사용함
+        projection.append("_id", 0);
+
+        // MongoDB의 find 명령어를 통해 조회할 경우 사용함
+        // 조회하는 데이터의 양이 적은 경우, find를 사용하고, 데이터양이 많은 경우 무조건 Aggregate 사용한다.
+        FindIterable<Document> rs = col.find(query).projection(projection);
+
+        for (Document doc : rs) {
+            if (doc == null) {
+                doc = new Document();
+
+            }
+
+            // 조회 잘되나 출력해 봄
+            String song = CmmUtil.nvl(doc.getString("song"));
+            String singer = CmmUtil.nvl(doc.getString("singer"));
+            String addData = CmmUtil.nvl(doc.getString("addData"));
+
+            log.info("song : " + song);
+            log.info("singer : " + singer);
+            log.info("addData : " + addData);
+
+            MelonDTO rDTO = new MelonDTO();
+
+            rDTO.setSong(song);
+            rDTO.setSinger(singer);
+            rDTO.setAddFieldValue(addData);
+
+            // 레코드 결과를 List에 저장하기
+            rList.add(rDTO);
+
+        }
+        log.info(this.getClass().getName() + ".getSingerSongAddData End!");
+
+        return rList;
     }
 
     @Override
