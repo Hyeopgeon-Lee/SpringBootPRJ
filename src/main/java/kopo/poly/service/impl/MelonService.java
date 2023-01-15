@@ -152,24 +152,6 @@ public class MelonService implements IMelonService {
     }
 
     @Override
-    public int dropCollection() throws Exception {
-
-        log.info(this.getClass().getName() + ".dropCollection Start!");
-
-        int res = 0;
-
-        // MongoDB에 저장된 컬렉션 이름
-        String colNm = "MELON_" + DateUtil.getDateTime("yyyyMMdd");
-
-        // 기존 수집된 멜론Top100 수집한 컬렉션 삭제하기
-        res = melonMapper.dropCollection(colNm);
-
-        log.info(this.getClass().getName() + ".dropCollection End!");
-
-        return res;
-    }
-
-    @Override
     public List<MelonDTO> getSingerSong(MelonDTO pDTO) throws Exception {
 
         log.info(this.getClass().getName() + ".getSingerSong Start!");
