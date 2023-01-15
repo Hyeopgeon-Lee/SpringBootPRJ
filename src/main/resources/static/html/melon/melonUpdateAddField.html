@@ -14,7 +14,7 @@
             $("#btnSend").on("click", function () {
 
                 $.ajax({ // Ajax 호출
-                        url: "/melon/updateField",
+                        url: "/melon/updateFieldAndAddField",
                         type: "post", // 전송방식은 Post
                         data: $("#f").serialize(), // form 태그 내 input 등 객체를 자동으로 전송할 형태로 변경하기
                         dataType: "JSON", // 전송 결과는 JSON으로 받기
@@ -23,6 +23,7 @@
                                 $("#melonData").append("<div class=\"divTableRow\">");
                                 $("#melonData").append("<div class=\"divTableCell\">" + json[i].song + "</div>");
                                 $("#melonData").append("<div class=\"divTableCell\">" + json[i].singer + "</div>");
+                                $("#melonData").append("<div class=\"divTableCell\">" + json[i].addFieldValue + "</div>");
                             }
                         }
                     }
@@ -63,7 +64,7 @@
         <div class="divTableRow">
             <div class="divTableHead">노래제목</div>
             <div class="divTableHead">가수</div>
-            <div class="divTableHead">별명</div>
+            <div class="divTableHead">추가한 데이터</div>
         </div>
     </div>
     <div class="divTableBody" id="melonData">

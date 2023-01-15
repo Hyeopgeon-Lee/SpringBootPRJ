@@ -550,7 +550,7 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
         Document projection = new Document();
         projection.append("song", "$song");
         projection.append("singer", "$singer");
-        projection.append("addData", "addData");
+        projection.append("addData", "$addData");
 
         // MongoDB는 무조건 ObjectId가 자동생성되며, ObjectID는 사용하지 않을때, 조회할 필요가 없음
         // ObjectId를 가지고 오지 않을 때 사용함
