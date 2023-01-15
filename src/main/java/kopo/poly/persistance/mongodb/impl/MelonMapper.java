@@ -372,7 +372,7 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
 
             }
 
-            // 조회 잘되나 출력해 봄
+            // MongoDB 조회 결과를 MelonDTO 저장하기 위해 변수에 저장
             String song = CmmUtil.nvl(doc.getString("song"));
             String singer = CmmUtil.nvl(doc.getString("singer"));
             String nickname = CmmUtil.nvl(doc.getString("nickname"));
@@ -467,7 +467,7 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
 
             }
 
-            // 조회 잘되나 출력해 봄
+            // MongoDB 조회 결과를 MelonDTO 저장하기 위해 변수에 저장
             String song = CmmUtil.nvl(doc.getString("song"));
             String singer = CmmUtil.nvl(doc.getString("singer"));
             List<String> member = doc.getList("member", String.class, new ArrayList<>());
@@ -566,7 +566,7 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
 
             }
 
-            // 조회 잘되나 출력해 봄
+            // MongoDB 조회 결과를 MelonDTO 저장하기 위해 변수에 저장
             String song = CmmUtil.nvl(doc.getString("song"));
             String singer = CmmUtil.nvl(doc.getString("singer"));
             String addData = CmmUtil.nvl(doc.getString("addData"));
