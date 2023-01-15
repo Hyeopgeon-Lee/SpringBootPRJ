@@ -59,7 +59,8 @@ public interface IMelonMapper {
     int insertManyField(String colNm, List<MelonDTO> pList) throws Exception;
 
     /**
-     * 가수의 이름 수정하기
+     * 필드 값 수정하기
+     * 예 : 가수의 이름 수정하기
      *
      * @param colNm 저장할 컬렉션 이름
      * @param pDTO  수정할 가수이름, 수정될 가수 이름 정보
@@ -68,7 +69,8 @@ public interface IMelonMapper {
     int updateField(String colNm, MelonDTO pDTO) throws Exception;
 
     /**
-     * 가수의 Nickname 필드 추가하기
+     * 필드 추가하기
+     * 예 : 가수의 Nickname 필드 추가하기
      *
      * @param colNm 저장할 컬렉션 이름
      * @param pDTO  추가를 위해 검색할 가수이름, 추가할 서브 가수이름
