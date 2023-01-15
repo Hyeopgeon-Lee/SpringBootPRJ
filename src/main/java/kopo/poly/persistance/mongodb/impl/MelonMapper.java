@@ -501,12 +501,12 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
         MongoCollection<Document> col = mongodb.getCollection(pColNm);
 
         String singer = CmmUtil.nvl(pDTO.getSinger());
-        String song = CmmUtil.nvl(pDTO.getSong());
+        String updateSinger = CmmUtil.nvl(pDTO.getUpdateSinger());
         String addFieldValue = CmmUtil.nvl(pDTO.getAddFieldValue());
 
         log.info("pColNm : " + pColNm);
         log.info("singer : " + singer);
-        log.info("song : " + song);
+        log.info("updateSinger : " + updateSinger);
         log.info("addFieldValue : " + addFieldValue);
 
         // 조회할 조건(SQL의 WHERE 역할 /  SELECT * FROM MELON_20220321 where singer ='방탄소년단')
@@ -519,7 +519,7 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
 
         // 한줄로 append해서 수정할 필드 추가해도 되지만, 가독성이 떨어져 줄마다 append 함
         Document updateDoc = new Document();
-        updateDoc.append("song", song); // 기존 필드 수정
+        updateDoc.append("singer", updateSinger); // 기존 필드 수정
         updateDoc.append("addData", addFieldValue); // 신규 필드 추가
 
         rs.forEach(doc -> col.updateOne(doc, new Document("$set", updateDoc)));
@@ -544,7 +544,7 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
 
         // 조회할 조건(SQL의 WHERE 역할 /  SELECT song, singer FROM MELON_20220321 where singer ='방탄소년단')
         Document query = new Document();
-        query.append("singer", CmmUtil.nvl(pDTO.getSinger()));
+        query.append("singer", CmmUtil.nvl(pDTO.getUpdateSinger())); // 이전 실행에서 가수이름이 변경되어 변경시킬 값으로 적용
 
         // 조회 결과 중 출력할 컬럼들(SQL의 SELECT절과 FROM절 가운데 컬럼들과 유사함)
         Document projection = new Document();

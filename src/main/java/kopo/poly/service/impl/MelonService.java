@@ -350,11 +350,8 @@ public class MelonService implements IMelonService {
 
         // 멜론Top100 수집하기
         if (this.collectMelonSong() == 1) {
-            String singer = "방탄소년단"; // 수정할 가수 이름
-            String updateSinger = "BTS"; // 변경될 가수이름
-            String updateSong = "BTS-SONG"; // 변경될 노래제목
 
-            // MongoDB에 데이터저장하기
+            // MongoDB에 데이터 수정하기
             if (melonMapper.updateFieldAndAddField(colNm, pDTO) == 1) {
 
                 // 변경된 값을 확인하기 위해 MongoDB로부터 데이터 조회하기

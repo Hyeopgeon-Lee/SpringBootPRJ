@@ -264,17 +264,17 @@ public class MelonController {
 
         log.info(this.getClass().getName() + ".updateFieldAndAddField Start!");
 
-        String singer = CmmUtil.nvl(request.getParameter("singer")); // 필드를 추가할 가수
-        String song = CmmUtil.nvl(request.getParameter("song")); // 필드를 추가할 가수
+        String singer = CmmUtil.nvl(request.getParameter("singer")); // 수정할 가수
+        String updateSinger = CmmUtil.nvl(request.getParameter("updateSinger")); // 수정될 가수
         String addData = CmmUtil.nvl(request.getParameter("addData")); // 추가될 필드 값
 
         log.info("singer " + singer);
-        log.info("song " + song);
+        log.info("updateSinger " + updateSinger);
         log.info("addData " + addData);
 
         MelonDTO pDTO = new MelonDTO();
         pDTO.setSinger(singer);
-        pDTO.setSong(song);
+        pDTO.setUpdateSinger(updateSinger);
         pDTO.setAddFieldValue(addData);
 
         List<MelonDTO> rList = melonService.updateFieldAndAddField(pDTO);
