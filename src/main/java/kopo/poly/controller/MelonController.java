@@ -123,7 +123,7 @@ public class MelonController {
         // 삭제 결과 출력
         String msg = "";
 
-        int res = melonService.collectMelonSong();
+        int res = melonService.dropCollection();
 
         if (res == 1) {
             msg = "멜론차트 삭제 성공!";
