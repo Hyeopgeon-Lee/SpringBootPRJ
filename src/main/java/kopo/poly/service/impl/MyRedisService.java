@@ -68,47 +68,29 @@ public class MyRedisService implements IMyRedisService {
     }
 
     @Override
-    public int saveRedisList() throws Exception {
+    public RedisDTO saveList(RedisDTO pDTO) throws Exception {
 
-        log.info(this.getClass().getName() + ".saveRedisList Start!");
-
-        String redisKey = "myRedis_List";
-
-        List<RedisDTO> pList = new LinkedList<>();
-
-        for (int i = 0; i < 10; i++) {
-
-            RedisDTO pDTO = new RedisDTO();
-            pDTO.setText(i + "번째 데이터입니다.");
-
-            pList.add(pDTO);
-            pDTO = null;
-        }
-
-        int res = myRedisMapper.saveRedisList(redisKey, pList);
-
-        log.info(this.getClass().getName() + ".saveRedisList End!");
-
-        return res;
-    }
-
-    @Override
-    public List<String> getRedisList() throws Exception {
-
-        log.info(this.getClass().getName() + ".getRedisList Start!");
+        log.info(this.getClass().getName() + ".saveList Start!");
 
         String redisKey = "myRedis_List";
 
-        List<String> rList = myRedisMapper.getRedisList(redisKey);
+        // 저장 결과
+        RedisDTO rDTO = null;
 
-        if (rList == null) {
-            rList = new LinkedList<>();
+        int res = myRedisMapper.saveList(redisKey, pDTO);
+
+        if (res == 1) { // Redis 저장이 성공하면, 저장된 데이터 가져오기
+            rDTO = myRedisMapper.getList(redisKey);
+
+        } else {
+            log.info("Redis 저장 실패!!");
+            new Exception("Redis 저장 실패!!");
 
         }
 
-        log.info(this.getClass().getName() + ".getRedisList End!");
+        log.info(this.getClass().getName() + ".saveList End!");
 
-        return rList;
+        return rDTO;
     }
 
     @Override

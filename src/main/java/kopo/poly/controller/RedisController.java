@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -88,7 +89,7 @@ public class RedisController {
 
         }
 
-        log.info(this.getClass().getName() + ".saveRedisStringJSON End!");
+        log.info(this.getClass().getName() + ".saveStringJSON End!");
 
         return rDTO;
     }
@@ -97,41 +98,31 @@ public class RedisController {
     /**
      * List타입에 여러 문자열로 저장하기(동기화)
      */
-    @GetMapping(value = "redis/saveRedisList")
-    public String saveRedisList() throws Exception {
+    @PostMapping(value = "saveList")
+    public RedisDTO saveList(HttpServletRequest request) throws Exception {
 
-        log.info(this.getClass().getName() + ".saveRedisList Start!");
+        log.info(this.getClass().getName() + ".saveList Start!");
 
-        // 수집 결과 출력
-        String msg;
+        // 가수 그룹 이름은 여러명 입력될 수 있기에 배열로 받음
+        // 배열로 받는 방법 : <input type="text" name="text" />의 name 속성 값이 동일하면 배열로 받아짐
+        String[] text = request.getParameterValues("text");
 
-        int res = myRedisService.saveRedisList();
+        // String[] 구조를 List<String> 구조로 변환하기
+        List<String> texts = Arrays.asList(text);
 
-        if (res == 1) {
-            msg = "success";
+        RedisDTO pDTO = new RedisDTO();
+        pDTO.setTexts(texts);
 
-        } else {
-            msg = "fail";
+        RedisDTO rDTO = myRedisService.saveList(pDTO);
+
+        if (rDTO == null) {
+            rDTO = new RedisDTO();
+
         }
 
-        log.info(this.getClass().getName() + ".saveRedisList End!");
+        log.info(this.getClass().getName() + ".saveList End!");
 
-        return msg;
-    }
-
-    /**
-     * List타입에 여러 문자열로 저장된 데이터 가져오기
-     */
-    @GetMapping(value = "redis/getRedisList")
-    public List<String> getRedisList() throws Exception {
-
-        log.info(this.getClass().getName() + ".getRedisList Start!");
-
-        List<String> rList = myRedisService.getRedisList();
-
-        log.info(this.getClass().getName() + ".getRedisList End!");
-
-        return rList;
+        return rDTO;
     }
 
 

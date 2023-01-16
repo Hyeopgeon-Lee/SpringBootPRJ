@@ -144,9 +144,9 @@ public class MyRedisMapper implements IMyRedisMapper {
     }
 
     @Override
-    public int saveRedisList(String redisKey, List<RedisDTO> pList) throws Exception {
+    public int saveList(String redisKey, RedisDTO pDTO) throws Exception {
 
-        log.info(this.getClass().getName() + ".saveRedisList Start!");
+        log.info(this.getClass().getName() + ".saveList Start!");
 
         int res = 0;
         /*
@@ -155,13 +155,15 @@ public class MyRedisMapper implements IMyRedisMapper {
         redisDB.setKeySerializer(new StringRedisSerializer()); // String 타입
         redisDB.setValueSerializer(new StringRedisSerializer()); // String 타입
 
-        for (RedisDTO dto : pList) {
+        List<String> tests = pDTO.getTexts(); // 저장된 문자열들
+
+        for (String text : tests) { // List에 저장된 문자열들을 Redis List객체에 저장
 
             // 오름차순으로 저장하기
-            //redisDB.opsForList().rightPush(redisKey, CmmUtil.nvl(dto.getTest_text()));
+//            redisDB.opsForList().rightPush(redisKey, CmmUtil.nvl(text));
 
             // 내림차순으로 저장하기
-            redisDB.opsForList().leftPush(redisKey, CmmUtil.nvl(dto.getText()));
+            redisDB.opsForList().leftPush(redisKey, CmmUtil.nvl(text));
 
         }
 
@@ -170,18 +172,18 @@ public class MyRedisMapper implements IMyRedisMapper {
 
         res = 1;
 
-        log.info(this.getClass().getName() + ".saveRedisList End!");
+        log.info(this.getClass().getName() + ".saveList End!");
 
         return res;
     }
 
     @Override
-    public List<String> getRedisList(String redisKey) throws Exception {
+    public RedisDTO getList(String redisKey) throws Exception {
 
         log.info(this.getClass().getName() + ".getRedisList Start!");
 
         // 결과 값 저장할 객체
-        List<String> rList = null;
+        RedisDTO rDTO = new RedisDTO();
 
         /*
          * redis 저장 및 읽기에 대한 데이터 타입 지정(String 타입으로 지정함)
@@ -190,13 +192,14 @@ public class MyRedisMapper implements IMyRedisMapper {
         redisDB.setValueSerializer(new StringRedisSerializer()); // String 타입
 
         if (redisDB.hasKey(redisKey)) {
-            rList = (List) redisDB.opsForList().range(redisKey, 0, -1);
+            List<String> rList = (List) redisDB.opsForList().range(redisKey, 0, -1);
 
+            rDTO.setTexts(rList);
         }
 
         log.info(this.getClass().getName() + ".getRedisList End!");
 
-        return rList;
+        return rDTO;
     }
 
     @Override

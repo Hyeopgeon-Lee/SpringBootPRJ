@@ -20,12 +20,8 @@ public interface IMyRedisService {
     /**
      * List타입에 여러 문자열로 저장하기(동기화)
      */
-    int saveRedisList() throws Exception;
+    RedisDTO saveList(RedisDTO pDTO) throws Exception;
 
-    /**
-     * List타입에 여러 문자열로 저장된 데이터 가져오기
-     */
-    List<String> getRedisList() throws Exception;
 
     /**
      * List타입에 JSON 형태로 저장하기(동기화)
