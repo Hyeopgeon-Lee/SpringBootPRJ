@@ -14,7 +14,7 @@ public interface IMyRedisMapper {
      * @param pDTO 저장할 정보
      * @return 저장 성공 여부
      */
-    int saveRedisString(String redisKey, RedisDTO pDTO) throws Exception;
+    int saveString(String redisKey, RedisDTO pDTO) throws Exception;
 
     /**
      * String 타입 가져오기
@@ -22,7 +22,7 @@ public interface IMyRedisMapper {
      * @param redisKey 가져올 RedisKey
      * @return 결과 값
      */
-    RedisDTO getRedisString(String redisKey) throws Exception;
+    RedisDTO getString(String redisKey) throws Exception;
 
     /**
      * String 타입에 JSON 형태로 저장하기
@@ -31,7 +31,7 @@ public interface IMyRedisMapper {
      * @param pDTO 저장할 정보
      * @return 결과 값
      */
-    int saveRedisStringJSON(String redisKey, RedisDTO pDTO) throws Exception;
+    int saveStringJSON(String redisKey, RedisDTO pDTO) throws Exception;
 
     /**
      * String 타입에 JSON 형태로 저장된 데이터 가져오기
@@ -39,7 +39,7 @@ public interface IMyRedisMapper {
      * @param redisKey 가져올 RedisKey
      * @return 결과 값
      */
-    RedisDTO getRedisStringJSON(String redisKey) throws Exception;
+    RedisDTO getStringJSON(String redisKey) throws Exception;
 
     /**
      * List타입에 여러 문자열로 저장하기(동기화)

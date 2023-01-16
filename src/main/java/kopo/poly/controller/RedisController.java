@@ -2,100 +2,97 @@ package kopo.poly.controller;
 
 import kopo.poly.dto.RedisDTO;
 import kopo.poly.service.IMyRedisService;
+import kopo.poly.util.CmmUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Set;
 
 @Slf4j
+@RequestMapping(value = "/redis")
+@RequiredArgsConstructor
 @RestController
 public class RedisController {
 
-    @Resource(name = "MyRedisService")
-    private IMyRedisService myRedisService;
+    private final IMyRedisService myRedisService;
 
     /**
      * Redis 문자열 저장 실습
      */
-    @GetMapping(value = "redis/saveRedisString")
-    public String saveRedisString() throws Exception {
+    @PostMapping(value = "saveString")
+    public RedisDTO saveString(HttpServletRequest request) throws Exception {
 
-        log.info(this.getClass().getName() + ".saveRedisString Start!");
+        log.info(this.getClass().getName() + ".saveString Start!");
 
-        // 수집 결과 출력
-        String msg;
+        String text = CmmUtil.nvl(request.getParameter("text")); // 저장할 문자열
 
-        int res = myRedisService.saveRedisString();
+        /*
+         * ####################################################################################
+         * 반드시, 값을 받았으면, 꼭 로그를 찍어서 값이 제대로 들어오는지 파악해야함 반드시 작성할 것
+         * ####################################################################################
+         */
+        log.info("text : " + text);
 
-        if (res == 1) {
-            msg = "success";
+        RedisDTO pDTO = new RedisDTO();
+        pDTO.setText(text);
 
-        } else {
-            msg = "fail";
+        RedisDTO rDTO = myRedisService.saveString(pDTO);
+
+        if (rDTO == null) {
+            rDTO = new RedisDTO();
+
         }
 
-        log.info(this.getClass().getName() + ".saveRedisString End!");
-
-        return msg;
-    }
-
-    /**
-     * Redis 문자열 저장된 값 가져오기
-     */
-    @GetMapping(value = "redis/getRedisString")
-    public RedisDTO getRedisString() throws Exception {
-
-        log.info(this.getClass().getName() + ".getRedisString Start!");
-
-        RedisDTO rDTO = myRedisService.getRedisString();
-
-        log.info(this.getClass().getName() + ".getRedisString End!");
+        log.info(this.getClass().getName() + ".saveString End!");
 
         return rDTO;
     }
+
 
     /**
      * Redis 문자열을 JSON으로 저장 실습
      */
-    @GetMapping(value = "redis/saveRedisStringJSON")
-    public String saveRedisStringJSON() throws Exception {
+    @PostMapping(value = "saveStringJSON")
+    public RedisDTO saveStringJSON(HttpServletRequest request) throws Exception {
 
-        log.info(this.getClass().getName() + ".saveRedisStringJSON Start!");
+        log.info(this.getClass().getName() + ".saveStringJSON Start!");
 
-        // 수집 결과 출력
-        String msg;
+        String name = CmmUtil.nvl(request.getParameter("name")); // 이름
+        String email = CmmUtil.nvl(request.getParameter("email")); // 이메일
+        String addr = CmmUtil.nvl(request.getParameter("addr")); // 주소
 
-        int res = myRedisService.saveRedisStringJSON();
+        /*
+         * ####################################################################################
+         * 반드시, 값을 받았으면, 꼭 로그를 찍어서 값이 제대로 들어오는지 파악해야함 반드시 작성할 것
+         * ####################################################################################
+         */
+        log.info("name : " + name);
+        log.info("email : " + email);
+        log.info("addr : " + addr);
 
-        if (res == 1) {
-            msg = "success";
+        RedisDTO pDTO = new RedisDTO();
+        pDTO.setName(name);
+        pDTO.setEmail(email);
+        pDTO.setAddr(addr);
 
-        } else {
-            msg = "fail";
+        RedisDTO rDTO = myRedisService.saveStringJSON(pDTO);
+
+        if (rDTO == null) {
+            rDTO = new RedisDTO();
+
         }
 
         log.info(this.getClass().getName() + ".saveRedisStringJSON End!");
 
-        return msg;
-    }
-
-    /**
-     * Redis 문자열을 JSON으로 저장된 값 가져오기
-     */
-    @GetMapping(value = "redis/getRedisStringJSON")
-    public RedisDTO getRedisStringJSON() throws Exception {
-
-        log.info(this.getClass().getName() + ".getRedisStringJSON Start!");
-
-        RedisDTO rDTO = myRedisService.getRedisStringJSON();
-
-        log.info(this.getClass().getName() + ".getRedisStringJSON End!");
-
         return rDTO;
     }
+
 
     /**
      * List타입에 여러 문자열로 저장하기(동기화)
@@ -337,7 +334,7 @@ public class RedisController {
 
         return rSet;
     }
-    
+
     /**
      * RedisDB 데이터 삭제하기
      */

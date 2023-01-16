@@ -8,24 +8,14 @@ import java.util.Set;
 public interface IMyRedisService {
 
     /**
-     * String 타입 저장하기
+     * String 타입 저장 및 가져오기
      */
-    int saveRedisString() throws Exception;
-
-    /**
-     * String 타입 가져오기
-     */
-    RedisDTO getRedisString() throws Exception;
+    RedisDTO saveString(RedisDTO pDTO) throws Exception;
 
     /**
      * String 타입에 JSON 형태로 저장하기
      */
-    int saveRedisStringJSON() throws Exception;
-
-    /**
-     * String 타입에 JSON 형태로 저장된 값 가져오기
-     */
-    RedisDTO getRedisStringJSON() throws Exception;
+    RedisDTO saveStringJSON(RedisDTO pDTO) throws Exception;
 
     /**
      * List타입에 여러 문자열로 저장하기(동기화)
@@ -54,7 +44,7 @@ public interface IMyRedisService {
 
     /**
      * List타입에 JSON 형태로 저장된 데이터 가져오기
-     * 
+     * <p>
      * 람다식 저장된 Redis키 값이 달라서 함수 별도로 만듬
      * 매퍼 호출은 앞서 만든 getRedisListJSON 호출함
      */

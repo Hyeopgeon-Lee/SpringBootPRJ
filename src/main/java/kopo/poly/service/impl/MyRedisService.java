@@ -3,87 +3,66 @@ package kopo.poly.service.impl;
 import kopo.poly.dto.RedisDTO;
 import kopo.poly.persistance.redis.IMyRedisMapper;
 import kopo.poly.service.IMyRedisService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.*;
 
 @Slf4j
+@RequiredArgsConstructor
 @Service("MyRedisService")
 public class MyRedisService implements IMyRedisService {
 
-    @Resource(name = "MyRedisMapper")
-    private IMyRedisMapper myRedisMapper;
+    private final IMyRedisMapper myRedisMapper;
 
 
     @Override
-    public int saveRedisString() throws Exception {
-        log.info(this.getClass().getName() + ".saveRedisString Start!");
+    public RedisDTO saveString(RedisDTO pDTO) throws Exception {
+        log.info(this.getClass().getName() + ".saveString Start!");
 
+        // 저장할 RedisDB 키
         String redisKey = "myRedis_String";
 
-        RedisDTO pDTO = new RedisDTO();
-        pDTO.setTest_text("난 String타입으로 저장할 일반 문자열이다.");
+        // 저장 결과
+        RedisDTO rDTO = null;
 
-        int res = myRedisMapper.saveRedisString(redisKey, pDTO);
+        int res = myRedisMapper.saveString(redisKey, pDTO);
 
+        if (res == 1) { // Redis 저장이 성공하면, 저장된 데이터 가져오기
+            rDTO = myRedisMapper.getString(redisKey);
 
-        log.info(this.getClass().getName() + ".saveRedisString End!");
+        } else {
+            log.info("Redis 저장 실패!!");
+            new Exception("Redis 저장 실패!!");
 
-        return res;
-    }
-
-    @Override
-    public RedisDTO getRedisString() throws Exception {
-        log.info(this.getClass().getName() + ".getRedisString Start!");
-
-        String redisKey = "myRedis_String";
-
-        RedisDTO rDTO = myRedisMapper.getRedisString(redisKey);
-
-        if (rDTO == null) {
-            rDTO = new RedisDTO();
         }
 
-        log.info(this.getClass().getName() + ".getRedisString End!");
+        log.info(this.getClass().getName() + ".saveString End!");
 
         return rDTO;
     }
 
     @Override
-    public int saveRedisStringJSON() throws Exception {
-        log.info(this.getClass().getName() + ".saveRedisStringJSON Start!");
+    public RedisDTO saveStringJSON(RedisDTO pDTO) throws Exception {
+        log.info(this.getClass().getName() + ".saveStringJSON Start!");
 
         String redisKey = "myRedis_String_JSON";
 
-        RedisDTO pDTO = new RedisDTO();
-        pDTO.setTest_text("난 String타입에 JSON 구조로 저장할 일반 문자열이다.");
-        pDTO.setName("이협건");
-        pDTO.setAddr("서울");
-        pDTO.setEmail("hglee67@kopo.ac.kr");
+        // 저장 결과
+        RedisDTO rDTO = null;
 
-        int res = myRedisMapper.saveRedisStringJSON(redisKey, pDTO);
+        int res = myRedisMapper.saveStringJSON(redisKey, pDTO);
 
-        log.info(this.getClass().getName() + ".saveRedisStringJSON End!");
+        if (res == 1) { // Redis 저장이 성공하면, 저장된 데이터 가져오기
+            rDTO = myRedisMapper.getStringJSON(redisKey);
 
-        return res;
-    }
+        } else {
+            log.info("Redis 저장 실패!!");
+            new Exception("Redis 저장 실패!!");
 
-    @Override
-    public RedisDTO getRedisStringJSON() throws Exception {
-
-        log.info(this.getClass().getName() + ".getRedisStringJSON Start!");
-
-        String redisKey = "myRedis_String_JSON";
-
-        RedisDTO rDTO = myRedisMapper.getRedisStringJSON(redisKey);
-
-        if (rDTO == null) {
-            rDTO = new RedisDTO();
         }
-
-        log.info(this.getClass().getName() + ".getRedisStringJSON End!");
+        log.info(this.getClass().getName() + ".saveStringJSON End!");
 
         return rDTO;
     }
@@ -100,7 +79,7 @@ public class MyRedisService implements IMyRedisService {
         for (int i = 0; i < 10; i++) {
 
             RedisDTO pDTO = new RedisDTO();
-            pDTO.setTest_text(i + "번째 데이터입니다.");
+            pDTO.setText(i + "번째 데이터입니다.");
 
             pList.add(pDTO);
             pDTO = null;
@@ -143,7 +122,7 @@ public class MyRedisService implements IMyRedisService {
         for (int i = 0; i < 10; i++) {
 
             RedisDTO pDTO = new RedisDTO();
-            pDTO.setTest_text(i + "번째 데이터입니다.");
+            pDTO.setText(i + "번째 데이터입니다.");
             pDTO.setName("이협건[" + i + "]");
             pDTO.setAddr("서울");
             pDTO.setEmail("hglee67@kopo.ac.kr");
@@ -189,7 +168,7 @@ public class MyRedisService implements IMyRedisService {
         for (int i = 0; i < 1000; i++) {
 
             RedisDTO pDTO = new RedisDTO();
-            pDTO.setTest_text(i + "번째 데이터입니다.");
+            pDTO.setText(i + "번째 데이터입니다.");
             pDTO.setName("이협건[" + i + "]");
             pDTO.setAddr("서울");
             pDTO.setEmail("hglee67@kopo.ac.kr");
@@ -273,7 +252,7 @@ public class MyRedisService implements IMyRedisService {
         for (int i = 0; i < 10; i++) {
 
             RedisDTO pDTO = new RedisDTO();
-            pDTO.setTest_text(i + "번째 데이터입니다.");
+            pDTO.setText(i + "번째 데이터입니다.");
             pDTO.setName("이협건[" + i + "]");
             pDTO.setAddr("서울");
             pDTO.setEmail("hglee67@kopo.ac.kr");
@@ -319,7 +298,7 @@ public class MyRedisService implements IMyRedisService {
         for (int i = 0; i < 10; i++) {
 
             RedisDTO pDTO = new RedisDTO();
-            pDTO.setTest_text(i + "번째 데이터입니다.");
+            pDTO.setText(i + "번째 데이터입니다.");
             pDTO.setName("이협건[" + i + "]");
             pDTO.setAddr("서울");
             pDTO.setEmail("hglee67@kopo.ac.kr");
