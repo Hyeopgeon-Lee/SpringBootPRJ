@@ -249,7 +249,7 @@ public class MelonService implements IMelonService {
             if (melonMapper.updateField(colNm, pDTO) == 1) {
 
                 // 변경된 값을 확인하기 위해 MongoDB로부터 데이터 조회하기
-                rList = melonMapper.getSingerSong(colNm, pDTO);
+                rList = melonMapper.getUpdateSinger(colNm, pDTO);
 
                 if (rList == null) {
                     rList = new LinkedList<>();
@@ -405,6 +405,4 @@ public class MelonService implements IMelonService {
 
         return rList;
     }
-
-
 }

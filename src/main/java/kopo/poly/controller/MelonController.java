@@ -257,7 +257,7 @@ public class MelonController {
     }
 
     /**
-     * 가수 이름이 방탄소년단을 BTS로 변경하기
+     * 가수 이름이 방탄소년단을 BTS로 변경 및 필드 추가하기
      */
     @PostMapping(value = "updateFieldAndAddField")
     public List<MelonDTO> updateFieldAndAddField(HttpServletRequest request) throws Exception {

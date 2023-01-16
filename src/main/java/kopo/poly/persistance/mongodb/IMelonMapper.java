@@ -69,6 +69,15 @@ public interface IMelonMapper {
     int updateField(String colNm, MelonDTO pDTO) throws Exception;
 
     /**
+     * 수정된 가수이름의 노래 가져오기
+     *
+     * @param colNm 조회할 컬렉션 이름
+     * @param pDTO  가수명
+     * @return 노래 리스트
+     */
+    List<MelonDTO> getUpdateSinger(String colNm, MelonDTO pDTO) throws Exception;
+
+    /**
      * 필드 추가하기
      * 예 : 가수의 Nickname 필드 추가하기
      *
@@ -122,7 +131,7 @@ public interface IMelonMapper {
      * @return 노래 리스트
      */
     List<MelonDTO> getSingerSongAddData(String colNm, MelonDTO pDTO) throws Exception;
-    
+
     /**
      * 가수의 노래 삭제하기
      *
