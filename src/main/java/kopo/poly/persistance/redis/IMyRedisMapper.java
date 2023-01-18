@@ -45,7 +45,7 @@ public interface IMyRedisMapper {
      * List타입에 여러 문자열로 저장하기(동기화)
      *
      * @param redisKey Redis저장 키
-     * @param pList    저장할 정보들
+     * @param pDTO     저장할 정보들
      * @return 저장 성공 여부
      */
     int saveList(String redisKey, RedisDTO pDTO) throws Exception;
@@ -65,7 +65,7 @@ public interface IMyRedisMapper {
      * @param pList    저장할 정보들
      * @return 저장 성공 여부
      */
-    int saveRedisListJSON(String redisKey, List<RedisDTO> pList) throws Exception;
+    int saveListJSON(String redisKey, List<RedisDTO> pList) throws Exception;
 
     /**
      * List타입에 JSON 형태로 저장된 데이터 가져오기
@@ -73,16 +73,7 @@ public interface IMyRedisMapper {
      * @param redisKey 가져올 RedisKey
      * @return 결과 값
      */
-    List<RedisDTO> getRedisListJSON(String redisKey) throws Exception;
-
-    /**
-     * List타입에 JSON 형태로 람다식을 이용하여 저장하기(비동기화)
-     *
-     * @param redisKey Redis저장 키
-     * @param pList    저장할 정보들
-     * @return 저장 성공 여부
-     */
-    int saveRedisListJSONRamda(String redisKey, List<RedisDTO> pList) throws Exception;
+    List<RedisDTO> getListJSON(String redisKey) throws Exception;
 
     /**
      * Hash 타입에 문자열 형태로 저장하기
@@ -91,7 +82,7 @@ public interface IMyRedisMapper {
      * @param pDTO     저장할 정보들
      * @return 저장 성공 여부
      */
-    int saveRedisHash(String redisKey, RedisDTO pDTO) throws Exception;
+    int saveHash(String redisKey, RedisDTO pDTO) throws Exception;
 
     /**
      * Hash 타입에 문자열 형태로 저장된 값 가져오기
@@ -99,7 +90,7 @@ public interface IMyRedisMapper {
      * @param redisKey 가져올 RedisKey
      * @return 결과 값
      */
-    RedisDTO getRedisHash(String redisKey) throws Exception;
+    RedisDTO getHash(String redisKey) throws Exception;
 
     /**
      * Set타입에 JSON 형태로 람다식을 이용하여 저장하기
@@ -108,7 +99,7 @@ public interface IMyRedisMapper {
      * @param pSet     저장할 정보들
      * @return 저장 성공 여부
      */
-    int saveRedisSetJSONRamda(String redisKey, Set<RedisDTO> pSet) throws Exception;
+    int saveSetJSON(String redisKey, Set<RedisDTO> pSet) throws Exception;
 
     /**
      * Set타입에 JSON 형태로 람다식을 이용하여 저장된 값 가져오기
@@ -116,7 +107,7 @@ public interface IMyRedisMapper {
      * @param redisKey 가져올 RedisKey
      * @return 결과 값
      */
-    Set<RedisDTO> getRedisSetJSONRamda(String redisKey) throws Exception;
+    Set<RedisDTO> getSetJSON(String redisKey) throws Exception;
 
     /**
      * ZSet타입에 JSON 형태로 저장하기
@@ -125,7 +116,7 @@ public interface IMyRedisMapper {
      * @param pList    저장할 정보들
      * @return 저장 성공 여부
      */
-    int saveRedisZSetJSON(String redisKey, List<RedisDTO> pList) throws Exception;
+    int saveZSetJSON(String redisKey, Set<RedisDTO> pList) throws Exception;
 
     /**
      * ZSet타입에 JSON 형태로 저장된 값 가져오기
@@ -133,21 +124,6 @@ public interface IMyRedisMapper {
      * @param redisKey 가져올 RedisKey
      * @return 결과 값
      */
-    Set<RedisDTO> getRedisZSetJSON(String redisKey) throws Exception;
+    Set<RedisDTO> getZSetJSON(String redisKey) throws Exception;
 
-    /**
-     * Redis에 JSON 구조로 저장된 데이터 삭제하기
-     *
-     * @param redisKey 삭제할 RedisKey
-     * @return 결과 값
-     */
-    boolean deleteDataJSON(String redisKey) throws Exception;
-
-    /**
-     * Redis에 String 구조로 저장된 데이터 삭제하기
-     *
-     * @param redisKey 삭제할 RedisKey
-     * @return 결과 값
-     */
-    boolean deleteDataString(String redisKey) throws Exception;
 }

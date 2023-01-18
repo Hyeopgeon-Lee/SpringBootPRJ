@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Slf4j
 @RequestMapping(value = "/redis")
@@ -129,79 +127,39 @@ public class RedisController {
     /**
      * List타입에 JSON 형태로 저장하기(동기화)
      */
-    @GetMapping(value = "redis/saveRedisListJSON")
-    public String saveRedisListJSON() throws Exception {
+    @GetMapping(value = "saveListJSON")
+    public List<RedisDTO> saveListJSON(HttpServletRequest request) throws Exception {
 
-        log.info(this.getClass().getName() + ".saveRedisListJSON Start!");
+        log.info(this.getClass().getName() + "saveListJSON. Start!");
 
-        // 수집 결과 출력
-        String msg;
+        // 가수 그룹 이름은 여러명 입력될 수 있기에 배열로 받음
+        // 배열로 받는 방법 : <input type="text" name="name" />의 name 속성 값이 동일하면 배열로 받아짐
+        String[] name = request.getParameterValues("name");
+        String[] email = request.getParameterValues("email");
+        String[] addr = request.getParameterValues("addr");
 
-        int res = myRedisService.saveRedisListJSON();
+        List<RedisDTO> pList = new ArrayList<>();
 
-        if (res == 1) {
-            msg = "success";
+        for (int i = 0; i < name.length; i++) {
+            RedisDTO pDTO = new RedisDTO();
+            pDTO.setName(name[i]);
+            pDTO.setEmail(email[i]);
+            pDTO.setAddr(addr[i]);
 
-        } else {
-            msg = "fail";
+            pList.add(pDTO); // 입력받는 값을 저장하기
+
+            pDTO = null;
+
         }
 
-        log.info(this.getClass().getName() + ".saveRedisListJSON End!");
+        List<RedisDTO> rList = myRedisService.saveListJSON(pList);
 
-        return msg;
-    }
+        if (rList == null) {
+            rList = new ArrayList<>();
 
-    /**
-     * List타입에 JSON 형태로 저장된 데이터 가져오기
-     */
-    @GetMapping(value = "redis/getRedisListJSON")
-    public List<RedisDTO> getRedisListJSON() throws Exception {
-
-        log.info(this.getClass().getName() + ".getRedisListJSON Start!");
-
-        List<RedisDTO> rList = myRedisService.getRedisListJSON();
-
-        log.info(this.getClass().getName() + ".getRedisListJSON End!");
-
-        return rList;
-    }
-
-    /**
-     * List타입에 JSON 형태로 람다식을 이용하여 저장하기(비동기화)
-     */
-    @GetMapping(value = "redis/saveRedisListJSONRamda")
-    public String saveRedisListJSONRamda() throws Exception {
-
-        log.info(this.getClass().getName() + ".saveRedisListJSONRamda Start!");
-
-        // 수집 결과 출력
-        String msg;
-
-        int res = myRedisService.saveRedisListJSONRamda();
-
-        if (res == 1) {
-            msg = "success";
-
-        } else {
-            msg = "fail";
         }
 
-        log.info(this.getClass().getName() + ".saveRedisListJSONRamda End!");
-
-        return msg;
-    }
-
-    /**
-     * List타입에 JSON 형태로 저장된 데이터 가져오기
-     */
-    @GetMapping(value = "redis/getRedisListJSONRamda")
-    public List<RedisDTO> getRedisListJSONRamda() throws Exception {
-
-        log.info(this.getClass().getName() + ".getRedisListJSONRamda Start!");
-
-        List<RedisDTO> rList = myRedisService.getRedisListJSONRamda();
-
-        log.info(this.getClass().getName() + ".getRedisListJSONRamda End!");
+        log.info(this.getClass().getName() + ".saveListJSON End!");
 
         return rList;
     }
@@ -209,39 +167,37 @@ public class RedisController {
     /**
      * Hash 타입에 문자열 형태로 저장하기
      */
-    @GetMapping(value = "redis/saveRedisHash")
-    public String saveRedisHash() throws Exception {
+    @GetMapping(value = "saveHash")
+    public RedisDTO saveHash(HttpServletRequest request) throws Exception {
 
-        log.info(this.getClass().getName() + ".saveRedisHash Start!");
+        log.info(this.getClass().getName() + ".saveHash Start!");
 
-        // 수집 결과 출력
-        String msg;
+        String name = CmmUtil.nvl(request.getParameter("name")); // 이름
+        String email = CmmUtil.nvl(request.getParameter("email")); // 이메일
+        String addr = CmmUtil.nvl(request.getParameter("addr")); // 주소
 
-        int res = myRedisService.saveRedisHash();
+        /*
+         * ####################################################################################
+         * 반드시, 값을 받았으면, 꼭 로그를 찍어서 값이 제대로 들어오는지 파악해야함 반드시 작성할 것
+         * ####################################################################################
+         */
+        log.info("name : " + name);
+        log.info("email : " + email);
+        log.info("addr : " + addr);
 
-        if (res == 1) {
-            msg = "success";
+        RedisDTO pDTO = new RedisDTO();
+        pDTO.setName(name);
+        pDTO.setEmail(email);
+        pDTO.setAddr(addr);
 
-        } else {
-            msg = "fail";
+        RedisDTO rDTO = myRedisService.saveHash(pDTO);
+
+        if (rDTO == null) {
+            rDTO = new RedisDTO();
+
         }
 
-        log.info(this.getClass().getName() + ".saveRedisHash End!");
-
-        return msg;
-    }
-
-    /**
-     * Hash 타입에 문자열 형태로 저장된 값 가져오기
-     */
-    @GetMapping(value = "redis/getRedisHash")
-    public RedisDTO getRedisHash() throws Exception {
-
-        log.info(this.getClass().getName() + ".getRedisHash Start!");
-
-        RedisDTO rDTO = myRedisService.getRedisHash();
-
-        log.info(this.getClass().getName() + ".getRedisHash End!");
+        log.info(this.getClass().getName() + ".saveHash End!");
 
         return rDTO;
     }
@@ -249,39 +205,39 @@ public class RedisController {
     /**
      * Set타입에 JSON 형태로 람다식을 이용하여 저장하기
      */
-    @GetMapping(value = "redis/saveRedisSetJSONRamda")
-    public String saveRedisSetJSONRamda() throws Exception {
+    @GetMapping(value = "saveSetJSON")
+    public Set<RedisDTO> saveSetJSON(HttpServletRequest request) throws Exception {
 
-        log.info(this.getClass().getName() + ".saveRedisSetJSONRamda Start!");
+        log.info(this.getClass().getName() + ".saveSetJSON Start!");
 
-        // 수집 결과 출력
-        String msg;
+        // 가수 그룹 이름은 여러명 입력될 수 있기에 배열로 받음
+        // 배열로 받는 방법 : <input type="text" name="name" />의 name 속성 값이 동일하면 배열로 받아짐
+        String[] name = request.getParameterValues("name");
+        String[] email = request.getParameterValues("email");
+        String[] addr = request.getParameterValues("addr");
 
-        int res = myRedisService.saveRedisSetJSONRamda();
+        Set<RedisDTO> pSet = new HashSet<>();
 
-        if (res == 1) {
-            msg = "success";
+        for (int i = 0; i < name.length; i++) {
+            RedisDTO pDTO = new RedisDTO();
+            pDTO.setName(name[i]);
+            pDTO.setEmail(email[i]);
+            pDTO.setAddr(addr[i]);
 
-        } else {
-            msg = "fail";
+            pSet.add(pDTO); // 입력받는 값을 저장하기
+
+            pDTO = null;
+
         }
 
-        log.info(this.getClass().getName() + ".saveRedisSetJSONRamda End!");
+        Set<RedisDTO> rSet = myRedisService.saveSetJSON(pSet);
 
-        return msg;
-    }
+        if (rSet == null) {
+            rSet = new HashSet<>();
 
-    /**
-     * Set타입에 JSON 형태로 람다식을 이용하여 저장된 값 가져오기
-     */
-    @GetMapping(value = "redis/getRedisSetJSONRamda")
-    public Set<RedisDTO> getRedisSetJSONRamda() throws Exception {
+        }
 
-        log.info(this.getClass().getName() + ".getRedisSetJSONRamda Start!");
-
-        Set<RedisDTO> rSet = myRedisService.getRedisSetJSONRamda();
-
-        log.info(this.getClass().getName() + ".getRedisSetJSONRamda End!");
+        log.info(this.getClass().getName() + ".saveSetJSON End!");
 
         return rSet;
     }
@@ -289,71 +245,41 @@ public class RedisController {
     /**
      * ZSet타입에 JSON 형태로 저장하기
      */
-    @GetMapping(value = "redis/saveRedisZSetJSON")
-    public String saveRedisZSetJSON() throws Exception {
+    @GetMapping(value = "saveZSetJSON")
+    public Set<RedisDTO> saveRedisZSetJSON(HttpServletRequest request) throws Exception {
 
-        log.info(this.getClass().getName() + ".saveRedisZSetJSON Start!");
+        log.info(this.getClass().getName() + ".saveZSetJSON Start!");
 
-        // 수집 결과 출력
-        String msg;
+        // 가수 그룹 이름은 여러명 입력될 수 있기에 배열로 받음
+        // 배열로 받는 방법 : <input type="text" name="name" />의 name 속성 값이 동일하면 배열로 받아짐
+        String[] name = request.getParameterValues("name");
+        String[] email = request.getParameterValues("email");
+        String[] addr = request.getParameterValues("addr");
 
-        int res = myRedisService.saveRedisZSetJSON();
+        Set<RedisDTO> pSet = new HashSet<>();
 
-        if (res == 1) {
-            msg = "success";
+        for (int i = 0; i < name.length; i++) {
+            RedisDTO pDTO = new RedisDTO();
+            pDTO.setName(name[i]);
+            pDTO.setEmail(email[i]);
+            pDTO.setAddr(addr[i]);
 
-        } else {
-            msg = "fail";
+            pSet.add(pDTO); // 입력받는 값을 저장하기
+
+            pDTO = null;
+
         }
 
-        log.info(this.getClass().getName() + ".saveRedisZSetJSON End!");
+        Set<RedisDTO> rSet = myRedisService.saveZSetJSON(pSet);
 
-        return msg;
-    }
+        if (rSet == null) {
+            rSet = new HashSet<>();
 
-    /**
-     * ZSet타입에 JSON 형태로 저장된 값 가져오기
-     */
-    @GetMapping(value = "redis/getRedisZSetJSON")
-    public Set<RedisDTO> getRedisZSetJSON() throws Exception {
+        }
 
-        log.info(this.getClass().getName() + ".getRedisZSetJSON Start!");
+        log.info(this.getClass().getName() + ".saveZSetJSON End!");
 
-        Set<RedisDTO> rSet = myRedisService.getRedisZSetJSON();
-
-        log.info(this.getClass().getName() + ".getRedisZSetJSON End!");
 
         return rSet;
     }
-
-    /**
-     * RedisDB 데이터 삭제하기
-     */
-    @GetMapping(value = "redis/deleteDataJSON")
-    public boolean deleteDataJSON() throws Exception {
-
-        log.info(this.getClass().getName() + ".deleteDataJSON Start!");
-
-        boolean res = myRedisService.deleteDataJSON();
-
-        log.info(this.getClass().getName() + ".deleteDataJSON End!");
-
-        return res;
-    }
-
-    /**
-     * RedisDB 데이터 삭제하기
-     */
-    @GetMapping(value = "redis/deleteDataString")
-    public boolean deleteDataString() throws Exception {
-
-        log.info(this.getClass().getName() + ".deleteDataString Start!");
-
-        boolean res = myRedisService.deleteDataString();
-
-        log.info(this.getClass().getName() + ".deleteDataString End!");
-
-        return res;
-    }
-
 }

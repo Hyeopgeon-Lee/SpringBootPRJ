@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>음성인식 기초 프로그램</title>
-    <script src="../js/annyang.js"></script>
-    <script src="../js/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="/css/table.css"/>
+    <script type="text/javascript" src="/js/annyang"></script>
+    <script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
     <script>
         //annyang 라이브러리 실행
         annyang.start({
@@ -37,13 +38,26 @@
     </script>
 </head>
 <body>
-<h1>내가 방금 한말</h1>
-<hr/>
-<div id="mySpeak"></div>
+<div class="divTable minimalistBlack">
+    <div class="divTableHeading">
+        <div class="divTableRow">
+            <div class="divTableHead">내가 방금 한말</div>
+        </div>
+    </div>
+    <div class="divTableBody" id="mySpeak">
+    </div>
+</div>
+<br/><br/>
 
-<h1>음성메시지 전체 내용</h1>
-<hr/>
-<div id="totalMySpeak"></div>
+<div class="divTable minimalistBlack">
+    <div class="divTableHeading">
+        <div class="divTableRow">
+            <div class="divTableHead">음성메시지 전체 내용</div>
+        </div>
+    </div>
+    <div class="divTableBody" id="totalMySpeak">
+    </div>
+</div>
 
 </body>
 </html>

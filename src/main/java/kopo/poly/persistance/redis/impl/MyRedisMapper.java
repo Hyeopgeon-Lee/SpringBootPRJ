@@ -203,9 +203,9 @@ public class MyRedisMapper implements IMyRedisMapper {
     }
 
     @Override
-    public int saveRedisListJSON(String redisKey, List<RedisDTO> pList) throws Exception {
+    public int saveListJSON(String redisKey, List<RedisDTO> pList) throws Exception {
 
-        log.info(this.getClass().getName() + ".saveRedisListJSON Start!");
+        log.info(this.getClass().getName() + ".saveListJSON Start!");
 
         int res = 0;
 
@@ -215,30 +215,23 @@ public class MyRedisMapper implements IMyRedisMapper {
         // RedisDTO에 저장된 데이터를 자동으로 JSON으로 변경하기
         redisDB.setValueSerializer(new Jackson2JsonRedisSerializer<>(RedisDTO.class));
 
-        for (RedisDTO dto : pList) {
-
-            // 오름차순으로 저장하기
-            redisDB.opsForList().rightPush(redisKey, dto);
-
-            // 내림차순으로 저장하기
-//            redisDB.opsForList().leftPush(redisKey, dto);
-
-        }
+        // 람다식 사용하여 데이터 저장
+        pList.forEach(dto -> redisDB.opsForList().rightPush(redisKey, dto));
 
         // 저장되는 데이터의 유효기간(TTL)은 5시간으로 정의
         redisDB.expire(redisKey, 5, TimeUnit.HOURS);
 
         res = 1;
 
-        log.info(this.getClass().getName() + ".saveRedisListJSON End!");
+        log.info(this.getClass().getName() + ".saveListJSON End!");
 
         return res;
     }
 
     @Override
-    public List<RedisDTO> getRedisListJSON(String redisKey) throws Exception {
+    public List<RedisDTO> getListJSON(String redisKey) throws Exception {
 
-        log.info(this.getClass().getName() + ".getRedisListJSON Start!");
+        log.info(this.getClass().getName() + ".getListJSON Start!");
 
         // 결과 값 저장할 객체
         List<RedisDTO> rList = null;
@@ -254,41 +247,15 @@ public class MyRedisMapper implements IMyRedisMapper {
 
         }
 
-        log.info(this.getClass().getName() + ".getRedisListJSON End!");
+        log.info(this.getClass().getName() + ".getListJSON End!");
 
         return rList;
     }
 
     @Override
-    public int saveRedisListJSONRamda(String redisKey, List<RedisDTO> pList) throws Exception {
+    public int saveHash(String redisKey, RedisDTO pDTO) throws Exception {
 
-        log.info(this.getClass().getName() + ".saveRedisListJSONRamda Start!");
-
-        int res = 0;
-
-        // redisDB의 키의 데이터 타입을 String으로 정의(항상 String으로 설정함)
-        redisDB.setKeySerializer(new StringRedisSerializer()); // String 타입
-
-        // RedisDTO에 저장된 데이터를 자동으로 JSON으로 변경하기
-        redisDB.setValueSerializer(new Jackson2JsonRedisSerializer<>(RedisDTO.class));
-
-        // 람다식 사용은 순서에 상관없이 저장하기 때문에 오름차순, 내림차순은 중요하지 않음
-        pList.forEach(dto -> redisDB.opsForList().rightPush(redisKey, dto));
-
-        // 저장되는 데이터의 유효기간(TTL)은 5시간으로 정의
-        redisDB.expire(redisKey, 5, TimeUnit.HOURS);
-
-        res = 1;
-
-        log.info(this.getClass().getName() + ".saveRedisListJSONRamda End!");
-
-        return res;
-    }
-
-    @Override
-    public int saveRedisHash(String redisKey, RedisDTO pDTO) throws Exception {
-
-        log.info(this.getClass().getName() + ".saveRedisHash Start!");
+        log.info(this.getClass().getName() + ".saveHash Start!");
 
         int res = 0;
 
@@ -307,16 +274,16 @@ public class MyRedisMapper implements IMyRedisMapper {
 
         res = 1;
 
-        log.info(this.getClass().getName() + ".saveRedisHash End!");
+        log.info(this.getClass().getName() + ".saveHash End!");
 
         return res;
     }
 
     @Override
-    public RedisDTO getRedisHash(String redisKey) throws Exception {
+    public RedisDTO getHash(String redisKey) throws Exception {
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
-        log.info(this.getClass().getName() + ".getRedisHash Start!");
+        log.info(this.getClass().getName() + ".getHash Start!");
 
         // 결과값 전달할 객체
         RedisDTO rDTO = new RedisDTO();
@@ -342,15 +309,15 @@ public class MyRedisMapper implements IMyRedisMapper {
 
         }
 
-        log.info(this.getClass().getName() + ".getRedisHash End!");
+        log.info(this.getClass().getName() + ".getHash End!");
 
         return rDTO;
     }
 
     @Override
-    public int saveRedisSetJSONRamda(String redisKey, Set<RedisDTO> pSet) throws Exception {
+    public int saveSetJSON(String redisKey, Set<RedisDTO> pSet) throws Exception {
 
-        log.info(this.getClass().getName() + ".saveRedisSetJSONRamda Start!");
+        log.info(this.getClass().getName() + ".saveSetJSON Start!");
 
         int res = 0;
 
@@ -368,15 +335,15 @@ public class MyRedisMapper implements IMyRedisMapper {
 
         res = 1;
 
-        log.info(this.getClass().getName() + ".saveRedisSetJSONRamda End!");
+        log.info(this.getClass().getName() + ".saveSetJSON End!");
 
         return res;
     }
 
     @Override
-    public Set<RedisDTO> getRedisSetJSONRamda(String redisKey) throws Exception {
+    public Set<RedisDTO> getSetJSON(String redisKey) throws Exception {
 
-        log.info(this.getClass().getName() + ".getRedisSetJSONRamda Start!");
+        log.info(this.getClass().getName() + ".getSetJSON Start!");
 
         // 결과값 전달할 객체
         Set<RedisDTO> rSet = null;
@@ -392,15 +359,15 @@ public class MyRedisMapper implements IMyRedisMapper {
 
         }
 
-        log.info(this.getClass().getName() + ".getRedisSetJSONRamda End!");
+        log.info(this.getClass().getName() + ".getSetJSON End!");
 
         return rSet;
     }
 
     @Override
-    public int saveRedisZSetJSON(String redisKey, List<RedisDTO> pList) throws Exception {
+    public int saveZSetJSON(String redisKey, Set<RedisDTO> pSet) throws Exception {
 
-        log.info(this.getClass().getName() + ".saveRedisZSetJSON Start!");
+        log.info(this.getClass().getName() + ".saveZSetJSON Start!");
 
         int res = 0;
 
@@ -412,7 +379,7 @@ public class MyRedisMapper implements IMyRedisMapper {
 
         int idx = 0;
 
-        for (RedisDTO dto : pList) {
+        for (RedisDTO dto : pSet) {
             redisDB.opsForZSet().add(redisKey, dto, ++idx);
 
         }
@@ -422,15 +389,15 @@ public class MyRedisMapper implements IMyRedisMapper {
 
         res = 1;
 
-        log.info(this.getClass().getName() + ".saveRedisZSetJSON End!");
+        log.info(this.getClass().getName() + ".saveZSetJSON End!");
 
         return res;
     }
 
     @Override
-    public Set<RedisDTO> getRedisZSetJSON(String redisKey) throws Exception {
+    public Set<RedisDTO> getZSetJSON(String redisKey) throws Exception {
 
-        log.info(this.getClass().getName() + ".getRedisZSetJSON Start!");
+        log.info(this.getClass().getName() + ".getZSetJSON Start!");
 
         // 결과값 전달할 객체
         Set<RedisDTO> rSet = null;
@@ -450,52 +417,9 @@ public class MyRedisMapper implements IMyRedisMapper {
 
         }
 
-        log.info(this.getClass().getName() + ".getRedisZSetJSON End!");
+        log.info(this.getClass().getName() + ".getZSetJSON End!");
 
         return rSet;
     }
 
-    @Override
-    public boolean deleteDataJSON(String redisKey) throws Exception {
-
-        log.info(this.getClass().getName() + ".deleteDataJSON Start!");
-
-        // 저장되었던 데이터 타입 정의
-        redisDB.setKeySerializer(new StringRedisSerializer()); // String 타입
-        redisDB.setValueSerializer(new Jackson2JsonRedisSerializer<>(RedisDTO.class));
-
-        boolean res = false;
-
-        if (redisDB.hasKey(redisKey)) {
-            redisDB.delete(redisKey);
-
-            res = true;
-        }
-
-        log.info(this.getClass().getName() + ".deleteDataJSON End!");
-
-        return res;
-    }
-
-    @Override
-    public boolean deleteDataString(String redisKey) throws Exception {
-
-        log.info(this.getClass().getName() + ".deleteDataString Start!");
-
-        // 저장되었던 데이터 타입 정의
-        redisDB.setKeySerializer(new StringRedisSerializer());
-        redisDB.setValueSerializer(new StringRedisSerializer());
-
-        boolean res = false;
-
-        if (redisDB.hasKey(redisKey)) {
-            redisDB.delete(redisKey);
-
-            res = true;
-        }
-
-        log.info(this.getClass().getName() + ".deleteDataString End!");
-
-        return res;
-    }
 }

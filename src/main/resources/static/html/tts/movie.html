@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>CGV 영화정보가져오기</title>
-    <script src="/js/annyang.js"></script>
-    <script src="/js/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="/css/table.css"/>
+    <script type="text/javascript" src="/js/annyang"></script>
+    <script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
     <script>
         //annyang 라이브러리 실행
         annyang.start({
@@ -56,13 +57,26 @@
     </script>
 </head>
 <body>
-<h1>내가 방금 말한 음성명령</h1>
-<hr/>
-<div id="view_msg"></div>
-<br/>
-<h1>영화 순위 결과</h1>
-<hr/>
-<div id="cgv_rank_list"></div>
+<div class="divTable minimalistBlack">
+    <div class="divTableHeading">
+        <div class="divTableRow">
+            <div class="divTableHead">내가 방금 말한 음성명령</div>
+        </div>
+    </div>
+    <div class="divTableBody" id="view_msg">
+    </div>
+</div>
+<br/><br/>
+
+<div class="divTable minimalistBlack">
+    <div class="divTableHeading">
+        <div class="divTableRow">
+            <div class="divTableHead">영화 순위 결과</div>
+        </div>
+    </div>
+    <div class="divTableBody" id="cgv_rank_list">
+    </div>
+</div>
 
 <!-- 음성 인식 데이터를 전송하기 위한 폼 -->
 <form name="form" method="post">
