@@ -5,7 +5,6 @@ import kopo.poly.service.IMyRedisService;
 import kopo.poly.util.CmmUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -127,7 +126,7 @@ public class RedisController {
     /**
      * List타입에 JSON 형태로 저장하기(동기화)
      */
-    @GetMapping(value = "saveListJSON")
+    @PostMapping(value = "saveListJSON")
     public List<RedisDTO> saveListJSON(HttpServletRequest request) throws Exception {
 
         log.info(this.getClass().getName() + "saveListJSON. Start!");
@@ -167,7 +166,7 @@ public class RedisController {
     /**
      * Hash 타입에 문자열 형태로 저장하기
      */
-    @GetMapping(value = "saveHash")
+    @PostMapping(value = "saveHash")
     public RedisDTO saveHash(HttpServletRequest request) throws Exception {
 
         log.info(this.getClass().getName() + ".saveHash Start!");
@@ -205,7 +204,7 @@ public class RedisController {
     /**
      * Set타입에 JSON 형태로 람다식을 이용하여 저장하기
      */
-    @GetMapping(value = "saveSetJSON")
+    @PostMapping(value = "saveSetJSON")
     public Set<RedisDTO> saveSetJSON(HttpServletRequest request) throws Exception {
 
         log.info(this.getClass().getName() + ".saveSetJSON Start!");
@@ -245,7 +244,7 @@ public class RedisController {
     /**
      * ZSet타입에 JSON 형태로 저장하기
      */
-    @GetMapping(value = "saveZSetJSON")
+    @PostMapping(value = "saveZSetJSON")
     public Set<RedisDTO> saveRedisZSetJSON(HttpServletRequest request) throws Exception {
 
         log.info(this.getClass().getName() + ".saveZSetJSON Start!");
@@ -278,7 +277,6 @@ public class RedisController {
         }
 
         log.info(this.getClass().getName() + ".saveZSetJSON End!");
-
 
         return rSet;
     }

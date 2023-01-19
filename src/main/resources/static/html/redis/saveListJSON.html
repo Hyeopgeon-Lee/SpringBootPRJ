@@ -12,21 +12,18 @@
 
             // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
             $("#btnAdd").on("click", function () {
-                $("#userData").append("<div className=\"divTableRow\">");
-                $("#userData").append("<div className=\"divTableCell\">이름</div>");
-                $("#userData").append("<div className=\"divTableCell\"><input type=\"text\" name=\"name\"></div>");
-                $("#userData").append("<div className=\"divTableCell\">이메일</div>");
-                $("#userData").append("<div className=\"divTableCell\"><input type=\"text\" name=\"email\"></div>");
-                $("#userData").append("<div className=\"divTableCell\">주소</div>");
-                $("#userData").append("<div className=\"divTableCell\"><input type=\"text\" name=\"addr\"></div>");
-                $("#userData").append("<div className=\"divTableCell\">");
-                $("#userData").append("<input type=\"button\" id=\"btnAdd\" value=\"Add\">");
+                $("#userData").append("<input type=\"text\" name=\"name\" placeholder=\"이름\"> ");
+                $("#userData").append("<input type=\"text\" name=\"email\" placeholder=\"이메일\"> ");
+                $("#userData").append("<input type=\"text\" name=\"addr\" placeholder=\"주소\"> ");
                 $("#userData").append("<input type=\"button\" class=\"btnRemove\" value=\"Remove\">");
-                $("#userData").append("</div>");
-                $("#userData").append("</div>");
+                $("#userData").append("<br/>");
 
                 $(".btnRemove").on("click", function () {
-                    $(this).preload().remove(); // remove the button
+                    $(this).prev().remove(); // remove the textbox 이름
+                    $(this).prev().remove(); // remove the textbox 이메일
+                    $(this).prev().remove(); // remove the textbox 주소
+                    $(this).next().remove(); // remove the <br>
+                    $(this).remove(); // remove the button
                 });
 
             })
@@ -36,17 +33,21 @@
 
                 // Ajax 호출해서 멜론차트 조회하기
                 $.ajax({
-                        url: "/redis/saveList",
+                        url: "/redis/saveListJSON",
                         type: "post", // 전송방식은 Post
                         data: $("#f").serialize(), // form 태그 내 input 등 객체를 자동으로 전송할 형태로 변경하기
                         dataType: "JSON", // 전송 결과는 JSON으로 받기
                         success: function (json) { // /melon/getSongList 호출이 성공했다면..
 
-                            let texts = json.texts;
+                            // 기존 데이터 삭제하기
+                            $("#redisData").empty();
 
-                            for (let i = 0; i < texts.length; i++) {
+                            console.log("json.length : "+ json.length)
+                            for (let i = 0; i < json.length; i++) {
                                 $("#redisData").append("<div class=\"divTableRow\">");
-                                $("#redisData").append("<div class=\"divTableCell\">" + texts[i] + "</div>");
+                                $("#redisData").append("<div class=\"divTableCell\">" + json[i].name + "</div>");
+                                $("#redisData").append("<div class=\"divTableCell\">" + json[i].email + "</div>");
+                                $("#redisData").append("<div class=\"divTableCell\">" + json[i].addr + "</div>");
                                 $("#redisData").append("</div>");
                             }
 
@@ -64,18 +65,17 @@
 <br/>
 <form name="f" id="f">
     <div class="divTable minimalistBlack">
-        <div class="divTableBody" id="userData">
+        <div class="divTableBody">
             <div class="divTableRow">
-                <div class="divTableCell">이름</div>
-                <div class="divTableCell"><input type="text" name="name"></div>
-                <div class="divTableCell">이메일</div>
-                <div class="divTableCell"><input type="text" name="email"></div>
-                <div class="divTableCell">주소</div>
-                <div class="divTableCell"><input type="text" name="addr"></div>
-                <div class="divTableCell"><input type="button" id="btnAdd" value="Add"></div>
+                <div class="divTableCell">입력정보</div>
+                <div class="divTableCell" id="userData">
+                    <input type="text" name="name" placeholder="이름">
+                    <input type="text" name="email" placeholder="이메일">
+                    <input type="text" name="addr" placeholder="주소">
+                    <input type="button" id="btnAdd" value="Add"><br/>
+                </div>
             </div>
         </div>
-    </div>
     </div>
     <div>
         <button id="btnSend" type="button">저장하기</button>
@@ -85,7 +85,9 @@
 <div class="divTable minimalistBlack">
     <div class="divTableHeading">
         <div class="divTableRow">
-            <div class="divTableHead">저장된 문자열</div>
+            <div class="divTableHead">이름</div>
+            <div class="divTableHead">이메일</div>
+            <div class="divTableHead">주소</div>
         </div>
     </div>
     <div class="divTableBody" id="redisData">
