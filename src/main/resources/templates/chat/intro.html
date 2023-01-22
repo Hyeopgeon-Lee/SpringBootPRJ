@@ -3,50 +3,16 @@
 <head>
     <meta charset=" UTF-8">
     <title>채팅방입장</title>
-    <script src="/js/annyang.js"></script>
-    <script src="/js/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="/css/table.css"/>
+    <script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="/js/annyang.js"></script>
     <script>
-        // html의 모든 객체(태그)들이 로딩이 완료된 경우 실행함
-        $(window).on("load", function () {
 
-            //화면 로딩이 완료되면 첫번째로 실행함
-            getRoomList();
+        // HTML로딩이 완료되고, 실행됨
+        $(document).ready(function () {
+            getAllMsg(); //채팅방 전체 대화 가져오기
 
-            //2번쨰부터 채팅방 전체리스트를 5초마다 로딩함
-            setInterval("getRoomList()", 5000);
-
-        });
-
-        //전체 채팅방 리스트 가져오기(채팅 내용도 같이 가져옴)
-        function getRoomList() {
-
-            //Ajax 호출
-            $.ajax({
-                url: "/chat/roomList", // 채팅방 정보 가져올 URL
-                type: "post", // 전송방식
-                dataType: "JSON", // 전달받을 데이터 타입
-                contentType: "application/json; charset=UTF-8",
-                success: function (json) {
-
-                    let roomList = "";
-
-                    for (let i = 0; i < json.length; i++) {
-                        roomList += (json[i] + "<br/>");
-
-                    }
-
-                    $("#room_list").html(roomList);
-
-                    /*
-                    Ajax는 비동기 처리 기술로 동시에 여러개의 Ajax가 실행되면, 충돌나서 에러 발생함
-                    보통 자바스크립트에서 제공하는 Promise를 통해 할수 있지만,
-                    간단한 화면은 Ajax의 실행 성공 함수에 함수 추가하는 것이 좋음
-                     */
-                    getAllMsg(); //전체 대화 가져오기
-                }
-            })
-
-        }
+        })
 
         //채팅방 전체 대화 가져오기
         function getAllMsg() {
@@ -56,31 +22,17 @@
                 url: "/chat/getMsg",
                 type: "post",
                 dataType: "JSON",
-                data: $("form").serialize(),
+                data: $("#f").serialize(), // form 태그 내 input 등 객체를 자동으로 전송할 형태로 변경하기
                 success: function (json) {
-                    $("#view_json").html("getAllMsg : " + json);
+                    $("#total_msg").empty(); // 기존 데이터 삭제하기
 
-                    //메시지 출력하기
-                    doOutputMsg(json);
+                    for (let i = 0; i < json.length; i++) {
+                        $("#total_msg").append(json[i].msg + " | " + json[i].userNm + " | "
+                            + json[i].dateTime + "<br/>");
+
+                    }
                 }
             })
-        }
-
-        // 대화 메시지 전체 출력하기
-        function doOutputMsg(json) {
-
-            // 메시지 대화가 존재하면 출력
-            if (json != null) {
-
-                let totalMsg = "";
-
-                for (let i = 0; i < json.length; i++) {
-                    totalMsg += (json[i].msg + " | " + json[i].userNm + " | " + json[i].dateTime + "<br/>");
-                }
-
-                // 채팅방마다 한줄씩 추가
-                $("#total_msg").html(totalMsg);
-            }
         }
 
         /*
@@ -111,23 +63,10 @@
                 }
             }
 
-            $("#view_msg").html(final_transcript);
-            $("#send_msg").val(final_transcript);
+            $("#view_msg").html(final_transcript); // 음성메시지 보여주기
+            $("#send_msg").val(final_transcript); // 음성메시지를 Controller에 전달하기 위해 input hidden 값 저장
 
-            //Ajax 호출
-            $.ajax({
-                url: "/chat/msg",
-                type: "post",
-                dataType: "JSON",
-                data: $("form").serialize(),
-                success: function (json) {
-
-                    $("#view_json").html("msg : " + json);
-
-                    //메시지 출력하기
-                    doOutputMsg(json);
-                }
-            })
+            getAllMsg(); //채팅방 전체 대화 가져오기
 
         };
 
@@ -139,20 +78,38 @@
     </script>
 </head>
 <body>
-<h1 th:text="${session.SS_ROOM_NAME}+ ' 채팅 내용'"></h1>
+<h1 th:text="${session.SS_ROOM_NAME}+ ' 입장을 환영합니다."></h1>
 <hr/>
-<div id="total_msg"></div>
+<br/><br/>
+<div class="divTable minimalistBlack">
+    <div class="divTableHeading">
+        <div class="divTableRow">
+            <div class="divTableHead">음성 채팅 메시지들</div>
+        </div>
+    </div>
+    <div class="divTableBody">
+        <div class="divTableRow">
+            <div class="divTableCell" id="total_msg"></div>
+        </div>
+    </div>
+</div>
+<br/><br/>
 
-<h1>내가 방금 말한 전송 메시지</h1>
-<hr/>
-<div id="view_msg"></div>
-<br/>
-<h1>채팅방 전체 리스트</h1>
-<hr/>
-<div id="room_list"></div>
+<div class="divTable minimalistBlack">
+    <div class="divTableHeading">
+        <div class="divTableRow">
+            <div class="divTableHead">내가 방금 말한 전송 메시지</div>
+        </div>
+    </div>
+    <div class="divTableBody">
+        <div class="divTableRow">
+            <div class="divTableCell" id="view_msg"></div>
+        </div>
+    </div>
+</div>
 
 <!-- 음성 인식 데이터를 전송하기 위한 폼 -->
-<form name="form" method="post">
+<form name="f" id="f">
     <input type="hidden" name="send_msg" id="send_msg"/>
 </form>
 
