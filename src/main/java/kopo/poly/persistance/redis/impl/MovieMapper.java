@@ -2,6 +2,7 @@ package kopo.poly.persistance.redis.impl;
 
 import kopo.poly.dto.MovieDTO;
 import kopo.poly.persistance.redis.IMovieMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
@@ -12,15 +13,11 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
-@Component("MovieMapper")
+@RequiredArgsConstructor
+@Component
 public class MovieMapper implements IMovieMapper {
 
     public final RedisTemplate<String, Object> redisDB;
-
-    public MovieMapper(RedisTemplate<String, Object> redisDB) {
-        this.redisDB = redisDB;
-    }
-
 
     @Override
     public int insertMovie(MovieDTO pDTO, String redisKey) throws Exception {

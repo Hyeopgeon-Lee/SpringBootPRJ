@@ -11,7 +11,7 @@ import java.util.*;
 
 @Slf4j
 @RequiredArgsConstructor
-@Service("MyRedisService")
+@Service
 public class MyRedisService implements IMyRedisService {
 
     private final IMyRedisMapper myRedisMapper;

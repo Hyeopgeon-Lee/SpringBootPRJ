@@ -3,6 +3,7 @@ package kopo.poly.persistance.redis.impl;
 import kopo.poly.dto.ChatDTO;
 import kopo.poly.persistance.redis.IChatMapper;
 import kopo.poly.util.CmmUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
@@ -14,14 +15,11 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
-@Component("ChatMapper")
+@RequiredArgsConstructor
+@Component
 public class ChatMapper implements IChatMapper {
 
     public final RedisTemplate<String, Object> redisDB;
-
-    public ChatMapper(RedisTemplate<String, Object> redisDB) {
-        this.redisDB = redisDB;
-    }
 
     @Override
     public Set<String> getRoomList() throws Exception {

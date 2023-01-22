@@ -20,13 +20,12 @@ import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
-@Service("MelonService")
+@Service
 public class MelonService implements IMelonService {
 
     private final IMelonMapper melonMapper; // MongoDB에 저장할 Mapper
 
-    @Resource(name = "MelonCacheMapper")
-    private IMelonCacheMapper melonCacheMapper; // redisDB에 저장할 Mapper
+    private final IMelonCacheMapper melonCacheMapper; // redisDB에 저장할 Mapper
 
     /**
      * 멜론 차트 수집 함수(웹 크롤링)

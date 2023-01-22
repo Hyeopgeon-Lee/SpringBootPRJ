@@ -3,8 +3,10 @@ package kopo.poly.controller;
 import kopo.poly.dto.MovieDTO;
 import kopo.poly.service.IMovieService;
 import kopo.poly.util.CmmUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,16 +16,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
+@RequestMapping(value = "/rank")
+@RequiredArgsConstructor
 @RestController
 public class MovieController {
 
-    @Resource(name = "MovieService")
-    private IMovieService movieService;
+    private final IMovieService movieService;
 
     /**
      * CGV 영화 순위 가져오기
      */
-    @PostMapping(value = "rank/getMovie")
+    @PostMapping(value = "getMovie")
     @ResponseBody
     public List<MovieDTO> getMovie(HttpServletRequest request) throws Exception {
 

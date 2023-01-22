@@ -4,6 +4,7 @@ import kopo.poly.dto.ChatDTO;
 import kopo.poly.persistance.redis.IChatMapper;
 import kopo.poly.service.IChatService;
 import kopo.poly.util.CmmUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +13,11 @@ import java.util.List;
 import java.util.Set;
 
 @Slf4j
-@Service("ChatService")
+@RequiredArgsConstructor
+@Service
 public class ChatService implements IChatService {
 
-    @Resource(name = "ChatMapper")
-    private IChatMapper chatMapper;
+    private final IChatMapper chatMapper;
 
     @Override
     public Set<String> getRoomList() throws Exception {

@@ -3,6 +3,7 @@ package kopo.poly.persistance.redis.impl;
 import kopo.poly.dto.MelonDTO;
 import kopo.poly.persistance.redis.IMelonCacheMapper;
 import kopo.poly.util.DateUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
@@ -13,14 +14,11 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
-@Component("MelonCacheMapper")
+@RequiredArgsConstructor
+@Component
 public class MelonCacheMapper implements IMelonCacheMapper {
 
     public final RedisTemplate<String, Object> redisDB;
-
-    public MelonCacheMapper(RedisTemplate<String, Object> redisDB) {
-        this.redisDB = redisDB;
-    }
 
     @Override
     public int insertSong(List<MelonDTO> pList, String redisKey) throws Exception {

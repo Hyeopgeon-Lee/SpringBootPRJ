@@ -5,6 +5,7 @@ import kopo.poly.persistance.redis.IMovieMapper;
 import kopo.poly.service.IMovieService;
 import kopo.poly.util.CmmUtil;
 import kopo.poly.util.DateUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -17,11 +18,11 @@ import java.util.Iterator;
 import java.util.List;
 
 @Slf4j
-@Service("MovieService")
+@RequiredArgsConstructor
+@Service
 public class MovieService implements IMovieService {
 
-    @Resource(name = "MovieMapper")
-    private IMovieMapper movieMapper; // RedisDB 저장할 Mapper
+    private final IMovieMapper movieMapper; // RedisDB 저장할 Mapper
 
     private int collectMovie(String redisKey) throws Exception {
 
