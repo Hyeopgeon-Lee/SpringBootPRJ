@@ -9,7 +9,7 @@ Spring Boot Frameworks, Spring Data MongoDB, Spring Data Redis 연동
 1. Spring Data MongoDB를 통한 데이터 수집 및 처리 프로그래밍
 2. Spring Data RedisDB를 통한 데이터 수집 및 처리 프로그래밍
 3. 멜론 차트100 데이터 수집하여 NoSQL에 저장하기
-4. CGV 영화 순위 데이터를 수집하여 NoSQL에 저장하기
+4. 음성 명령으로 CGV 영화 순위 데이터를 수집하여 NoSQL에 저장하기
 5. 음성 채팅 구현하기
 
 * 주요 적용 프레임워크 : Spring Boot Frameworks, Spring Data MongoDB, Spring Data RedisDB
