@@ -28,8 +28,7 @@
             // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
             $("#btnSend").on("click", function () {
 
-                // Ajax 호출해서 멜론차트 조회하기
-                $.ajax({
+                $.ajax({ // Ajax 호출해서 RedisDB 저장 및 조회하기
                         url: "/redis/saveList",
                         type: "post", // 전송방식은 Post
                         data: $("#f").serialize(), // form 태그 내 input 등 객체를 자동으로 전송할 형태로 변경하기
@@ -41,9 +40,9 @@
                             for (let i = 0; i < texts.length; i++) {
                                 $("#redisData").append("<div class=\"divTableRow\">");
 
-                            $("#redisData").append("<div class=\"divTableCell\">" + texts[i] + "</div>");
-                            $("#redisData").append("</div>");
-                        }
+                                $("#redisData").append("<div class=\"divTableCell\">" + texts[i] + "</div>");
+                                $("#redisData").append("</div>");
+                            }
                         }
                     }
                 )
@@ -78,8 +77,7 @@
             <div class="divTableHead">저장된 문자열</div>
         </div>
     </div>
-    <div class="divTableBody" id="redisData">
-    </div>
+    <div class="divTableBody" id="redisData"></div>
 </div>
 </body>
 </html>

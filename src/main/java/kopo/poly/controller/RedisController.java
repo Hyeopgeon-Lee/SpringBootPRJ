@@ -131,7 +131,6 @@ public class RedisController {
 
         log.info(this.getClass().getName() + "saveListJSON. Start!");
 
-        // 가수 그룹 이름은 여러명 입력될 수 있기에 배열로 받음
         // 배열로 받는 방법 : <input type="text" name="name" />의 name 속성 값이 동일하면 배열로 받아짐
         String[] name = request.getParameterValues("name");
         String[] email = request.getParameterValues("email");
@@ -209,7 +208,6 @@ public class RedisController {
 
         log.info(this.getClass().getName() + ".saveSetJSON Start!");
 
-        // 가수 그룹 이름은 여러명 입력될 수 있기에 배열로 받음
         // 배열로 받는 방법 : <input type="text" name="name" />의 name 속성 값이 동일하면 배열로 받아짐
         String[] name = request.getParameterValues("name");
         String[] email = request.getParameterValues("email");
@@ -249,7 +247,6 @@ public class RedisController {
 
         log.info(this.getClass().getName() + ".saveZSetJSON Start!");
 
-        // 가수 그룹 이름은 여러명 입력될 수 있기에 배열로 받음
         // 배열로 받는 방법 : <input type="text" name="name" />의 name 속성 값이 동일하면 배열로 받아짐
         String[] name = request.getParameterValues("name");
         String[] email = request.getParameterValues("email");

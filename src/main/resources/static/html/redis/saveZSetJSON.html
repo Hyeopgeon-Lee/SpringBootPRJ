@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Redis List 구조에 JSON 형태로 저장</title>
+    <title>Redis ZSet 구조에 JSON 형태로 저장</title>
     <link rel="stylesheet" href="/css/table.css"/>
     <script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
     <script type="text/javascript">
@@ -32,7 +32,7 @@
             $("#btnSend").on("click", function () {
 
                 $.ajax({ // Ajax 호출해서 RedisDB 저장 및 조회하기
-                        url: "/redis/saveListJSON",
+                        url: "/redis/saveZSetJSON",
                         type: "post", // 전송방식은 Post
                         data: $("#f").serialize(), // form 태그 내 input 등 객체를 자동으로 전송할 형태로 변경하기
                         dataType: "JSON", // 전송 결과는 JSON으로 받기
@@ -59,7 +59,7 @@
     </script>
 </head>
 <body>
-<h2>Redis List 구조에 JSON 형태로 저장</h2>
+<h2>Redis ZSet 구조에 JSON 형태로 저장</h2>
 <hr/>
 <br/>
 <form name="f" id="f">
