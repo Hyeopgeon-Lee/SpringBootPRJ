@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.LinkedHashSet;
@@ -38,7 +37,7 @@ public class ChatController {
 
         log.info(this.getClass().getName() + ".index End!");
 
-        return "/chat/index";
+        return "chat/index";
     }
 
     /**
@@ -77,7 +76,7 @@ public class ChatController {
 
         log.info(this.getClass().getName() + ".intro End!");
 
-        return "/chat/intro";
+        return "chat/intro";
     }
 
     /**
