@@ -247,7 +247,8 @@ public class RedisController {
 
         log.info(this.getClass().getName() + ".saveZSetJSON Start!");
 
-        // 배열로 받는 방법 : <input type="text" name="name" />의 name 속성 값이 동일하면 배열로 받아짐
+        // 배열로 받는 방법 : <input type="text" name="order" />의 name 속성 값이 동일하면 배열로 받아짐
+        String[] order = request.getParameterValues("order");
         String[] name = request.getParameterValues("name");
         String[] email = request.getParameterValues("email");
         String[] addr = request.getParameterValues("addr");
@@ -256,6 +257,7 @@ public class RedisController {
 
         for (int i = 0; i < name.length; i++) {
             RedisDTO pDTO = new RedisDTO();
+            pDTO.setOrder(Float.parseFloat(order[i]));
             pDTO.setName(name[i]);
             pDTO.setEmail(email[i]);
             pDTO.setAddr(addr[i]);

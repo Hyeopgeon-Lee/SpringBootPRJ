@@ -12,6 +12,7 @@
 
             // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
             $("#btnAdd").on("click", function () {
+                $("#userData").append("<input type=\"text\" name=\"order\" placeholder=\"저장순서(숫자만 입력가능)\"> ");
                 $("#userData").append("<input type=\"text\" name=\"name\" placeholder=\"이름\"> ");
                 $("#userData").append("<input type=\"text\" name=\"email\" placeholder=\"이메일\"> ");
                 $("#userData").append("<input type=\"text\" name=\"addr\" placeholder=\"주소\"> ");
@@ -19,6 +20,7 @@
                 $("#userData").append("<br/>");
 
                 $(".btnRemove").on("click", function () {
+                    $(this).prev().remove(); // remove the textbox 저장순서
                     $(this).prev().remove(); // remove the textbox 이름
                     $(this).prev().remove(); // remove the textbox 이메일
                     $(this).prev().remove(); // remove the textbox 주소
@@ -44,6 +46,7 @@
                             console.log("json.length : " + json.length)
                             for (let i = 0; i < json.length; i++) {
                                 $("#redisData").append("<div class=\"divTableRow\">");
+                                $("#redisData").append("<div class=\"divTableCell\">" + json[i].order + "</div>");
                                 $("#redisData").append("<div class=\"divTableCell\">" + json[i].name + "</div>");
                                 $("#redisData").append("<div class=\"divTableCell\">" + json[i].email + "</div>");
                                 $("#redisData").append("<div class=\"divTableCell\">" + json[i].addr + "</div>");
@@ -68,6 +71,7 @@
             <div class="divTableRow">
                 <div class="divTableCell">입력정보</div>
                 <div class="divTableCell" id="userData">
+                    <input type="text" name="order" placeholder="저장순서(숫자만 입력가능)">
                     <input type="text" name="name" placeholder="이름">
                     <input type="text" name="email" placeholder="이메일">
                     <input type="text" name="addr" placeholder="주소">
@@ -84,6 +88,7 @@
 <div class="divTable minimalistBlack">
     <div class="divTableHeading">
         <div class="divTableRow">
+            <div class="divTableHead">저장순서</div>
             <div class="divTableHead">이름</div>
             <div class="divTableHead">이메일</div>
             <div class="divTableHead">주소</div>

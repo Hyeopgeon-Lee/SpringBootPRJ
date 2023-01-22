@@ -13,6 +13,7 @@ public class RedisDTO {
     private String email; // 이메일
     private String addr; // 주소
     private String text; // 테스트 문구
+    private float order; // 저장순서
 
     private List<String> texts; // 여러개 문자열 저장
 }

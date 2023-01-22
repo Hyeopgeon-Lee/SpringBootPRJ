@@ -377,10 +377,8 @@ public class MyRedisMapper implements IMyRedisMapper {
         // RedisDTO에 저장된 데이터를 자동으로 JSON으로 변경하기
         redisDB.setValueSerializer(new Jackson2JsonRedisSerializer<>(RedisDTO.class));
 
-        int idx = 0;
-
         for (RedisDTO dto : pSet) {
-            redisDB.opsForZSet().add(redisKey, dto, ++idx);
+            redisDB.opsForZSet().add(redisKey, dto, dto.getOrder()); // 저장순서는 order 값에 따름
 
         }
 
