@@ -213,7 +213,9 @@ public class RedisController {
         String[] email = request.getParameterValues("email");
         String[] addr = request.getParameterValues("addr");
 
-        Set<RedisDTO> pSet = new HashSet<>();
+        // 중복된 데이터를 입력받을 수 있으며, Redis의 Set 구조가 중복제거하는지 테스트하기 위해
+        // 중복된 데이터가 저장가능한 List 구조로 데이터를 저장함
+        List<RedisDTO> pList = new ArrayList<>();
 
         for (int i = 0; i < name.length; i++) {
             RedisDTO pDTO = new RedisDTO();
@@ -221,13 +223,13 @@ public class RedisController {
             pDTO.setEmail(email[i]);
             pDTO.setAddr(addr[i]);
 
-            pSet.add(pDTO); // 입력받는 값을 저장하기
+            pList.add(pDTO); // 입력받는 값을 저장하기
 
             pDTO = null;
 
         }
 
-        Set<RedisDTO> rSet = myRedisService.saveSetJSON(pSet);
+        Set<RedisDTO> rSet = myRedisService.saveSetJSON(pList);
 
         if (rSet == null) {
             rSet = new HashSet<>();
@@ -253,7 +255,9 @@ public class RedisController {
         String[] email = request.getParameterValues("email");
         String[] addr = request.getParameterValues("addr");
 
-        Set<RedisDTO> pSet = new HashSet<>();
+        // 중복된 데이터를 입력받을 수 있으며, Redis의 Set 구조가 중복제거하는지 테스트하기 위해
+        // 중복된 데이터가 저장가능한 List 구조로 데이터를 저장함
+        List<RedisDTO> pList = new ArrayList<>();
 
         for (int i = 0; i < name.length; i++) {
             RedisDTO pDTO = new RedisDTO();
@@ -262,13 +266,13 @@ public class RedisController {
             pDTO.setEmail(email[i]);
             pDTO.setAddr(addr[i]);
 
-            pSet.add(pDTO); // 입력받는 값을 저장하기
+            pList.add(pDTO); // 입력받는 값을 저장하기
 
             pDTO = null;
 
         }
 
-        Set<RedisDTO> rSet = myRedisService.saveZSetJSON(pSet);
+        Set<RedisDTO> rSet = myRedisService.saveZSetJSON(pList);
 
         if (rSet == null) {
             rSet = new HashSet<>();

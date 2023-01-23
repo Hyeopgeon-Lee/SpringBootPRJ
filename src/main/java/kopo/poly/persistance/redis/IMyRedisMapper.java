@@ -99,7 +99,7 @@ public interface IMyRedisMapper {
      * @param pSet     저장할 정보들
      * @return 저장 성공 여부
      */
-    int saveSetJSON(String redisKey, Set<RedisDTO> pSet) throws Exception;
+    int saveSetJSON(String redisKey, List<RedisDTO> pList) throws Exception;
 
     /**
      * Set타입에 JSON 형태로 람다식을 이용하여 저장된 값 가져오기
@@ -116,7 +116,7 @@ public interface IMyRedisMapper {
      * @param pList    저장할 정보들
      * @return 저장 성공 여부
      */
-    int saveZSetJSON(String redisKey, Set<RedisDTO> pList) throws Exception;
+    int saveZSetJSON(String redisKey, List<RedisDTO> pList) throws Exception;
 
     /**
      * ZSet타입에 JSON 형태로 저장된 값 가져오기

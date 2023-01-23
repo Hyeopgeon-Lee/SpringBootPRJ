@@ -315,7 +315,7 @@ public class MyRedisMapper implements IMyRedisMapper {
     }
 
     @Override
-    public int saveSetJSON(String redisKey, Set<RedisDTO> pSet) throws Exception {
+    public int saveSetJSON(String redisKey, List<RedisDTO> pList) throws Exception {
 
         log.info(this.getClass().getName() + ".saveSetJSON Start!");
 
@@ -327,8 +327,10 @@ public class MyRedisMapper implements IMyRedisMapper {
         // RedisDTO에 저장된 데이터를 자동으로 JSON으로 변경하기
         redisDB.setValueSerializer(new Jackson2JsonRedisSerializer<>(RedisDTO.class));
 
+        log.info("입력받은 데이터 수 : " + pList.size());
+
         // 데이터 저장하기
-        pSet.forEach(dto -> redisDB.opsForSet().add(redisKey, dto));
+        pList.forEach(dto -> redisDB.opsForSet().add(redisKey, dto));
 
         // 저장되는 데이터의 유효기간(TTL)은 5시간으로 정의
         redisDB.expire(redisKey, 5, TimeUnit.HOURS);
@@ -365,7 +367,7 @@ public class MyRedisMapper implements IMyRedisMapper {
     }
 
     @Override
-    public int saveZSetJSON(String redisKey, Set<RedisDTO> pSet) throws Exception {
+    public int saveZSetJSON(String redisKey, List<RedisDTO> pList) throws Exception {
 
         log.info(this.getClass().getName() + ".saveZSetJSON Start!");
 
@@ -377,7 +379,7 @@ public class MyRedisMapper implements IMyRedisMapper {
         // RedisDTO에 저장된 데이터를 자동으로 JSON으로 변경하기
         redisDB.setValueSerializer(new Jackson2JsonRedisSerializer<>(RedisDTO.class));
 
-        for (RedisDTO dto : pSet) {
+        for (RedisDTO dto : pList) {
             redisDB.opsForZSet().add(redisKey, dto, dto.getOrder()); // 저장순서는 order 값에 따름
 
         }

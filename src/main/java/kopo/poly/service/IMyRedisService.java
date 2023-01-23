@@ -36,12 +36,12 @@ public interface IMyRedisService {
     /**
      * Set타입에 JSON 형태로 저장하기
      */
-    Set<RedisDTO> saveSetJSON(Set<RedisDTO> pSet) throws Exception;
+    Set<RedisDTO> saveSetJSON(List<RedisDTO> pList) throws Exception;
 
     /**
      * ZSet타입에 JSON 형태로 저장하기
      */
-    Set<RedisDTO> saveZSetJSON(Set<RedisDTO> pSet) throws Exception;
+    Set<RedisDTO> saveZSetJSON(List<RedisDTO> pList) throws Exception;
 
 
 }

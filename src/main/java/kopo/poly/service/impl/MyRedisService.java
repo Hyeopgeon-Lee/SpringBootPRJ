@@ -150,7 +150,7 @@ public class MyRedisService implements IMyRedisService {
     }
 
     @Override
-    public Set<RedisDTO> saveSetJSON(Set<RedisDTO> pSet) throws Exception {
+    public Set<RedisDTO> saveSetJSON(List<RedisDTO> pList) throws Exception {
 
         log.info(this.getClass().getName() + ".saveSetJSON Start!");
 
@@ -160,7 +160,7 @@ public class MyRedisService implements IMyRedisService {
         // 저장 결과
         Set<RedisDTO> rSet = null;
 
-        int res = myRedisMapper.saveSetJSON(redisKey, pSet);
+        int res = myRedisMapper.saveSetJSON(redisKey, pList);
 
         if (res == 1) { // Redis 저장이 성공하면, 저장된 데이터 가져오기
             rSet = myRedisMapper.getSetJSON(redisKey);
@@ -177,7 +177,7 @@ public class MyRedisService implements IMyRedisService {
     }
 
     @Override
-    public Set<RedisDTO> saveZSetJSON(Set<RedisDTO> pSet) throws Exception {
+    public Set<RedisDTO> saveZSetJSON(List<RedisDTO> pList) throws Exception {
 
         log.info(this.getClass().getName() + ".saveZSetJSON Start!");
 
@@ -187,7 +187,7 @@ public class MyRedisService implements IMyRedisService {
         // 저장 결과
         Set<RedisDTO> rSet = null;
 
-        int res = myRedisMapper.saveZSetJSON(redisKey, pSet);
+        int res = myRedisMapper.saveZSetJSON(redisKey, pList);
 
         if (res == 1) { // Redis 저장이 성공하면, 저장된 데이터 가져오기
             rSet = myRedisMapper.getZSetJSON(redisKey);
