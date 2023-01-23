@@ -96,7 +96,7 @@ public interface IMyRedisMapper {
      * Set타입에 JSON 형태로 람다식을 이용하여 저장하기
      *
      * @param redisKey Redis저장 키
-     * @param pSet     저장할 정보들
+     * @param pList     저장할 정보들
      * @return 저장 성공 여부
      */
     int saveSetJSON(String redisKey, List<RedisDTO> pList) throws Exception;

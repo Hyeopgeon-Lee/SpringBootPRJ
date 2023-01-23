@@ -16,7 +16,6 @@ public class MyRedisService implements IMyRedisService {
 
     private final IMyRedisMapper myRedisMapper;
 
-
     @Override
     public RedisDTO saveString(RedisDTO pDTO) throws Exception {
         log.info(this.getClass().getName() + ".saveString Start!");

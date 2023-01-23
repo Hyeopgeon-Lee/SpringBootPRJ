@@ -70,11 +70,10 @@ public class MyRedisMapper implements IMyRedisMapper {
         redisDB.setKeySerializer(new StringRedisSerializer()); // String 타입
         redisDB.setValueSerializer(new StringRedisSerializer()); // String 타입
 
-        if (redisDB.hasKey(redisKey)) { // 데이터가 존재하지 않으면 저장하기
+        if (redisDB.hasKey(redisKey)) { // 데이터가 존재하면, 조회하기
+            String res = (String) redisDB.opsForValue().get(redisKey); // redisKey 통해 조회하기
 
-            String res = (String) redisDB.opsForValue().get(redisKey);
-
-            log.info("res : " + res);
+            log.info("res : " + res); // 조회 결과
 
             // RedisDB에 저장된 데이터를 DTO에 저장하기
             rDTO.setText(res);
@@ -133,8 +132,8 @@ public class MyRedisMapper implements IMyRedisMapper {
         // RedisDTO에 저장된 데이터를 자동으로 JSON으로 변경하기
         redisDB.setValueSerializer(new Jackson2JsonRedisSerializer<>(RedisDTO.class));
 
-        if (Boolean.TRUE.equals(redisDB.hasKey(redisKey))) { // 데이터가 존재하지 않으면 저장하기
-            rDTO = (RedisDTO) redisDB.opsForValue().get(redisKey);
+        if (redisDB.hasKey(redisKey)) { // 데이터가 존재하면, 조회하기
+            rDTO = (RedisDTO) redisDB.opsForValue().get(redisKey); // redisKey 통해 조회하기
 
         }
 
@@ -154,6 +153,13 @@ public class MyRedisMapper implements IMyRedisMapper {
          */
         redisDB.setKeySerializer(new StringRedisSerializer()); // String 타입
         redisDB.setValueSerializer(new StringRedisSerializer()); // String 타입
+
+        if (redisDB.hasKey(redisKey)) { // 데이터가 존재하면, 기존 데이터 삭제하기
+            redisDB.delete(redisKey); // 삭제하기
+
+            log.info("삭제 성공!");
+
+        }
 
         List<String> tests = pDTO.getTexts(); // 저장된 문자열들
 
@@ -215,6 +221,13 @@ public class MyRedisMapper implements IMyRedisMapper {
         // RedisDTO에 저장된 데이터를 자동으로 JSON으로 변경하기
         redisDB.setValueSerializer(new Jackson2JsonRedisSerializer<>(RedisDTO.class));
 
+        if (redisDB.hasKey(redisKey)) { // 데이터가 존재하면, 기존 데이터 삭제하기
+            redisDB.delete(redisKey); // 삭제하기
+
+            log.info("삭제 성공!");
+
+        }
+
         // 람다식 사용하여 데이터 저장
         pList.forEach(dto -> redisDB.opsForList().rightPush(redisKey, dto));
 
@@ -263,7 +276,15 @@ public class MyRedisMapper implements IMyRedisMapper {
          * redis 저장 및 읽기에 대한 데이터 타입 지정(String 타입으로 지정함)
          */
         redisDB.setKeySerializer(new StringRedisSerializer()); // String 타입
-        redisDB.setValueSerializer(new StringRedisSerializer()); // String 타입
+        redisDB.setHashKeySerializer(new StringRedisSerializer()); // Hash 구조의 키 타입, String 타입
+        redisDB.setHashValueSerializer(new StringRedisSerializer()); // Hash 구조의 값 타입, String 타입
+
+        if (redisDB.hasKey(redisKey)) { // 데이터가 존재하면, 기존 데이터 삭제하기
+            redisDB.delete(redisKey); // 삭제하기
+
+            log.info("삭제 성공!");
+
+        }
 
         redisDB.opsForHash().put(redisKey, "name", CmmUtil.nvl(pDTO.getName()));
         redisDB.opsForHash().put(redisKey, "email", CmmUtil.nvl(pDTO.getEmail()));
@@ -291,8 +312,9 @@ public class MyRedisMapper implements IMyRedisMapper {
         /*
          * redis 저장 및 읽기에 대한 데이터 타입 지정(String 타입으로 지정함)
          */
-        redisDB.setKeySerializer(new StringRedisSerializer());
-        redisDB.setValueSerializer(new StringRedisSerializer());
+        redisDB.setKeySerializer(new StringRedisSerializer()); // String 타입
+        redisDB.setHashKeySerializer(new StringRedisSerializer()); // Hash 구조의 키 타입, String 타입
+        redisDB.setHashValueSerializer(new StringRedisSerializer()); // Hash 구조의 값 타입, String 타입
 
         if (redisDB.hasKey(redisKey)) {
             String name = CmmUtil.nvl((String) redisDB.opsForHash().get(redisKey, "name"));
@@ -327,9 +349,16 @@ public class MyRedisMapper implements IMyRedisMapper {
         // RedisDTO에 저장된 데이터를 자동으로 JSON으로 변경하기
         redisDB.setValueSerializer(new Jackson2JsonRedisSerializer<>(RedisDTO.class));
 
+        if (redisDB.hasKey(redisKey)) { // 데이터가 존재하면, 기존 데이터 삭제하기
+            redisDB.delete(redisKey); // 삭제하기
+
+            log.info("삭제 성공!");
+
+        }
+
         log.info("입력받은 데이터 수 : " + pList.size());
 
-        // 데이터 저장하기
+        // Set 구조는 저장 순서에 상관없이 저장하기 떄문에 List 구조와 달리 방향이 존재하지 않음
         pList.forEach(dto -> redisDB.opsForSet().add(redisKey, dto));
 
         // 저장되는 데이터의 유효기간(TTL)은 5시간으로 정의
@@ -357,7 +386,7 @@ public class MyRedisMapper implements IMyRedisMapper {
         redisDB.setValueSerializer(new Jackson2JsonRedisSerializer<>(RedisDTO.class));
 
         if (redisDB.hasKey(redisKey)) {
-            rSet = (Set) redisDB.opsForSet().members(redisKey);
+            rSet = (Set) redisDB.opsForSet().members(redisKey); // RedisDB 데이터 조회하기
 
         }
 
@@ -411,9 +440,9 @@ public class MyRedisMapper implements IMyRedisMapper {
         if (redisDB.hasKey(redisKey)) {
 
             // 저장된 전체 레코드 수
-            long cnt = redisDB.opsForZSet().size(redisKey);
+//            long cnt = redisDB.opsForZSet().size(redisKey);
 
-            rSet = (Set) redisDB.opsForZSet().range(redisKey, 0, cnt);
+            rSet = (Set) redisDB.opsForZSet().range(redisKey, 0, -1);
 
         }
 
