@@ -7,10 +7,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +25,6 @@ public class MovieController {
      * CGV 영화 순위 가져오기
      */
     @PostMapping(value = "getMovie")
-    @ResponseBody
     public List<MovieDTO> getMovie(HttpServletRequest request) throws Exception {
 
         log.info(this.getClass().getName() + ".getMovie start!");
@@ -55,5 +52,4 @@ public class MovieController {
 
         return rList;
     }
-
 }
