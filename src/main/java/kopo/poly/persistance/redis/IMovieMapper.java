@@ -9,7 +9,7 @@ public interface IMovieMapper {
     /**
      * CGV 영화 정보 저장하기
      *
-     * @param pDTO 저장할 데이터
+     * @param pDTO     저장할 데이터
      * @param redisKey 저장할 키
      * @return 저장 결과
      */
@@ -31,11 +31,4 @@ public interface IMovieMapper {
      */
     List<MovieDTO> getMovieList(String redisKey) throws Exception;
 
-    /**
-     * 수집 및 조회 요청시 1시간씩 유효시간 연장하기
-     *
-     * @param redisKey 저장된 키 이름
-     * @return 노래 리스트
-     */
-    boolean setTimeOutHour(String redisKey) throws Exception;
 }

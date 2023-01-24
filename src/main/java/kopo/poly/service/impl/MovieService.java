@@ -13,7 +13,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.Iterator;
 import java.util.List;
 
@@ -53,13 +52,12 @@ public class MovieService implements IMovieService {
 
         //수집된 데이터 DB에 저장하기
         while (movie_rank.hasNext()) {
-
             MovieDTO pDTO = new MovieDTO(); //수집된 영화정보를 DTO에 저장하기 위해 메모리에 올리기
 
-            //수집시간을 기본키(pk)로 사용
+            // 수집날짜를 기본키(pk)로 사용
             pDTO.setCollect_time(DateUtil.getDateTime("yyyyMMdd"));
 
-            //영화 순위(trim 함수 추가 이유 : trim 함수는 글자의 앞뒤 공백 삭제 역할을 수행하여,
+            // 영화 순위(trim 함수 추가 이유 : trim 함수는 글자의 앞뒤 공백 삭제 역할을 수행하여,
             // 데이터 수집시, 홈페이지 개발자들을 앞뒤 공백 집어넣을 수 있어서 추가)
             String rank = CmmUtil.nvl(movie_rank.next().text()).trim();  //No.1 들어옴
             pDTO.setMovie_rank(rank.substring(3, rank.length()));
@@ -80,11 +78,9 @@ public class MovieService implements IMovieService {
             res += movieMapper.insertMovie(pDTO, redisKey);
 
         }
-
         log.info(this.getClass().getName() + ".collectMovie End!");
 
         return res;
-
     }
 
     @Override

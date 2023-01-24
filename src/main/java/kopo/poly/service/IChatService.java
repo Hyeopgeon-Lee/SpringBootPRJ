@@ -5,7 +5,6 @@ import kopo.poly.dto.ChatDTO;
 import java.util.List;
 import java.util.Set;
 
-
 public interface IChatService {
 
 	// 채팅 룸 리스트 가져오기

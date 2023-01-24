@@ -19,6 +19,17 @@ public class MovieMapper implements IMovieMapper {
 
     public final RedisTemplate<String, Object> redisDB;
 
+    /**
+     * 수집 및 조회 요청시 1시간씩 유효시간 연장하기
+     *
+     * @param redisKey 저장된 키 이름
+     * @return 유효시간 설정 성공여부
+     */
+    private boolean setTimeOutHour(String redisKey) throws Exception {
+        log.info(this.getClass().getName() + ".setTimeOutHour Start!");
+        return redisDB.expire(redisKey, 1, TimeUnit.HOURS);
+    }
+
     @Override
     public int insertMovie(MovieDTO pDTO, String redisKey) throws Exception {
         log.info(this.getClass().getName() + ".insertMovie Start!");
@@ -82,11 +93,5 @@ public class MovieMapper implements IMovieMapper {
         log.info(this.getClass().getName() + ".getMovieList End!");
 
         return rList;
-    }
-
-    @Override
-    public boolean setTimeOutHour(String redisKey) throws Exception {
-        log.info(this.getClass().getName() + ".setTimeOutHour Start!");
-        return redisDB.expire(redisKey, 1, TimeUnit.HOURS);
     }
 }
