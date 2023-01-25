@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>음성인식 기초 프로그램</title>
     <link rel="stylesheet" href="/css/table.css"/>
-    <script type="text/javascript" src="/js/annyang"></script>
+    <script type="text/javascript" src="/js/annyang.js"></script>
     <script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
     <script>
         //annyang 라이브러리 실행
@@ -32,7 +32,7 @@
             }
 
             $("#mySpeak").html(final_transcript);
-            $("#totalMySpeak").after(final_transcript + "<br/>");
+            $("#totalMySpeak").append(final_transcript + "<br/>");
 
         };
     </script>

@@ -74,9 +74,13 @@ public class MelonCacheMapper implements IMelonCacheMapper {
             rList = (List) redisDB.opsForList().range(key, 0, -1);
         }
 
+        // 저장된 데이터는 1시간동안 연장하기
+        redisDB.expire(key, 1, TimeUnit.HOURS);
+        
         log.info(this.getClass().getName() + ".getSongList End!");
 
         return rList;
     }
 }
+
 

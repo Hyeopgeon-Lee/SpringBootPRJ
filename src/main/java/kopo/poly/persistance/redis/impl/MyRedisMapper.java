@@ -408,6 +408,13 @@ public class MyRedisMapper implements IMyRedisMapper {
         // RedisDTO에 저장된 데이터를 자동으로 JSON으로 변경하기
         redisDB.setValueSerializer(new Jackson2JsonRedisSerializer<>(RedisDTO.class));
 
+        if (redisDB.hasKey(redisKey)) { // 데이터가 존재하면, 기존 데이터 삭제하기
+            redisDB.delete(redisKey); // 삭제하기
+
+            log.info("삭제 성공!");
+
+        }
+
         for (RedisDTO dto : pList) {
             redisDB.opsForZSet().add(redisKey, dto, dto.getOrder()); // 저장순서는 order 값에 따름
 
@@ -438,10 +445,6 @@ public class MyRedisMapper implements IMyRedisMapper {
         redisDB.setValueSerializer(new Jackson2JsonRedisSerializer<>(RedisDTO.class));
 
         if (redisDB.hasKey(redisKey)) {
-
-            // 저장된 전체 레코드 수
-//            long cnt = redisDB.opsForZSet().size(redisKey);
-
             rSet = (Set) redisDB.opsForZSet().range(redisKey, 0, -1);
 
         }

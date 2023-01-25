@@ -10,16 +10,21 @@
 
         // HTML로딩이 완료되고, 실행됨
         $(document).ready(function () {
-            getAllMsg(); //채팅방 전체 대화 가져오기
+            chatMsg("/chat/getMsg"); //채팅방 전체 대화 가져오기
+
+            //2번쨰부터 채팅메시지를 10초마다 로딩함
+            setInterval("chatMsg(\"/chat/getMsg\")", 10000);
 
         })
 
-        //채팅방 전체 대화 가져오기
-        function getAllMsg() {
+        // 채팅방 전체 대화 가져오기(API 주소를 파라미터로 받아 저장 및 조회 수행함
+        // 메시지 저장 API : /chat/msg
+        // 전체 메시지 조회 API : /chat/getMsg
+        function chatMsg(api) {
 
             //Ajax 호출
             $.ajax({
-                url: "/chat/getMsg",
+                url: api,
                 type: "post",
                 dataType: "JSON",
                 data: $("#f").serialize(), // form 태그 내 input 등 객체를 자동으로 전송할 형태로 변경하기
@@ -66,7 +71,7 @@
             $("#view_msg").html(final_transcript); // 음성메시지 보여주기
             $("#send_msg").val(final_transcript); // 음성메시지를 Controller에 전달하기 위해 input hidden 값 저장
 
-            getAllMsg(); //채팅방 전체 대화 가져오기
+            chatMsg("/chat/msg"); // 음성메시지 저장 후, 채팅방 전체 대화 가져오기
 
         };
 
