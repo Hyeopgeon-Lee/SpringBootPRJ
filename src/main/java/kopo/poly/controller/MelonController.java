@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RequestMapping(value = "/melon")
@@ -61,7 +62,9 @@ public class MelonController {
 
         log.info(this.getClass().getName() + ".getSongList Start!");
 
-        List<MelonDTO> rList = melonService.getSongList();
+        // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
+        List<MelonDTO> rList = Optional.ofNullable(melonService.getSongList())
+                .orElseGet(ArrayList::new);
 
         log.info(this.getClass().getName() + ".getSongList End!");
 
@@ -77,7 +80,9 @@ public class MelonController {
 
         log.info(this.getClass().getName() + ".getSingerSongCnt Start!");
 
-        List<MelonDTO> rList = melonService.getSingerSongCnt();
+        // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
+        List<MelonDTO> rList = Optional.ofNullable(melonService.getSingerSongCnt())
+                .orElseGet(ArrayList::new);
 
         log.info(this.getClass().getName() + ".getSingerSongCnt End!");
 
@@ -104,7 +109,9 @@ public class MelonController {
         MelonDTO pDTO = new MelonDTO();
         pDTO.setSinger(singer);
 
-        List<MelonDTO> rList = melonService.getSingerSong(pDTO);
+        // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
+        List<MelonDTO> rList = Optional.ofNullable(melonService.getSingerSong(pDTO))
+                .orElseGet(ArrayList::new);
 
         log.info(this.getClass().getName() + ".getSingerSong End!");
 
@@ -150,11 +157,9 @@ public class MelonController {
 
         log.info(this.getClass().getName() + ".insertManyField Start!");
 
-        List<MelonDTO> rList = melonService.insertManyField();
-
-        if (rList == null) {
-            rList = new ArrayList<>();
-        }
+        // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
+        List<MelonDTO> rList = Optional.ofNullable(melonService.insertManyField())
+                .orElseGet(ArrayList::new);
 
         log.info(this.getClass().getName() + ".insertManyField End!");
 
@@ -180,11 +185,9 @@ public class MelonController {
         pDTO.setSinger(singer);
         pDTO.setUpdateSinger(updateSinger);
 
-        List<MelonDTO> rList = melonService.updateField(pDTO);
-
-        if (rList == null) {
-            rList = new ArrayList<>();
-        }
+        // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
+        List<MelonDTO> rList = Optional.ofNullable(melonService.updateField(pDTO))
+                .orElseGet(ArrayList::new);
 
         log.info(this.getClass().getName() + ".updateField End!");
 
@@ -210,11 +213,9 @@ public class MelonController {
         pDTO.setSinger(singer);
         pDTO.setNickname(nickname);
 
-        List<MelonDTO> rList = melonService.updateAddField(pDTO);
-
-        if (rList == null) {
-            rList = new ArrayList<>();
-        }
+        // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
+        List<MelonDTO> rList = Optional.ofNullable(melonService.updateAddField(pDTO))
+                .orElseGet(ArrayList::new);
 
         log.info(this.getClass().getName() + ".updateAddField End!");
 
@@ -245,11 +246,9 @@ public class MelonController {
         pDTO.setSinger(singer);
         pDTO.setMember(memberList);
 
-        List<MelonDTO> rList = melonService.updateAddListField(pDTO);
-
-        if (rList == null) {
-            rList = new ArrayList<>();
-        }
+        // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
+        List<MelonDTO> rList = Optional.ofNullable(melonService.updateAddListField(pDTO))
+                .orElseGet(ArrayList::new);
 
         log.info(this.getClass().getName() + ".updateAddListField End!");
 
@@ -277,11 +276,9 @@ public class MelonController {
         pDTO.setUpdateSinger(updateSinger);
         pDTO.setAddFieldValue(addData);
 
-        List<MelonDTO> rList = melonService.updateFieldAndAddField(pDTO);
-
-        if (rList == null) {
-            rList = new ArrayList<>();
-        }
+        // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
+        List<MelonDTO> rList = Optional.ofNullable(melonService.updateFieldAndAddField(pDTO))
+                .orElseGet(ArrayList::new);
 
         log.info(this.getClass().getName() + ".updateFieldAndAddField End!");
 
@@ -303,11 +300,9 @@ public class MelonController {
         MelonDTO pDTO = new MelonDTO();
         pDTO.setSinger(singer);
 
-        List<MelonDTO> rList = melonService.deleteDocument(pDTO);
-
-        if (rList == null) {
-            rList = new ArrayList<>();
-        }
+        // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
+        List<MelonDTO> rList = Optional.ofNullable(melonService.deleteDocument(pDTO))
+                .orElseGet(ArrayList::new);
 
         log.info(this.getClass().getName() + ".deleteDocument End!");
 

@@ -40,12 +40,9 @@ public class RedisController {
         RedisDTO pDTO = new RedisDTO();
         pDTO.setText(text);
 
-        RedisDTO rDTO = myRedisService.saveString(pDTO);
-
-        if (rDTO == null) {
-            rDTO = new RedisDTO();
-
-        }
+        // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
+        RedisDTO rDTO = Optional.ofNullable(myRedisService.saveString(pDTO))
+                .orElseGet(RedisDTO::new);
 
         log.info(this.getClass().getName() + ".saveString End!");
 
@@ -79,12 +76,9 @@ public class RedisController {
         pDTO.setEmail(email);
         pDTO.setAddr(addr);
 
-        RedisDTO rDTO = myRedisService.saveStringJSON(pDTO);
-
-        if (rDTO == null) {
-            rDTO = new RedisDTO();
-
-        }
+        // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
+        RedisDTO rDTO = Optional.ofNullable(myRedisService.saveStringJSON(pDTO))
+                .orElseGet(RedisDTO::new);
 
         log.info(this.getClass().getName() + ".saveStringJSON End!");
 
@@ -110,12 +104,9 @@ public class RedisController {
         RedisDTO pDTO = new RedisDTO();
         pDTO.setTexts(texts);
 
-        RedisDTO rDTO = myRedisService.saveList(pDTO);
-
-        if (rDTO == null) {
-            rDTO = new RedisDTO();
-
-        }
+        // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
+        RedisDTO rDTO = Optional.ofNullable(myRedisService.saveList(pDTO))
+                .orElseGet(RedisDTO::new);
 
         log.info(this.getClass().getName() + ".saveList End!");
 
@@ -150,12 +141,9 @@ public class RedisController {
 
         }
 
-        List<RedisDTO> rList = myRedisService.saveListJSON(pList);
-
-        if (rList == null) {
-            rList = new ArrayList<>();
-
-        }
+        // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
+        List<RedisDTO> rList = Optional.ofNullable(myRedisService.saveListJSON(pList))
+                .orElseGet(ArrayList::new);
 
         log.info(this.getClass().getName() + ".saveListJSON End!");
 
@@ -188,12 +176,9 @@ public class RedisController {
         pDTO.setEmail(email);
         pDTO.setAddr(addr);
 
-        RedisDTO rDTO = myRedisService.saveHash(pDTO);
-
-        if (rDTO == null) {
-            rDTO = new RedisDTO();
-
-        }
+        // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
+        RedisDTO rDTO = Optional.ofNullable(myRedisService.saveHash(pDTO))
+                .orElseGet(RedisDTO::new);
 
         log.info(this.getClass().getName() + ".saveHash End!");
 
@@ -229,12 +214,9 @@ public class RedisController {
 
         }
 
-        Set<RedisDTO> rSet = myRedisService.saveSetJSON(pList);
-
-        if (rSet == null) {
-            rSet = new HashSet<>();
-
-        }
+        // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
+        Set<RedisDTO> rSet = Optional.ofNullable(myRedisService.saveSetJSON(pList))
+                .orElseGet(HashSet::new);
 
         log.info(this.getClass().getName() + ".saveSetJSON End!");
 
@@ -272,12 +254,9 @@ public class RedisController {
 
         }
 
-        Set<RedisDTO> rSet = myRedisService.saveZSetJSON(pList);
-
-        if (rSet == null) {
-            rSet = new HashSet<>();
-
-        }
+        // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
+        Set<RedisDTO> rSet = Optional.ofNullable(myRedisService.saveZSetJSON(pList))
+                .orElseGet(HashSet::new);
 
         log.info(this.getClass().getName() + ".saveZSetJSON End!");
 

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RequestMapping(value = "/rank")
@@ -40,12 +41,9 @@ public class MovieController {
         if ((send_msg.contains("영화")) || (send_msg.contains("영하")) || (send_msg.contains("연하"))
                 || (send_msg.contains("연화"))) {
 
-            rList = movieService.getMovieRank();
+            // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
+            rList = Optional.ofNullable(movieService.getMovieRank()).orElseGet(ArrayList::new);
 
-            if (rList == null) {
-                rList = new ArrayList<>();
-
-            }
         }
 
         log.info(this.getClass().getName() + ".getMovie end!");

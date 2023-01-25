@@ -14,7 +14,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -123,10 +122,6 @@ public class MelonService implements IMelonService {
 
         }
 
-        if (rList == null) {
-            rList = new LinkedList<>();
-        }
-
         log.info(this.getClass().getName() + ".getSongList End!");
 
         return rList;
@@ -140,10 +135,6 @@ public class MelonService implements IMelonService {
         String colNm = "MELON_" + DateUtil.getDateTime("yyyyMMdd");
 
         List<MelonDTO> rList = melonMapper.getSingerSongCnt(colNm);
-
-        if (rList == null) {
-            rList = new LinkedList<>();
-        }
 
         log.info(this.getClass().getName() + ".getSingerSongCnt End!");
 
@@ -182,14 +173,8 @@ public class MelonService implements IMelonService {
         // Melen 노래 수집하기
         if (this.collectMelonSong() == 1) {
 
+            // 가수 노래 조회하기
             rList = melonMapper.getSingerSong(colNm, pDTO);
-
-            if (rList == null) {
-                rList = new LinkedList<>();
-            }
-
-        } else {
-            rList = new LinkedList<>();
 
         }
 
@@ -216,9 +201,6 @@ public class MelonService implements IMelonService {
             // 변경된 값을 확인하기 위해 MongoDB로부터 데이터 조회하기
             rList = melonMapper.getSongList(colNm);
 
-            if (rList == null) {
-                rList = new LinkedList<>();
-            }
         }
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
@@ -250,9 +232,6 @@ public class MelonService implements IMelonService {
                 // 변경된 값을 확인하기 위해 MongoDB로부터 데이터 조회하기
                 rList = melonMapper.getUpdateSinger(colNm, pDTO);
 
-                if (rList == null) {
-                    rList = new LinkedList<>();
-                }
             }
         }
 
@@ -286,11 +265,7 @@ public class MelonService implements IMelonService {
                 // 변경된 값을 확인하기 위해 MongoDB로부터 데이터 조회하기
                 rList = melonMapper.getSingerSongNickname(colNm, pDTO);
 
-                if (rList == null) {
-                    rList = new LinkedList<>();
-                }
             }
-
         }
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
@@ -322,9 +297,6 @@ public class MelonService implements IMelonService {
                 // 변경된 값을 확인하기 위해 MongoDB로부터 데이터 조회하기
                 rList = melonMapper.getSingerSongMember(colNm, pDTO);
 
-                if (rList == null) {
-                    rList = new LinkedList<>();
-                }
             }
         }
 
@@ -356,18 +328,13 @@ public class MelonService implements IMelonService {
                 // 변경된 값을 확인하기 위해 MongoDB로부터 데이터 조회하기
                 rList = melonMapper.getSingerSongAddData(colNm, pDTO);
 
-                if (rList == null) {
-                    rList = new LinkedList<>();
-                }
             }
-
         }
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
         log.info(this.getClass().getName() + ".updateFieldAndAddField End!");
 
         return rList;
-
     }
 
     @Override
@@ -393,9 +360,6 @@ public class MelonService implements IMelonService {
                 // 삭제된 값을 확인하기 위해 MongoDB로부터 데이터 조회하기
                 rList = melonMapper.getSongList(colNm);
 
-                if (rList == null) {
-                    rList = new LinkedList<>();
-                }
             }
 
         }

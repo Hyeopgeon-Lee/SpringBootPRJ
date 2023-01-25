@@ -14,10 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Slf4j
 @RequestMapping(value = "/chat")
@@ -31,7 +28,7 @@ public class ChatController {
      * 채팅방 초기화면
      */
     @GetMapping(value = "index")
-    public String index() throws Exception {
+    public String index() {
 
         log.info(this.getClass().getName() + ".index Start!");
 
@@ -88,12 +85,9 @@ public class ChatController {
 
         log.info(this.getClass().getName() + ".roomList Start!");
 
-        Set<String> rSet = chatService.getRoomList();
-
-        if (rSet == null) {
-            rSet = new LinkedHashSet<String>();
-
-        }
+        // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
+        Set<String> rSet = Optional.ofNullable(chatService.getRoomList())
+                .orElseGet(HashSet::new);
 
         log.info(this.getClass().getName() + ".roomList End!");
 
@@ -130,12 +124,9 @@ public class ChatController {
             pDTO.setMsg(msg);
             pDTO.setDateTime(DateUtil.getDateTime("yyyy.MM.dd hh:mm:ss"));
 
-            rList = chatService.insertChat(pDTO);
-
-            if (rList == null) {
-                rList = new LinkedList<>();
-
-            }
+            // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
+            rList = Optional.ofNullable(chatService.insertChat(pDTO))
+                    .orElseGet(ArrayList::new);
 
             pDTO = null;
 
@@ -164,12 +155,9 @@ public class ChatController {
 
         pDTO.setRoomKey("Chat_" + room_name);
 
-        List<ChatDTO> rList = chatService.getChat(pDTO);
-
-        if (rList == null) {
-            rList = new LinkedList<>();
-
-        }
+        // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
+        List<ChatDTO> rList = Optional.ofNullable(chatService.getChat(pDTO))
+                .orElseGet(ArrayList::new);
 
         pDTO = null;
 

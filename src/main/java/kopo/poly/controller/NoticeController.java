@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 /*
@@ -53,13 +54,10 @@ public class NoticeController {
         // 추후 로그인을 구현할 것으로 가정하고, 공지사항 리스트 출력하는 함수에서 로그인 한 것처럼 Session 값을 생성함
         session.setAttribute("SESSION_USER_ID", "USER01");
 
-        // 공지사항 리스트 가져오기
-        List<NoticeDTO> rList = noticeService.getNoticeList();
-
-        if (rList == null) {
-            rList = new ArrayList<>();
-
-        }
+        // 공지사항 리스트 조회하기
+        // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
+        List<NoticeDTO> rList = Optional.ofNullable(noticeService.getNoticeList())
+                .orElseGet(ArrayList::new);
 
         // 조회된 리스트 결과값 넣어주기
         model.addAttribute("rList", rList);
@@ -183,12 +181,9 @@ public class NoticeController {
         pDTO.setNoticeSeq(nSeq);
 
         // 공지사항 상세정보 가져오기
-        NoticeDTO rDTO = noticeService.getNoticeInfo(pDTO, true);
-
-        if (rDTO == null) {
-            rDTO = new NoticeDTO();
-
-        }
+        // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
+        NoticeDTO rDTO = Optional.ofNullable(noticeService.getNoticeInfo(pDTO, true))
+                .orElseGet(NoticeDTO::new);
 
         // 조회된 리스트 결과값 넣어주기
         model.addAttribute("rDTO", rDTO);
@@ -221,12 +216,9 @@ public class NoticeController {
         NoticeDTO pDTO = new NoticeDTO();
         pDTO.setNoticeSeq(nSeq);
 
-        NoticeDTO rDTO = noticeService.getNoticeInfo(pDTO, false);
-
-        if (rDTO == null) {
-            rDTO = new NoticeDTO();
-
-        }
+        // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
+        NoticeDTO rDTO = Optional.ofNullable(noticeService.getNoticeInfo(pDTO, false))
+                .orElseGet(NoticeDTO::new);
 
         // 조회된 리스트 결과값 넣어주기
         model.addAttribute("rDTO", rDTO);
@@ -241,7 +233,7 @@ public class NoticeController {
      */
     @ResponseBody
     @PostMapping(value = "noticeUpdate")
-    public MsgDTO noticeUpdate(HttpSession session, HttpServletRequest request, ModelMap model) {
+    public MsgDTO noticeUpdate(HttpSession session, HttpServletRequest request) {
 
         log.info(this.getClass().getName() + ".noticeUpdate Start!");
 
@@ -304,7 +296,7 @@ public class NoticeController {
      */
     @ResponseBody
     @PostMapping(value = "noticeDelete")
-    public MsgDTO noticeDelete(HttpServletRequest request, ModelMap model) {
+    public MsgDTO noticeDelete(HttpServletRequest request) {
 
         log.info(this.getClass().getName() + ".noticeDelete Start!");
 
