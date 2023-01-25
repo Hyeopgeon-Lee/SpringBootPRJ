@@ -10,58 +10,45 @@
         // HTML로딩이 완료되고, 실행됨
         $(document).ready(function () {
 
-            // html의 btnMelonTop100 id의 버튼 객체 가져오기
-            const btnCollectMelonTop100 = document.getElementById("btnCollectMelonTop100");
-
             // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
-            btnCollectMelonTop100.addEventListener("click", e => {
-                doCollectMelonTop100(); // 멜론 차트 수집하기
-            })
+            $("#btnCollectMelonTop100").on("click", function () {
 
-            // html의 btnMelonTop100 id의 버튼 객체 가져오기
-            const btnMelonTop100 = document.getElementById("btnMelonTop100");
+                // Ajax 호출해서 멜론차트 수집하기
+                $.ajax({
+                        url: "/melon/collectMelonSong",
+                        type: "post", // 전송방식은 Post
+                        dataType: "JSON", // 전송 결과는 JSON으로 받기
+                        success: function (json) { // /melon/collectMelonSong 호출이 성공했다면..
+                            alert(json.msg);
 
-            // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
-            btnMelonTop100.addEventListener("click", e => {
-                doSearchMelonTop100(); // 앞서 수집된 멜로 차트 조회하기
-            })
-
-        })
-
-        function doCollectMelonTop100() {
-            // Ajax 호출해서 멜론차트 수집하기
-            $.ajax({
-                    url: "/melon/collectMelonSong",
-                    type: "post", // 전송방식은 Post
-                    dataType: "JSON", // 전송 결과는 JSON으로 받기
-                    success: function (json) { // /melon/collectMelonSong 호출이 성공했다면..
-                        alert(json.msg);
-
-                    }
-                }
-            )
-        }
-
-        function doSearchMelonTop100() {
-            // Ajax 호출해서 멜론차트 조회하기
-            $.ajax({
-                    url: "/melon/getSongList",
-                    type: "post", // 전송방식은 Post
-                    dataType: "JSON", // 전송 결과는 JSON으로 받기
-                    success: function (json) { // /melon/getSongList 호출이 성공했다면..
-                        for (let i = 0; i < json.length; i++) {
-                            $("#melonData").append("<div class=\"divTableRow\">");
-                            $("#melonData").append("<div class=\"divTableCell\">" + json[i].song + "</div>");
-                            $("#melonData").append("<div class=\"divTableCell\">" + json[i].singer + "</div>");
-                            $("#melonData").append("</div>");
                         }
-
                     }
-                }
-            )
-        }
+                )
+            })
 
+            // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
+            $("#btnMelonTop100").on("click", function () {
+
+                // Ajax 호출해서 멜론차트 조회하기
+                $.ajax({
+                        url: "/melon/getSongList",
+                        type: "post", // 전송방식은 Post
+                        dataType: "JSON", // 전송 결과는 JSON으로 받기
+                        success: function (json) { // /melon/getSongList 호출이 성공했다면..
+                            for (let i = 0; i < json.length; i++) {
+                                $("#melonData").append("<div class=\"divTableRow\">");
+                                $("#melonData").append("<div class=\"divTableCell\">" + json[i].song + "</div>");
+                                $("#melonData").append("<div class=\"divTableCell\">" + json[i].singer + "</div>");
+                                $("#melonData").append("</div>");
+                            }
+
+                        }
+                    }
+                )
+            })
+        })
     </script>
+</head>
 <body>
 <h2>멜론 차트100 조회하기</h2>
 <hr/>

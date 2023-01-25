@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>멜론 차트100 조회하기</title>
+    <title>가수별 멜론 차트100 조회하기</title>
     <link rel="stylesheet" href="/css/table.css"/>
     <script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
     <script type="text/javascript">
@@ -10,36 +10,31 @@
         // HTML로딩이 완료되고, 실행됨
         $(document).ready(function () {
 
-            // html의 btnSinger id의 버튼 객체 가져오기
-            const btnSinger = document.getElementById("btnSinger");
-
             // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
-            btnSinger.addEventListener("click", e => {
-                doSearchSinger(); // 앞서 수집된 멜로 차트 조회하기
+            $("#btnSinger").on("click", function () {
+
+                // Ajax 호출해서 멜론차트 가수별 노래 수 조회하기
+                $.ajax({
+                        url: "/melon/getSingerSongCnt",
+                        type: "post", // 전송방식은 Post
+                        dataType: "JSON", // 전송 결과는 JSON으로 받기
+                        success: function (json) { // /melon/getSingerSongCnt 호출이 성공했다면..
+                            for (let i = 0; i < json.length; i++) {
+                                $("#melonData").append("<div class=\"divTableRow\">");
+                                $("#melonData").append("<div class=\"divTableCell\">" + json[i].singer + "</div>");
+                                $("#melonData").append("<div class=\"divTableCell\">" + json[i].singerCnt + "</div>");
+                                $("#melonData").append("</div>");
+                            }
+
+                        }
+                    }
+                )
             })
         })
-
-        function doSearchSinger() {
-            // Ajax 호출해서 멜론차트 가수별 노래 수 조회하기
-            $.ajax({
-                    url: "/melon/getSingerSongCnt",
-                    type: "post", // 전송방식은 Post
-                    dataType: "JSON", // 전송 결과는 JSON으로 받기
-                    success: function (json) { // /melon/getSingerSongCnt 호출이 성공했다면..
-                        for (let i = 0; i < json.length; i++) {
-                            $("#melonData").append("<div class=\"divTableRow\">");
-                            $("#melonData").append("<div class=\"divTableCell\">" + json[i].singer + "</div>");
-                            $("#melonData").append("<div class=\"divTableCell\">" + json[i].singerCnt + "</div>");
-                            $("#melonData").append("</div>");
-                        }
-
-                    }
-                }
-            )
-        }
     </script>
+</head>
 <body>
-<h2>멜론 차트100 조회하기</h2>
+<h2>가수별 멜론 차트100 조회하기</h2>
 <hr/>
 <br/>
 <div>
