@@ -14,7 +14,7 @@
 	</select>
 	
 	<!-- 게시판 등록 쿼리 -->
-	<insert id="InsertNoticeInfo" parameterType="NoticeDTO">
+	<insert id="insertNoticeInfo" parameterType="NoticeDTO">
 		INSERT INTO NOTICE
 			(
 				NOTICE_SEQ, TITLE, NOTICE_YN, CONTENTS, USER_ID, READ_CNT, 
