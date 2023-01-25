@@ -14,32 +14,20 @@
 
         // HTML로딩이 완료되고, 실행됨
         $(document).ready(function () {
-
-            // html의 btnEdit id의 버튼 객체 가져오기
-            const btnEdit = document.getElementById("btnEdit");
-
             // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
-            btnEdit.addEventListener("click", e => {
-                doEdit();
+            $("#btnEdit").on("click", function () {
+                doEdit(); // 공지사항 수정하기 실행
             })
 
-            // html의 btnEdit id의 버튼 객체 가져오기
-            const btnDelete = document.getElementById("btnDelete");
-
             // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
-            btnDelete.addEventListener("click", e => {
-                doDelete();
+            $("#btnDelete").on("click", function () {
+                doDelete(); // 공지사항 수정하기 실행
             })
 
-            // html의 btnEdit id의 버튼 객체 가져오기
-            const btnList = document.getElementById("btnList");
-
             // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
-            btnList.addEventListener("click", e => {
-                doList();
+            $("#btnDelete").on("click", function () {
+                location.href = "/notice/noticeList"; // 공지사항 리스트 이동
             })
-
-
         })
 
         //수정하기
@@ -83,11 +71,6 @@
                 alert("본인이 작성한 글만 수정 가능합니다.");
 
             }
-        }
-
-        //목록으로 이동
-        function doList() {
-            location.href = "/notice/noticeList";
         }
 
         /*]]>*/
