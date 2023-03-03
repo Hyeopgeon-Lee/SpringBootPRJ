@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 public class NoticeDTO {
 
-    private String noticeSeq; // 기본키, 순번
+    private long noticeSeq; // 기본키, 순번
     private String title; // 제목
     private String noticeYn; // 공지글 여부
     private String contents; // 글 내용

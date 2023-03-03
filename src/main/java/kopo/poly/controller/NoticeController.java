@@ -178,7 +178,7 @@ public class NoticeController {
          * 값 전달은 반드시 DTO 객체를 이용해서 처리함 전달 받은 값을 DTO 객체에 넣는다.
          */
         NoticeDTO pDTO = new NoticeDTO();
-        pDTO.setNoticeSeq(nSeq);
+        pDTO.setNoticeSeq(Long.parseLong(nSeq)); // String 타입을 long 타입으로 변경
 
         // 공지사항 상세정보 가져오기
         // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
@@ -214,7 +214,7 @@ public class NoticeController {
          * 값 전달은 반드시 DTO 객체를 이용해서 처리함 전달 받은 값을 DTO 객체에 넣는다.
          */
         NoticeDTO pDTO = new NoticeDTO();
-        pDTO.setNoticeSeq(nSeq);
+        pDTO.setNoticeSeq(Long.parseLong(nSeq)); // String 타입을 long 타입으로 변경
 
         // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
         NoticeDTO rDTO = Optional.ofNullable(noticeService.getNoticeInfo(pDTO, false))
@@ -263,7 +263,7 @@ public class NoticeController {
              */
             NoticeDTO pDTO = new NoticeDTO();
             pDTO.setUserId(userId);
-            pDTO.setNoticeSeq(nSeq);
+            pDTO.setNoticeSeq(Long.parseLong(nSeq)); // String 타입을 long 타입으로 변경
             pDTO.setTitle(title);
             pDTO.setNoticeYn(noticeYn);
             pDTO.setContents(contents);
@@ -317,7 +317,7 @@ public class NoticeController {
              * 값 전달은 반드시 DTO 객체를 이용해서 처리함 전달 받은 값을 DTO 객체에 넣는다.
              */
             NoticeDTO pDTO = new NoticeDTO();
-            pDTO.setNoticeSeq(nSeq);
+            pDTO.setNoticeSeq(Long.parseLong(nSeq)); // String 타입을 long 타입으로 변경
 
             // 게시글 삭제하기 DB
             noticeService.deleteNoticeInfo(pDTO);
